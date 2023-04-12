@@ -10,15 +10,24 @@ public class CandleThrower : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        _candle = GetCandle();
+    }
+
+    private Transform GetCandle()
+    {
+        Transform candle;
+
         for (int i = 0; i < transform.childCount; i++)
         {
-            Transform candle = transform.GetChild(i);
+            candle = transform.GetChild(i);
+
             if (candle.GetComponent<Candle>())
             {
-                _candle = candle;
-                return;
+                return candle;
             }
         }
+
+        return null;
     }
 
     private void OnEnable()
@@ -31,9 +40,20 @@ public class CandleThrower : MonoBehaviour
         _playerInput.OnCandleThrown -= OnCandleThrown;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.transform == _candle)
+        {
+            _candle.SetParent(transform);
+            Debug.Log("picked");
+        }
+    }
+
     private void OnCandleThrown()
     {
         _candle.parent = null;
+
+
     }
 
     // Start is called before the first frame update
@@ -45,6 +65,7 @@ public class CandleThrower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
+
+    
 }

@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
             OnJumpFinished?.Invoke();
         
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyUp(KeyCode.Q))
             OnCandleThrown?.Invoke();
 
         MovementHorizontal = Input.GetAxis("Horizontal");
