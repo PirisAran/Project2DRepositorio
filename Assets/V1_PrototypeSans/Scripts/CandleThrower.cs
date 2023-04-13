@@ -84,7 +84,7 @@ public class CandleThrower : MonoBehaviour
     void Update()
     {
         Rigidbody2D candleRB = _candle.GetComponent<Rigidbody2D>();
-        if (candleRB.velocity.y == 0)
+        if (candleRB.velocity.y == 0 && candleRB.bodyType != RigidbodyType2D.Static)
             candleRB.velocity = Vector2.zero;
     }
 

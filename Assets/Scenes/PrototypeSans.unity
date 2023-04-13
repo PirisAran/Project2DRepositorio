@@ -783,8 +783,8 @@ GameObject:
   - component: {fileID: 1277321786}
   - component: {fileID: 1277321787}
   - component: {fileID: 1277321789}
-  - component: {fileID: 1277321788}
   - component: {fileID: 1277321790}
+  - component: {fileID: 1277321791}
   m_Layer: 0
   m_Name: Candle
   m_TagString: Untagged
@@ -861,18 +861,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1277321788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1277321785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f41d514e6aa73f4e99dd74c4db16b3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &1277321789
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -910,6 +898,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1277321791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277321785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99ca313dcb28b54f85eb4115a87b12c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PickUpRadius: 1
+  MaxLightRange: 6
+  PickUpCollider: {fileID: 277212169}
+  Light: {fileID: 1690612780}
+  Color: {r: 0.9622642, g: 0.049020927, b: 0.049020927, a: 1}
 --- !u!1 &1532806523
 GameObject:
   m_ObjectHideFlags: 0
