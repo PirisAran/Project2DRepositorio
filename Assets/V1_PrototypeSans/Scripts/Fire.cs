@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Candle : MonoBehaviour
+public class Fire : MonoBehaviour
 {
     [SerializeField]
     float PickUpRadius = 1;
@@ -27,10 +27,10 @@ public class Candle : MonoBehaviour
     private void Awake()
     {
 
-        InitCandle();
+        InitFire();
     }
 
-    private void InitCandle()
+    private void InitFire()
     {
         PickUpCollider.radius = PickUpRadius;
         Light.pointLightInnerRadius = 0;
