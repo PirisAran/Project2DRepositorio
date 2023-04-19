@@ -23,6 +23,19 @@ public class Candle : MonoBehaviour
 
     [SerializeField]
 
+    private void OnEnable()
+    {
+        SpiderLive.OnSpiderwebDestroyed += OnCandleCollidesWithSpideweb;
+    }
+
+    private void OnDisable()
+    {
+        SpiderLive.OnSpiderwebDestroyed -= OnCandleCollidesWithSpideweb;
+    }
+    private void OnCandleCollidesWithSpideweb(SpiderLive obj)
+    {
+        
+    }
 
     private void Awake()
     {
