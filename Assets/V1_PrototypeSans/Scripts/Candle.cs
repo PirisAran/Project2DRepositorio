@@ -22,6 +22,7 @@ public class Candle : MonoBehaviour
     Color Color;
 
     [SerializeField]
+    Rigidbody2D _candleRB;
 
     private void OnEnable()
     {
@@ -34,7 +35,7 @@ public class Candle : MonoBehaviour
     }
     private void OnCandleCollidesWithSpideweb(SpiderLive obj)
     {
-        
+        _candleRB.velocity = _candleRB.velocity / 2;
     }
 
     private void Awake()
