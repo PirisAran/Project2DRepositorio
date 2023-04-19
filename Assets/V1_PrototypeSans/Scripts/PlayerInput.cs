@@ -8,23 +8,47 @@ public class PlayerInput : MonoBehaviour
     public float MovementHorizontal { get; private set; }
     public float MovementVertical { get; private set; }
 
+    [SerializeField]
+    KeyCode JumpKey = KeyCode.Space;
+
+    [SerializeField]
+    KeyCode ThrowKey = KeyCode.Mouse0;
+
     public Action OnJumpStarted;
     public Action OnJumpFinished;
-    public Action OnCandleThrown;
+
+    public Action OnThrowStarted;
+    public Action OnThrowFinished;
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        JumpInput();
+        ThrowInput();
+        MoveInput();
+    }
+
+    private void MoveInput()
+    {
+        MovementHorizontal = Input.GetAxis("Horizontal");
+        MovementVertical = Input.GetAxis("Vertical");
+    }
+
+    private void ThrowInput()
+    {
+        if (Input.GetKeyDown(ThrowKey))
+            OnThrowStarted?.Invoke();
+
+        if (Input.GetKeyUp(ThrowKey))
+            OnThrowFinished?.Invoke();
+    }
+
+    private void JumpInput()
+    {
+        if (Input.GetKeyDown(JumpKey))
             OnJumpStarted?.Invoke();
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(JumpKey))
             OnJumpFinished?.Invoke();
-        
-        if (Input.GetMouseButtonDown(0))
-            OnCandleThrown?.Invoke();
-
-        MovementHorizontal = Input.GetAxis("Horizontal");
-        MovementVertical = Input.GetAxis("Vertical");       
     }
 }
