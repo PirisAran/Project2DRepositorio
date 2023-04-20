@@ -8,24 +8,26 @@ public class BurnableObject: MonoBehaviour
     [SerializeField]
     float TimeToBurn = 3;
 
+    [SerializeField]
+    GameObject Particles;
+
     float _timer;
 
     private void Awake()
     {
+        Particles.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("tOUCHED");
         if (collision.gameObject.GetComponent<Fire>())
-        {
             StartToBurn();
-        }
     }
 
     void StartToBurn()
     {
         StartCoroutine(StartCountDown());
+        Particles.SetActive(true);
     }
 
     IEnumerator StartCountDown()
@@ -41,6 +43,7 @@ public class BurnableObject: MonoBehaviour
 
     private void EndBurn()
     {
+        Particles.SetActive(false);
         Destroy(gameObject);
         Debug.Log("BURNED OBJECT:" + gameObject.name);
     }

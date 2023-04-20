@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
-   
+    [SerializeField]
+    SpriteRenderer SpriteRenderer;
+    [SerializeField]
+    PlayerMovement PlayerMovement;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+    }
     void Update()
     {
-       
+        if (PlayerMovement.Direction.x != 0)
+            SpriteRenderer.flipX = (PlayerMovement.Direction.x < 0); 
     }
 }

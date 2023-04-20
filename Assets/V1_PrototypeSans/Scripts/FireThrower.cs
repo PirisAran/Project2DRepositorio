@@ -17,11 +17,9 @@ public class FireThrower : MonoBehaviour
     float MinThrowSpeed = 2;
     [SerializeField]
     float TimeToMaxThrow = 1.5f;
-    [SerializeField]
-    Rigidbody2D FireRb;
     [Range (2, 20)]
     [SerializeField]
-    public float DeltaSpeed = 3.0f;
+    public float DeltaSpeed = 3.0fm;
     [SerializeField]
     public float ParabolicShootAngle = 45.0f;
     [SerializeField]
@@ -31,6 +29,7 @@ public class FireThrower : MonoBehaviour
     float _throwStartTime;
     bool _isChargingThrow = false;
 
+    Rigidbody2D _fireRb;
     public Action OnFirePickedUp;
 
     List<Vector3> GetParabolicPositions(float AngleInRadians, float Speed, int MaxPoints, float MaxTime)
@@ -62,8 +61,7 @@ public class FireThrower : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        _fire = GetFire();
-        FireRb = _fire.GetComponent<Rigidbody2D>();
+        _fireRb = _fire.GetComponent<Rigidbody2D>();
     }
 
     private Transform GetFire()
@@ -138,7 +136,7 @@ public class FireThrower : MonoBehaviour
     private void Throw(Vector2 dir, float speed)
     {
         _fire.GetComponent<Fire>().DetachFromPlayer();
-        FireRb.velocity = dir * speed;
+        _fireRb.velocity = dir * speed;
     }
 
     void Update()
@@ -146,6 +144,7 @@ public class FireThrower : MonoBehaviour
         Rigidbody2D candleRB = _fire.GetComponent<Rigidbody2D>();
         if (candleRB.velocity.y == 0 && candleRB.bodyType != RigidbodyType2D.Static)
             candleRB.velocity = Vector2.zero;
+        
         if (_isChargingThrow)
         {
             List<Vector3> l_Positions = GetParabolicPositions((Vector2.Angle(Vector2.right, GetMouseDirFromPlayer())) * Mathf.Deg2Rad, GetCurrentSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);

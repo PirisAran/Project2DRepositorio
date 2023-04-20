@@ -27,6 +27,9 @@ public class Fire : MonoBehaviour
     [SerializeField]
     GameObject Particles;
 
+    [SerializeField]
+    SpriteRenderer _spriteRenderer;
+
     bool _isAttached;
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -75,9 +78,11 @@ public class Fire : MonoBehaviour
     private void Hide()
     {
         Particles.SetActive(false);
+        _spriteRenderer.enabled = false;
     }
     void Show()
     {
         Particles.SetActive(true);
+        _spriteRenderer.enabled = true;
     }
 }
