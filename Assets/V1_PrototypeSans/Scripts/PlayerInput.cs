@@ -8,11 +8,16 @@ public class PlayerInput : MonoBehaviour
     public float MovementHorizontal { get; private set; }
     public float MovementVertical { get; private set; }
 
+    public bool TryPickUp { get; private set; }
+
     [SerializeField]
     KeyCode JumpKey = KeyCode.Space;
 
     [SerializeField]
     KeyCode ThrowKey = KeyCode.Mouse0;
+
+    [SerializeField]
+    KeyCode PickUpKey = KeyCode.E;
 
     public Action OnJumpStarted;
     public Action OnJumpFinished;
@@ -20,12 +25,21 @@ public class PlayerInput : MonoBehaviour
     public Action OnThrowStarted;
     public Action OnThrowFinished;
 
+
     // Update is called once per frame
     void Update()
     {
         JumpInput();
         ThrowInput();
         MoveInput();
+        TryPickUpInput();
+    }
+
+    private void TryPickUpInput()
+    {
+        TryPickUp = false;
+        TryPickUp = Input.GetKeyDown(PickUpKey);
+        Debug.Log(TryPickUp);
     }
 
     private void MoveInput()

@@ -5,34 +5,43 @@ using UnityEngine;
 
 public class CollisionChecker : MonoBehaviour
 {
-    Jumper _jumper;
-
-
     [SerializeField]
     private float DetectionRadius = 0.15f;
 
     [SerializeField]
     Transform GroundCheckerOrigin;
 
+    public Action OnLanding;
 
-    public bool CanJump => _canJump;
-    bool _canJump;
+    public bool OnGround => _onGround;
+    bool _onGround;
 
-    private void Awake()
+    bool lastOnGround = false;
+
+    private void Update()
     {
-        _jumper = GetComponentInParent<Jumper>();
-    }
-    private void FixedUpdate()
-    {
-        _canJump = false;
-
-        CheckIfOnGround();
+        CheckOnGround();
+        CheckLanding();
     }
 
-    private void CheckIfOnGround()
+    private void CheckOnGround()
     {
+        _onGround = false;
         var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius);
-        _canJump = (colliders.Length > 0);
+        _onGround = (colliders.Length > 0);
+    }
+
+    private void CheckLanding()
+    {
+        var currentOnGround = _onGround;
+
+        if (!lastOnGround && currentOnGround)
+        {
+            OnLanding?.Invoke();
+            Debug.Log("landed");
+        }
+
+        lastOnGround = currentOnGround;
     }
 
 }

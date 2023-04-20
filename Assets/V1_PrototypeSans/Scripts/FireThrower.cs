@@ -8,7 +8,7 @@ public class FireThrower : MonoBehaviour
     PlayerInput _playerInput;
 
     [SerializeField]
-    Transform _fire;
+    Fire Fire;
     [SerializeField]
     Collider2D PickRangeCandle;
     [SerializeField]
@@ -19,7 +19,7 @@ public class FireThrower : MonoBehaviour
     float TimeToMaxThrow = 1.5f;
     [Range (2, 20)]
     [SerializeField]
-    public float DeltaSpeed = 3.0fm;
+    public float DeltaSpeed = 3.0f;
     [SerializeField]
     public float ParabolicShootAngle = 45.0f;
     [SerializeField]
@@ -61,19 +61,7 @@ public class FireThrower : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        _fireRb = _fire.GetComponent<Rigidbody2D>();
-    }
-
-    private Transform GetFire()
-    {
-        Transform candle;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            candle = transform.GetChild(i);
-            if (candle.GetComponent<Fire>())
-                return candle;
-        }
-        return null;
+        _fireRb = Fire.GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -88,24 +76,26 @@ public class FireThrower : MonoBehaviour
         _playerInput.OnThrowFinished -= OnThrowFinished;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (_fire.parent != null)
+        if (Fire.IsAttached)
             return;
-        if (other = PickRangeCandle)
+
+        if (other == PickRangeCandle && _playerInput.TryPickUp)
             PickUp();
     }
 
     private void PickUp()
     {
-        _fire.GetComponent<Fire>().AttachToPlayer();
+        Fire.GetComponent<Fire>().AttachToPlayer();
         OnFirePickedUp?.Invoke();
         Debug.Log("picked up");
     }
 
     private void OnThrowStarted()
     {
-        if (_fire.parent == null)
+        if (!Fire.IsAttached)
             return;
         _isChargingThrow = true;
         _throwStartTime = Time.time;
@@ -113,7 +103,7 @@ public class FireThrower : MonoBehaviour
 
     private void OnThrowFinished()
     {
-        if (_fire.parent == null)
+        if (!Fire.IsAttached)
             return;
         Vector2 dir = GetMouseDirFromPlayer();
         float currentSpeed = GetCurrentSpeed();
@@ -135,15 +125,14 @@ public class FireThrower : MonoBehaviour
 
     private void Throw(Vector2 dir, float speed)
     {
-        _fire.GetComponent<Fire>().DetachFromPlayer();
+        Fire.GetComponent<Fire>().DetachFromPlayer();
         _fireRb.velocity = dir * speed;
     }
 
     void Update()
     {
-        Rigidbody2D candleRB = _fire.GetComponent<Rigidbody2D>();
-        if (candleRB.velocity.y == 0 && candleRB.bodyType != RigidbodyType2D.Static)
-            candleRB.velocity = Vector2.zero;
+        if (_fireRb.velocity.y == 0 && _fireRb.bodyType != RigidbodyType2D.Static)
+            _fireRb.velocity = Vector2.zero;
         
         if (_isChargingThrow)
         {
@@ -151,7 +140,5 @@ public class FireThrower : MonoBehaviour
             for (int i = 1; i < l_Positions.Count; ++i)
                 Debug.DrawLine(l_Positions[i - 1], l_Positions[i], Color.red);
         }
-
-        
     }
 }

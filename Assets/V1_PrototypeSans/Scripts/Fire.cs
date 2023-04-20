@@ -16,6 +16,9 @@ public class Fire : MonoBehaviour
     CircleCollider2D PickUpCollider;
 
     [SerializeField]
+    CircleCollider2D DamageCollider;
+
+    [SerializeField]
     Light2D Light;
 
     [SerializeField]
@@ -28,8 +31,36 @@ public class Fire : MonoBehaviour
     GameObject Particles;
 
     [SerializeField]
+    float MaxHealth = 10;
+
+    [SerializeField]
     SpriteRenderer _spriteRenderer;
 
+    float _currentHealth;
+
+    public void TakeDamage(float damageDealt)
+    {
+        Debug.Log("fireDamaged:" + damageDealt);
+        _currentHealth -= damageDealt;
+        AdjustLight(Mathf.Clamp01(_currentHealth/MaxHealth));
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        IDamageFire water = other.GetComponent<IDamageFire>();
+        if(water != null)
+        {
+            TakeDamage(water.DamageDealt);
+            water.Destroy();
+        }
+    }
+
+    private void AdjustLight(float fraction)
+    {
+        Light.pointLightOuterRadius = Mathf.Lerp(0, MaxLightRange, fraction);
+    }
+
+    public bool IsAttached => _isAttached;
     bool _isAttached;
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -49,6 +80,7 @@ public class Fire : MonoBehaviour
         Light.pointLightInnerRadius = 0;
         Light.pointLightOuterRadius = MaxLightRange;
         Light.color = Color;
+        _currentHealth = MaxHealth;
         AttachToPlayer();
     }
 
