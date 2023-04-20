@@ -14,8 +14,7 @@ public class BurnableObject: MonoBehaviour
     {
     }
 
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("tOUCHED");
         if (collision.gameObject.GetComponent<Fire>())

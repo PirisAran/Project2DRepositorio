@@ -115,6 +115,8 @@ public class FireThrower : MonoBehaviour
 
     private void OnThrowFinished()
     {
+        if (_fire.parent == null)
+            return;
         Vector2 dir = GetMouseDirFromPlayer();
         float currentSpeed = GetCurrentSpeed();
         Throw(dir, currentSpeed);
