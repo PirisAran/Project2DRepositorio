@@ -22,11 +22,21 @@ public class Fire : MonoBehaviour
     Color Color;
 
     [SerializeField]
+    Transform Player;
 
+    [SerializeField]
+    GameObject Particles;
+
+    bool _isAttached;
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.GetComponent<Fire>())
+            GetComponent<Collider2D>().isTrigger = false;
+    }
 
     private void Awake()
     {
-
         InitFire();
     }
 
@@ -36,11 +46,38 @@ public class Fire : MonoBehaviour
         Light.pointLightInnerRadius = 0;
         Light.pointLightOuterRadius = MaxLightRange;
         Light.color = Color;
+        _isAttached = true;
     }
 
     private void Update()
     {
-
+        if (_isAttached)
+            transform.localPosition = Vector2.zero;
     }
 
+    internal void AttachToPlayer()
+    {
+        transform.SetParent(Player);
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        GetComponent<Collider2D>().isTrigger = true;
+        _isAttached = true;
+        Hide();
+    }
+
+    internal void DetachFromPlayer()
+    {
+        transform.SetParent(null);
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        _isAttached = false;
+        Show();
+    }
+
+    private void Hide()
+    {
+        Particles.SetActive(false);
+    }
+    void Show()
+    {
+        Particles.SetActive(true);
+    }
 }

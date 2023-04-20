@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,8 @@ public class FireThrower : MonoBehaviour
     public float ParabolicShootTime = 4.0f;
     float _throwStartTime;
     bool _isChargingThrow = false;
+
+    public Action OnFirePickedUp;
 
     List<Vector3> GetParabolicPositions(float AngleInRadians, float Speed, int MaxPoints, float MaxTime)
     {
@@ -97,8 +100,8 @@ public class FireThrower : MonoBehaviour
 
     private void PickUp()
     {
-        _fire.SetParent(transform);
-        _fire.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        _fire.GetComponent<Fire>().AttachToPlayer();
+        OnFirePickedUp?.Invoke();
         Debug.Log("picked up");
     }
 
@@ -133,9 +136,7 @@ public class FireThrower : MonoBehaviour
 
     private void Throw(Vector2 dir, float speed)
     {
-        _fire.parent = null;
-
-        FireRb.bodyType = RigidbodyType2D.Dynamic;
+        _fire.GetComponent<Fire>().DetachFromPlayer();
         FireRb.velocity = dir * speed;
     }
 
