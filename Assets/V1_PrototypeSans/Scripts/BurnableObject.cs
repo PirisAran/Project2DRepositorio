@@ -14,6 +14,7 @@ public class BurnableObject: MonoBehaviour
     {
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("tOUCHED");

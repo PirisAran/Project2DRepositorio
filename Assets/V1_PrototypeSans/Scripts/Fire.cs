@@ -31,7 +31,7 @@ public class Fire : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.GetComponent<Fire>())
+        if(collision.transform == Player)
             GetComponent<Collider2D>().isTrigger = false;
     }
 
@@ -46,7 +46,7 @@ public class Fire : MonoBehaviour
         Light.pointLightInnerRadius = 0;
         Light.pointLightOuterRadius = MaxLightRange;
         Light.color = Color;
-        _isAttached = true;
+        AttachToPlayer();
     }
 
     private void Update()
