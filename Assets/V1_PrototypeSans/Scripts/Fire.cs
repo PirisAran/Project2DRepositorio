@@ -16,6 +16,9 @@ public class Fire : MonoBehaviour
     CircleCollider2D PickUpCollider;
 
     [SerializeField]
+    CircleCollider2D DamageCollider;
+
+    [SerializeField]
     Light2D Light;
 
     [SerializeField]
@@ -27,6 +30,45 @@ public class Fire : MonoBehaviour
     [SerializeField]
     GameObject Particles;
 
+    [SerializeField]
+    float MaxHealth = 10;
+
+    [SerializeField]
+    SpriteRenderer _spriteRenderer;
+
+    public float LightRange => Light.pointLightOuterRadius;
+    float _currentHealth;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, Light.pointLightOuterRadius);
+        Gizmos.color = Color.white;
+    }
+
+    public void TakeDamage(float damageDealt)
+    {
+        Debug.Log("fireDamaged:" + damageDealt);
+        _currentHealth -= damageDealt;
+        AdjustLight(Mathf.Clamp01(_currentHealth/MaxHealth));
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        IDamageFire water = other.GetComponent<IDamageFire>();
+        if(water != null)
+        {
+            TakeDamage(water.DamageDealt);
+            water.Destroy();
+        }
+    }
+
+    private void AdjustLight(float fraction)
+    {
+        Light.pointLightOuterRadius = Mathf.Lerp(0, MaxLightRange, fraction);
+    }
+
+    public bool IsAttached => _isAttached;
     bool _isAttached;
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -46,6 +88,7 @@ public class Fire : MonoBehaviour
         Light.pointLightInnerRadius = 0;
         Light.pointLightOuterRadius = MaxLightRange;
         Light.color = Color;
+        _currentHealth = MaxHealth;
         AttachToPlayer();
     }
 
@@ -53,6 +96,7 @@ public class Fire : MonoBehaviour
     {
         if (_isAttached)
             transform.localPosition = Vector2.zero;
+
     }
 
     internal void AttachToPlayer()
@@ -75,9 +119,11 @@ public class Fire : MonoBehaviour
     private void Hide()
     {
         Particles.SetActive(false);
+        _spriteRenderer.enabled = false;
     }
     void Show()
     {
         Particles.SetActive(true);
+        _spriteRenderer.enabled = true;
     }
 }

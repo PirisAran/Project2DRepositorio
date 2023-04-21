@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public bool IsMoving => _isMoving;
+    public Vector2 Direction => _direction;
 
     [SerializeField]
     private float SpeedWithFire = 5;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     float _currentSpeed;
 
     private bool _isMoving;
+    private Vector2 _direction;
 
     PlayerInput _input;
     Rigidbody2D _rigidbody;
@@ -47,10 +49,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        Vector2 direction = new Vector2(_input.MovementHorizontal * _currentSpeed, _rigidbody.velocity.y) ;
+         _direction = new Vector2(_input.MovementHorizontal * _currentSpeed, _rigidbody.velocity.y) ;
 
-        _rigidbody.velocity = direction;
-        _isMoving = direction.magnitude > 0.01f;
+        _rigidbody.velocity = _direction;
+        _isMoving = _direction.magnitude > 0.01f;
     }
 
     void OnThrowFinished()

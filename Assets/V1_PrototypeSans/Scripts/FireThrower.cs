@@ -6,19 +6,18 @@ using UnityEngine;
 public class FireThrower : MonoBehaviour
 {
     PlayerInput _playerInput;
+    LineRenderer _lr;
 
     [SerializeField]
-    Transform _fire;
+    Fire Fire;
     [SerializeField]
-    Collider2D PickRangeCandle;
+    Collider2D PickUpCollider;
     [SerializeField]
     float MaxThrowSpeed = 20;
     [SerializeField]
     float MinThrowSpeed = 2;
     [SerializeField]
     float TimeToMaxThrow = 1.5f;
-    [SerializeField]
-    Rigidbody2D FireRb;
     [Range (2, 20)]
     [SerializeField]
     public float DeltaSpeed = 3.0f;
@@ -30,6 +29,9 @@ public class FireThrower : MonoBehaviour
     public float ParabolicShootTime = 4.0f;
     float _throwStartTime;
     bool _isChargingThrow = false;
+
+    Rigidbody2D _fireRb;
+    Collider2D _playerCollider;
 
     public Action OnFirePickedUp;
 
@@ -62,52 +64,37 @@ public class FireThrower : MonoBehaviour
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        _fire = GetFire();
-        FireRb = _fire.GetComponent<Rigidbody2D>();
-    }
+        _fireRb = Fire.GetComponent<Rigidbody2D>();
+        _playerCollider = GetComponent<Collider2D>();
+        _lr = GetComponent<LineRenderer>();
 
-    private Transform GetFire()
-    {
-        Transform candle;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            candle = transform.GetChild(i);
-            if (candle.GetComponent<Fire>())
-                return candle;
-        }
-        return null;
     }
 
     private void OnEnable()
     {
         _playerInput.OnThrowStarted += OnThrowStarted;
         _playerInput.OnThrowFinished += OnThrowFinished;
+        _playerInput.OnTryPickUp += OnTryPickUp;
     }
 
     private void OnDisable()
     {
         _playerInput.OnThrowStarted -= OnThrowStarted;
         _playerInput.OnThrowFinished -= OnThrowFinished;
+        _playerInput.OnTryPickUp -= OnTryPickUp;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (_fire.parent != null)
-            return;
-        if (other = PickRangeCandle)
-            PickUp();
-    }
 
-    private void PickUp()
+    private void PickUpFire()
     {
-        _fire.GetComponent<Fire>().AttachToPlayer();
+        Fire.GetComponent<Fire>().AttachToPlayer();
         OnFirePickedUp?.Invoke();
         Debug.Log("picked up");
     }
 
     private void OnThrowStarted()
     {
-        if (_fire.parent == null)
+        if (!Fire.IsAttached)
             return;
         _isChargingThrow = true;
         _throwStartTime = Time.time;
@@ -115,6 +102,8 @@ public class FireThrower : MonoBehaviour
 
     private void OnThrowFinished()
     {
+        if (!Fire.IsAttached)
+            return;
         Vector2 dir = GetMouseDirFromPlayer();
         float currentSpeed = GetCurrentSpeed();
         Throw(dir, currentSpeed);
@@ -135,22 +124,34 @@ public class FireThrower : MonoBehaviour
 
     private void Throw(Vector2 dir, float speed)
     {
-        _fire.GetComponent<Fire>().DetachFromPlayer();
-        FireRb.velocity = dir * speed;
+        Fire.GetComponent<Fire>().DetachFromPlayer();
+        _fireRb.velocity = dir * speed;
+        _lr.positionCount = 0;
     }
 
     void Update()
     {
-        Rigidbody2D candleRB = _fire.GetComponent<Rigidbody2D>();
-        if (candleRB.velocity.y == 0 && candleRB.bodyType != RigidbodyType2D.Static)
-            candleRB.velocity = Vector2.zero;
+        if (_fireRb.velocity.y == 0 && _fireRb.bodyType != RigidbodyType2D.Static)
+            _fireRb.velocity = Vector2.zero;
+        
         if (_isChargingThrow)
         {
+            _lr.positionCount = ParabolicShootMaxPoints;
             List<Vector3> l_Positions = GetParabolicPositions((Vector2.Angle(Vector2.right, GetMouseDirFromPlayer())) * Mathf.Deg2Rad, GetCurrentSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);
-            for (int i = 1; i < l_Positions.Count; ++i)
-                Debug.DrawLine(l_Positions[i - 1], l_Positions[i], Color.red);
-        }
+            _lr.SetPositions(l_Positions.ToArray());
 
-        
+            //for (int i = 1; i < l_Positions.Count; ++i)
+            //    //Debug.DrawLine(l_Positions[i - 1], l_Positions[i], Color.red);
+            //    _lr.set
+        }
+    }
+
+    void OnTryPickUp()
+    {
+        if (Fire.IsAttached)
+            return;
+
+        if (PickUpCollider.IsTouching(_playerCollider))
+            PickUpFire();
     }
 }

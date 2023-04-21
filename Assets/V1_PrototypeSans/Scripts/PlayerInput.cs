@@ -14,11 +14,18 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     KeyCode ThrowKey = KeyCode.Mouse0;
 
+    [SerializeField]
+    KeyCode PickUpKey = KeyCode.E;
+
     public Action OnJumpStarted;
     public Action OnJumpFinished;
 
     public Action OnThrowStarted;
     public Action OnThrowFinished;
+
+    public Action OnTryPickUp;
+
+
 
     // Update is called once per frame
     void Update()
@@ -26,6 +33,13 @@ public class PlayerInput : MonoBehaviour
         JumpInput();
         ThrowInput();
         MoveInput();
+        TryPickUpInput();
+    }
+
+    private void TryPickUpInput()
+    {
+        if (Input.GetKeyDown(PickUpKey))
+            OnTryPickUp?.Invoke();
     }
 
     private void MoveInput()
