@@ -6,6 +6,7 @@ using UnityEngine;
 public class FireThrower : MonoBehaviour
 {
     PlayerInput _playerInput;
+    LineRenderer _lr;
 
     [SerializeField]
     Fire Fire;
@@ -65,6 +66,7 @@ public class FireThrower : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _fireRb = Fire.GetComponent<Rigidbody2D>();
         _playerCollider = GetComponent<Collider2D>();
+        _lr = GetComponent<LineRenderer>();
 
     }
 
@@ -124,6 +126,7 @@ public class FireThrower : MonoBehaviour
     {
         Fire.GetComponent<Fire>().DetachFromPlayer();
         _fireRb.velocity = dir * speed;
+        _lr.positionCount = 0;
     }
 
     void Update()
@@ -133,9 +136,13 @@ public class FireThrower : MonoBehaviour
         
         if (_isChargingThrow)
         {
+            _lr.positionCount = ParabolicShootMaxPoints;
             List<Vector3> l_Positions = GetParabolicPositions((Vector2.Angle(Vector2.right, GetMouseDirFromPlayer())) * Mathf.Deg2Rad, GetCurrentSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);
-            for (int i = 1; i < l_Positions.Count; ++i)
-                Debug.DrawLine(l_Positions[i - 1], l_Positions[i], Color.red);
+            _lr.SetPositions(l_Positions.ToArray());
+
+            //for (int i = 1; i < l_Positions.Count; ++i)
+            //    //Debug.DrawLine(l_Positions[i - 1], l_Positions[i], Color.red);
+            //    _lr.set
         }
     }
 
