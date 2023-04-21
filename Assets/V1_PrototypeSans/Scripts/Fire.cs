@@ -36,7 +36,15 @@ public class Fire : MonoBehaviour
     [SerializeField]
     SpriteRenderer _spriteRenderer;
 
+    public float LightRange => Light.pointLightOuterRadius;
     float _currentHealth;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, Light.pointLightOuterRadius);
+        Gizmos.color = Color.white;
+    }
 
     public void TakeDamage(float damageDealt)
     {
@@ -88,6 +96,7 @@ public class Fire : MonoBehaviour
     {
         if (_isAttached)
             transform.localPosition = Vector2.zero;
+
     }
 
     internal void AttachToPlayer()
