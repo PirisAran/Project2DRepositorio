@@ -7,7 +7,8 @@ public class CollisionChecker : MonoBehaviour
 {
     [SerializeField]
     private float DetectionRadius = 0.15f;
-
+    [SerializeField]
+    LayerMask WhatIsGround;
     [SerializeField]
     Transform GroundCheckerOrigin;
 
@@ -27,7 +28,7 @@ public class CollisionChecker : MonoBehaviour
     private void CheckOnGround()
     {
         _onGround = false;
-        var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius);
+        var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius, WhatIsGround);
         _onGround = (colliders.Length > 0);
     }
 
