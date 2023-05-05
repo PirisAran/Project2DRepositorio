@@ -8,38 +8,37 @@ public class Fire : MonoBehaviour
 {
     [SerializeField]
     float PickUpRadius = 1;
-
     [SerializeField]
     float MaxLightRange = 6;
-
     [SerializeField]
     CircleCollider2D PickUpCollider;
-
     [SerializeField]
     CircleCollider2D DamageCollider;
-
     [SerializeField]
     Light2D Light;
-
     [SerializeField]
     Color Color;
-
     [SerializeField]
     Transform Player;
-
     [SerializeField]
-    GameObject Particles;
-
+    GameObject FireParticles;
     [SerializeField]
-    float MaxHealth = 10;
-
-    [SerializeField]
+    float MaxFireHealth = 10;
     SpriteRenderer _spriteRenderer;
 
     public float LightRange => Light.pointLightOuterRadius;
-    float _currentHealth;
+    float _currentFireHealth;
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        IDamageFire water = other.GetComponent<IDamageFire>();
+        if(water != null)
+        {
+            TakeDamage(water.DamageDealt);
+            water.Destroy();
+        }
+    }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Light.pointLightOuterRadius);
@@ -49,18 +48,8 @@ public class Fire : MonoBehaviour
     public void TakeDamage(float damageDealt)
     {
         Debug.Log("fireDamaged:" + damageDealt);
-        _currentHealth -= damageDealt;
-        AdjustLight(Mathf.Clamp01(_currentHealth/MaxHealth));
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        IDamageFire water = other.GetComponent<IDamageFire>();
-        if(water != null)
-        {
-            TakeDamage(water.DamageDealt);
-            water.Destroy();
-        }
+        _currentFireHealth -= damageDealt;
+        AdjustLight(Mathf.Clamp01(_currentFireHealth/MaxFireHealth));
     }
 
     private void AdjustLight(float fraction)
@@ -79,16 +68,17 @@ public class Fire : MonoBehaviour
 
     private void Awake()
     {
-        InitFire();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        InitLight();
     }
 
-    private void InitFire()
+    private void InitLight()
     {
         PickUpCollider.radius = PickUpRadius;
         Light.pointLightInnerRadius = 0;
         Light.pointLightOuterRadius = MaxLightRange;
         Light.color = Color;
-        _currentHealth = MaxHealth;
+        _currentFireHealth = MaxFireHealth;
         AttachToPlayer();
     }
 
@@ -118,12 +108,12 @@ public class Fire : MonoBehaviour
 
     private void Hide()
     {
-        Particles.SetActive(false);
+        FireParticles.SetActive(false);
         _spriteRenderer.enabled = false;
     }
     void Show()
     {
-        Particles.SetActive(true);
+        FireParticles.SetActive(true);
         _spriteRenderer.enabled = true;
     }
 }
