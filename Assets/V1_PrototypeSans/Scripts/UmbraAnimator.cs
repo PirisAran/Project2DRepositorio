@@ -13,6 +13,7 @@ public class UmbraAnimator : MonoBehaviour
     Sprite ChasingSprite;
 
     UmbraFSM _umbraFSM;
+    V2UmbraFSM _V2umbraFSM;
     SpriteRenderer _spriteRenderer;
 
     [SerializeField]
@@ -21,6 +22,7 @@ public class UmbraAnimator : MonoBehaviour
     private void Awake()
     {
         _umbraFSM = GetComponent<UmbraFSM>();
+        _V2umbraFSM = GetComponent<V2UmbraFSM>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -29,6 +31,10 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnCuteState += OnCuteState;
         _umbraFSM.OnChillState += OnChillState;
         _umbraFSM.OnChasingState += OnChasingState;
+
+        _V2umbraFSM.OnHarmlessState += OnCuteState;
+        _V2umbraFSM.OnChasingState += OnChillState;
+        _V2umbraFSM.OnKillerState += OnChasingState;
     }
 
     private void OnDisable()
@@ -36,16 +42,15 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnCuteState -= OnCuteState;
         _umbraFSM.OnChillState -= OnChillState;
         _umbraFSM.OnChasingState -= OnChasingState;
+
+        _V2umbraFSM.OnHarmlessState -= OnCuteState;
+        _V2umbraFSM.OnChasingState -= OnChillState;
+        _V2umbraFSM.OnKillerState -= OnChasingState;
     }
 
     private void Update()
     {
-        _spriteRenderer.flipX = _umbraFSM.PlayerOrientation.x < 0;
-
-        foreach (Transform light in EyeLights)
-        {
-            light.localPosition = new Vector2(Mathf.Abs(light.localPosition.x) * (_spriteRenderer.flipX ? -1 : 1), light.localPosition.y);
-        }
+        //_spriteRenderer.flipX = _umbraFSM.PlayerDirection.x < 0;
     }
 
     void ChangeSprite(Sprite nextSprite)

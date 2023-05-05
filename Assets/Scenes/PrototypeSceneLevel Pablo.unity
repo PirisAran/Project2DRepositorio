@@ -412,7 +412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &332280395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,8 +516,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fire: {fileID: 1277321791}
   Player: {fileID: 1184702655}
+  TimeToRecover: 2
   ChillStateSpeed: 2
   ChasingStateSpeed: 6
+  DistToSlowDown: 3
+  ChillStateRespDist: 5
+  ChaseStateRespDist: 1
   _currentState: 1
 --- !u!70 &332280399
 CapsuleCollider2D:
@@ -2068,9 +2072,8 @@ MonoBehaviour:
   Light: {fileID: 1690612780}
   Color: {r: 1, g: 0.5648728, b: 0.135849, a: 1}
   Player: {fileID: 1184702655}
-  Particles: {fileID: 7338518219167364403}
-  MaxHealth: 10
-  _spriteRenderer: {fileID: 1277321787}
+  FireParticles: {fileID: 7338518219167364403}
+  MaxFireHealth: 10
 --- !u!114 &1277321792
 MonoBehaviour:
   m_ObjectHideFlags: 0

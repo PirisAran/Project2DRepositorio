@@ -118,10 +118,8 @@ public class Jumper : MonoBehaviour
     }
     private void TryAddExtraJumpForce()
     {
-        Debug.Log("TRY ADD EXTRA FORCE");
         if (Time.time - _jumpStartTime >= PressTimeToHighJump && _firstAddedForce)
         {
-            Debug.Log("Extra Force");
             var currentPosition = transform.position;
             AddVerticalForce(HighJumpHeight - Vector2.Distance(currentPosition, _initialPosition));
             _isJumping = false;
