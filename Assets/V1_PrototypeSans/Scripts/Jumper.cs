@@ -5,35 +5,33 @@ using UnityEngine;
 
 public class Jumper : MonoBehaviour
 {
+    //Components
     Rigidbody2D _rigidbody2D;
     PlayerInput _playerInput;
     CollisionChecker _collisionCheck;
     FireThrower _fireThrower;
 
+    bool _hasFire = true;
+    bool _firstAddedForce = true;
+
+    //Jump
     [SerializeField]
-    private float JumpHeight = 2.5f;
-
+    private float HighJumpHeight = 2.5f;
     [SerializeField]
-    private float TimeToPeak = 1f;
-
+    private float LowJumpHeight = 1.0f;
     [SerializeField]
-    private float PressTimeToMaxJump = 2f;
-
-    [SerializeField]
-    bool MultipleJumpActive = true;
-
-    [SerializeField]
-    float MaxJumpsNum = 2;
-
-    float _jumpsLeft;
-
-    bool _firstJump = true;
-    
-    [SerializeField]
-    float _gravityTweak = 3;
-
-
+    private float PressTimeToHighJump = 0.3f;
     float _jumpStartTime;
+    Vector2 _initialPosition;
+    bool _isJumping = false;
+
+    //Multiple Jump
+    bool _firstJump = true;
+    float _multipleJumpsLeft;
+    [SerializeField]
+    float MaxMultipleJumps = 5;
+
+
 
     private void Awake()
     {
@@ -62,104 +60,107 @@ public class Jumper : MonoBehaviour
         _fireThrower.OnFirePickedUp -= OnFirePickedUp;
     }
 
-    private void SetGravity()
+    private void Update()
     {
-        var gravDesired = 2 * JumpHeight / (TimeToPeak * TimeToPeak);
-        _rigidbody2D.gravityScale = (gravDesired / Vector3.Magnitude(Physics.gravity)) * Math.Sign(_rigidbody2D.gravityScale);
-    }
-
-    private float GetJumpForce()
-    {
-        return (2 * JumpHeight / TimeToPeak) * Math.Sign(_rigidbody2D.gravityScale);
+        if (_isJumping && !_hasFire)
+            TryAddExtraJumpForce();
     }
 
     private void OnJumpStarted()
     {
         TryJump();
     }
-
     void TryJump()
     {
-        if (MultipleJumpActive)
+        if (!_hasFire)
         {
-            MultipleJump();
+            DoMultipleJump();
             return;
         }
 
         if (OnGround())
-            Jump();
+        {
+            DoJump();
+            _jumpStartTime = Time.time;
+        }
     }
 
-    void MultipleJump()
+    private void DoMultipleJump()
     {
         if (_firstJump)
         {
             if (!OnGround())
             {
-                _jumpsLeft--;
+                _firstAddedForce = false;
+                _multipleJumpsLeft--;
             }
-            DoMultipleJump();
             _firstJump = false;
-            return;
         }
-        
-        if (_jumpsLeft > 0)
+
+        if (_multipleJumpsLeft > 0)
         {
-            DoMultipleJump();
+            _multipleJumpsLeft--;
+            DoJump();
         }
     }
 
-    void DoMultipleJump()
+    void DoJump()
     {
-        Jump();
-        _jumpsLeft--;
-    }
-
-    private void OnJumpFinished()
-    {
-        if (PressTimeToMaxJump > TimeToPeak) PressTimeToMaxJump = TimeToPeak;
-
-        var timePassed = Time.time - _jumpStartTime;
-        var proportionTimePassed = Mathf.Clamp01((timePassed / PressTimeToMaxJump));
-
-        _rigidbody2D.gravityScale *= (1 / proportionTimePassed);
-        TweakGravity();
-    }
-
-    private void TweakGravity()
-    {
-        _rigidbody2D.gravityScale += _gravityTweak;
-    }
-
-    private void Jump()
-    {
-        SetGravity();
-        _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, GetJumpForce());
+        _isJumping = true;
+        Debug.Log("NormalJump");
+        AddVerticalForce(LowJumpHeight);
         _jumpStartTime = Time.time;
     }
-
+    private void AddVerticalForce(float height)
+    {
+        _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, GetJumpForce(height));
+        _initialPosition = transform.position;
+    }
+    private void TryAddExtraJumpForce()
+    {
+        Debug.Log("TRY ADD EXTRA FORCE");
+        if (Time.time - _jumpStartTime >= PressTimeToHighJump && _firstAddedForce)
+        {
+            Debug.Log("Extra Force");
+            var currentPosition = transform.position;
+            AddVerticalForce(HighJumpHeight - Vector2.Distance(currentPosition, _initialPosition));
+            _isJumping = false;
+            _firstAddedForce = false;
+        }
+    }
+    private float GetJumpForce(float height)
+    {
+        return Mathf.Sqrt(2*Physics.gravity.magnitude * height);
+    }
     private bool OnGround()
     {
         return  _collisionCheck.OnGround;
     }
 
-    void OnLanding()
+    private void OnJumpFinished()
     {
-        ResetJumps();
+        _isJumping = false;
     }
 
     void ResetJumps()
     {
-        _jumpsLeft = MaxJumpsNum;
+        _multipleJumpsLeft = MaxMultipleJumps;
+    }
+
+    void OnLanding()
+    {
+        _firstJump = true;
+        _firstAddedForce = true;
+        ResetJumps();
     }
 
     void OnThrowFinished()
     {
-        MultipleJumpActive = true;
+        _hasFire = false;
     }
 
     void OnFirePickedUp()
     {
-        MultipleJumpActive = false;
+        _hasFire = true;
     }
 }
