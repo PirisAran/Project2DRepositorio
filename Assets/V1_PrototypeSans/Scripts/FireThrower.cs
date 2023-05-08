@@ -74,6 +74,7 @@ public class FireThrower : MonoBehaviour
     {
         _playerInput.OnThrowStarted += OnThrowStarted;
         _playerInput.OnThrowFinished += OnThrowFinished;
+        _playerInput.OnCancelThrowStarted += OnCancelThrow;
         _playerInput.OnTryPickUp += OnTryPickUp;
     }
 
@@ -81,6 +82,7 @@ public class FireThrower : MonoBehaviour
     {
         _playerInput.OnThrowStarted -= OnThrowStarted;
         _playerInput.OnThrowFinished -= OnThrowFinished;
+        _playerInput.OnCancelThrowStarted -= OnCancelThrow;
         _playerInput.OnTryPickUp -= OnTryPickUp;
     }
 
@@ -109,6 +111,22 @@ public class FireThrower : MonoBehaviour
         Throw(dir, currentSpeed);
         _isChargingThrow = false;
     }
+   
+    private void OnCancelThrow()
+    {
+        if (!Fire.IsAttached /*&& !_isChargingThrow*/)
+            return;
+        
+        if (_isChargingThrow)
+        {
+            Debug.Log("Fire Canceled");
+            GetParabolicPositions(0, 0, 0, 0);
+            Throw(new Vector2(0,0), 0);
+            //Fire.GetComponent<Fire>().AttachToPlayer();
+            //_throwStartTime = 0;
+            _isChargingThrow = false;
+        }
+    }
 
     private Vector2 GetMouseDirFromPlayer()
     {
@@ -128,6 +146,7 @@ public class FireThrower : MonoBehaviour
         _fireRb.velocity = dir * speed;
         _lr.positionCount = 0;
     }
+
 
     void Update()
     {

@@ -15,6 +15,9 @@ public class PlayerInput : MonoBehaviour
     KeyCode ThrowKey = KeyCode.Mouse0;
 
     [SerializeField]
+    KeyCode CancelThrowKey = KeyCode.Mouse1;
+
+    [SerializeField]
     KeyCode PickUpKey = KeyCode.E;
 
     public Action OnJumpStarted;
@@ -22,6 +25,8 @@ public class PlayerInput : MonoBehaviour
 
     public Action OnThrowStarted;
     public Action OnThrowFinished;
+
+    public Action OnCancelThrowStarted;
 
     public Action OnTryPickUp;
 
@@ -32,6 +37,7 @@ public class PlayerInput : MonoBehaviour
     {
         JumpInput();
         ThrowInput();
+        CancelThrowInput();
         MoveInput();
         TryPickUpInput();
     }
@@ -55,6 +61,12 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKeyUp(ThrowKey))
             OnThrowFinished?.Invoke();
+    }
+
+    private void CancelThrowInput()
+    {
+        if (Input.GetKeyDown(CancelThrowKey))
+            OnCancelThrowStarted?.Invoke();
     }
 
     private void JumpInput()
