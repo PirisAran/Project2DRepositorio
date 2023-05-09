@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 public class UmbraFSM : MonoBehaviour
 {
     [SerializeField]
-    Fire Fire;
+    FireController Fire;
     [SerializeField]
-    Transform Player;
+    PlayerController Player;
     [SerializeField]
     float TimeToRecover = 2f;
     [SerializeField]
@@ -143,11 +143,11 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool CanGoChillState()
     {
-        return Fire.IsAttached && GetDistanceFromFire() > Fire.LightRange && Fire.LightRange > 0;
+        return Player.HasFire && GetDistanceFromFire() > Fire.LightRange && Fire.LightRange > 0;
     }
     private bool CanGoChasingState()
     {
-        return !Fire.IsAttached && GetDistanceFromFire() > Fire.LightRange || Fire.LightRange <= 0;
+        return !Player.HasFire && GetDistanceFromFire() > Fire.LightRange || Fire.LightRange <= 0;
     }
 
     void UpdateCuteState()

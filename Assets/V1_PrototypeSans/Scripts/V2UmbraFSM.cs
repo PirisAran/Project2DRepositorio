@@ -8,7 +8,7 @@ public class V2UmbraFSM : MonoBehaviour
     [SerializeField]
     GameObject Player;
     [SerializeField]
-    Fire Fire;
+    FireController   Fire;
     [SerializeField]
     V2UmbraStates CurrentState;
     [SerializeField]
