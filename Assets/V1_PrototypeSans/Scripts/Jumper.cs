@@ -31,8 +31,6 @@ public class Jumper : MonoBehaviour
     [SerializeField]
     float MaxMultipleJumps = 5;
 
-
-
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -103,8 +101,7 @@ public class Jumper : MonoBehaviour
             DoJump();
         }
     }
-
-    void DoJump()
+    private void DoJump()
     {
         _isJumping = true;
         Debug.Log("NormalJump");

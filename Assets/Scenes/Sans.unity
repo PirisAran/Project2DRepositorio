@@ -412,7 +412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &332280395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,13 +1604,10 @@ GameObject:
   - component: {fileID: 1184702654}
   - component: {fileID: 1184702653}
   - component: {fileID: 1184702652}
-  - component: {fileID: 1184702659}
-  - component: {fileID: 1184702658}
-  - component: {fileID: 1184702657}
-  - component: {fileID: 1184702656}
+  - component: {fileID: 1184702663}
   - component: {fileID: 1184702660}
-  - component: {fileID: 1184702661}
   - component: {fileID: 1184702662}
+  - component: {fileID: 1184702664}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1724,68 +1721,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1184702656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b65828835d8485043af9df0950faefe4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpeedWithFire: 3
-  SpeedNoFire: 8
---- !u!114 &1184702657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9faa25ca0f099d74da44ddc941ddc12c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  JumpKey: 32
-  ThrowKey: 323
-  PickUpKey: 101
---- !u!114 &1184702658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c9078700104974eada968be80c2d6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HighJumpHeight: 2.5
-  LowJumpHeight: 1.5
-  PressTimeToHighJump: 0.1
-  MaxMultipleJumps: 2
---- !u!114 &1184702659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41bbf290aae20914a914b96c070f27f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DetectionRadius: 0.15
-  WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
-  GroundCheckerOrigin: {fileID: 515159477}
 --- !u!114 &1184702660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1793,34 +1728,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a132a75a43ea004aa2f09c2e700fa22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 1184702654}
-  PlayerMovement: {fileID: 1184702656}
---- !u!114 &1184702661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84bb503343eaf42458d2ba740afeb734, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Fire: {fileID: 1277321791}
-  PickUpCollider: {fileID: 277212169}
-  MaxThrowSpeed: 15
-  MinThrowSpeed: 5
-  TimeToMaxThrow: 1.5
-  DeltaSpeed: 7.4
-  ParabolicShootAngle: 60.77
-  ParabolicShootMaxPoints: 228
-  ParabolicShootTime: 5
+  PlayerMovement: {fileID: 0}
 --- !u!120 &1184702662
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1920,6 +1834,44 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1184702663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184702651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b99d9abf08fd9440a6bb60e0c8d435e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fire: {fileID: 0}
+  NoFireSpeed: 8
+  FireSpeed: 5
+  HighJumpHeight: 2.5
+  LowJumpHeight: 1
+  PressTimeToHighJump: 0.1
+  JumpKey: 32
+  ThrowKey: 323
+  PickUpKey: 101
+--- !u!114 &1184702664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184702651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bbf290aae20914a914b96c070f27f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DetectionRadius: 0.15
+  WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  GroundCheckerOrigin: {fileID: 515159477}
 --- !u!1 &1277321785
 GameObject:
   m_ObjectHideFlags: 0
