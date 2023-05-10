@@ -20,7 +20,7 @@ public class BurnableObject: MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Fire>())
+        if (collision.gameObject.GetComponent<FireController>())
             StartToBurn();
     }
 
