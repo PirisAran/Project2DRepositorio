@@ -37,10 +37,7 @@ public class CollisionChecker : MonoBehaviour
         var currentOnGround = _colliding;
 
         if (!lastOnGround && currentOnGround)
-        {
             OnLanding?.Invoke();
-            Debug.Log("landed");
-        }
 
         lastOnGround = currentOnGround;
     }
