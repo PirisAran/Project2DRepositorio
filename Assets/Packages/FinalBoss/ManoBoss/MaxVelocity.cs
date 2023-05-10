@@ -21,6 +21,6 @@ public class MaxVelocity : MonoBehaviour
         {
             Target.velocity = Velocity;
         }
-        Debug.Log("targer velociy:"+Target.velocity);
+       // Debug.Log("targer velociy:"+Target.velocity);
     }
 }
