@@ -113,17 +113,17 @@ public class FireController : MonoBehaviour
 
     private void OnLanding()
     {
-        _rb.velocity = new Vector2(0, 0);
+        _rb.velocity = Vector2.zero;
     }
 
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */
     private void UpdateLightEffect()
     {
-        var tempLightRange = LightRange - Random.Range(-tremblingValue, tremblingValue);
         if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
         {
-            _lastTimeTremble = Time.time;
+            var tempLightRange = LightRange + Random.Range(-tremblingValue, tremblingValue);
             Light.pointLightOuterRadius = tempLightRange;
+            _lastTimeTremble = Time.time;
         }
     }
     private void Hide()

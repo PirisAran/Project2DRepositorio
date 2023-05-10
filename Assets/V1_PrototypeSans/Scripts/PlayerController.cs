@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
                                           /* ------------------PLAYER CONTROLLER SCRIPT---------------------*/         
-
     [SerializeField]
     FireController Fire;
 
@@ -210,7 +209,8 @@ public class PlayerController : MonoBehaviour
     }
 
     /* ------------- FIRE THROWER ---------- */
-    private void UpdateThrow()
+   
+    private void UpdateThrow() // Se llama cada update
     {
         _lr.positionCount = 0;
         if (_isChargingThrow)
@@ -274,6 +274,8 @@ public class PlayerController : MonoBehaviour
 
     private void PickUpInput()
     {
+        if (_hasFire)
+            return;
         if (Input.GetKeyDown(PickUpKey))
             TryPickUp();
     }
@@ -281,8 +283,6 @@ public class PlayerController : MonoBehaviour
     //Try pick uf the fire
     private void TryPickUp()
     {
-        if (_hasFire)
-            return;
         if (Fire.OnPickUpRange)
             PickUpFire();
     }
