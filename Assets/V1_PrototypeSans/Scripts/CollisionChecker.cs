@@ -7,14 +7,15 @@ public class CollisionChecker : MonoBehaviour
 {
     [SerializeField]
     private float DetectionRadius = 0.15f;
-
+    [SerializeField]
+    LayerMask WhatIsCollision;
     [SerializeField]
     Transform GroundCheckerOrigin;
 
     public Action OnLanding;
 
-    public bool OnGround => _onGround;
-    bool _onGround;
+    public bool Colliding => _colliding;
+    bool _colliding;
 
     bool lastOnGround = false;
 
@@ -26,14 +27,14 @@ public class CollisionChecker : MonoBehaviour
 
     private void CheckOnGround()
     {
-        _onGround = false;
-        var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius);
-        _onGround = (colliders.Length > 0);
+        _colliding = false;
+        var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius, WhatIsCollision);
+        _colliding = (colliders.Length > 0);
     }
 
     private void CheckLanding()
     {
-        var currentOnGround = _onGround;
+        var currentOnGround = _colliding;
 
         if (!lastOnGround && currentOnGround)
         {
