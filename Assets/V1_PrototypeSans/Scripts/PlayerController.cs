@@ -259,7 +259,6 @@ public class PlayerController : MonoBehaviour
         //se llama el metodo de FireController para lanzar el fuego, dandole dir y speed.
         Fire.BeThrown(dir, speed);
         //ya no tiene fuego y no esta cargando
-        SetHasFire(false);
         _isChargingThrow = false;
     }
     private void CancelThrow()
@@ -267,7 +266,7 @@ public class PlayerController : MonoBehaviour
         _isChargingThrow = false;
     }
 
-    private void SetHasFire(bool v)
+    public void SetHasFire(bool v)
     {
         _hasFire = v;
         _currentSpeed = _hasFire ? FireSpeed : NoFireSpeed;
@@ -291,7 +290,6 @@ public class PlayerController : MonoBehaviour
     private void PickUpFire()
     {
         Fire.BePickedUp();
-        _hasFire = true;
     }
 
     private Vector2 GetMouseDir()

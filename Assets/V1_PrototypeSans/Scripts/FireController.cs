@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Random = UnityEngine.Random;
 
 public class FireController : MonoBehaviour
 {
@@ -24,7 +25,15 @@ public class FireController : MonoBehaviour
     Color LightColor;
     [SerializeField]
     GameObject FireParticles;
-    public float LightRange => Light.pointLightOuterRadius;
+    public float LightRange => _lightRange;
+    float _lightRange;
+    //Light Effect Parameters (que la luz tiemble un poco que parezca fuego)
+    [SerializeField]
+    float tremblingValue = 0.5f;
+    [SerializeField]
+    float _intervalTimeMax = 0.15f, _intervalTimeMin = 0.05f;
+    float _lastTimeTremble;
+
 
     //Pick up and throw parameters--------------------
     [SerializeField]
@@ -61,7 +70,8 @@ public class FireController : MonoBehaviour
     private void Init()
     {
         PickUpCollider.radius = PickUpRadius;
-        Light.pointLightOuterRadius = MaxLightRange;
+        _lightRange = MaxLightRange;
+        Light.pointLightOuterRadius = _lightRange;
         _currentFireHealth = MaxFireHealth;
         Light.color = LightColor;
         BePickedUp();
@@ -70,26 +80,30 @@ public class FireController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsAttached())
-        {
-            transform.localPosition = new Vector2(0, 0);
-        }
+        UpdateLightEffect();
     }
+
 
     /* ------ PICK UP AND BE THROWN ------ */
     public void BeThrown(Vector2 dir, float currentThrowSpeed)
     {
-        transform.parent = null;
-        _rb.bodyType = RigidbodyType2D.Dynamic;
+        SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
     }
 
     public void BePickedUp()
     {
-        transform.parent = Player.transform;
-        _rb.bodyType = RigidbodyType2D.Static;
+        SetAttached(true);
+        transform.localPosition = Vector2.zero;
         Hide();
+    }
+
+    private void SetAttached(bool v)
+    {
+        Player.SetHasFire(v);
+        transform.parent = v ? Player.transform : null;
+        _rb.simulated = !v;
     }
 
     private bool IsAttached()
@@ -103,7 +117,15 @@ public class FireController : MonoBehaviour
     }
 
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */
-
+    private void UpdateLightEffect()
+    {
+        var tempLightRange = LightRange - Random.Range(-tremblingValue, tremblingValue);
+        if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
+        {
+            _lastTimeTremble = Time.time;
+            Light.pointLightOuterRadius = tempLightRange;
+        }
+    }
     private void Hide()
     {
         FireParticles.SetActive(false);
@@ -116,7 +138,8 @@ public class FireController : MonoBehaviour
     }
     private void AdjustLight(float fraction)
     {
-        Light.pointLightOuterRadius = Mathf.Lerp(0, MaxLightRange, fraction);
+        _lightRange = Mathf.Lerp(0, MaxLightRange, fraction);
+        Light.pointLightOuterRadius = _lightRange;
     }
 
     /* ----- HEALTH AND DAMAGE HERE  ------- */

@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class V2UmbraFSM : MonoBehaviour
+public class UmbraController : MonoBehaviour
 {
     [SerializeField]
-    GameObject Player;
+    PlayerController Player;
     [SerializeField]
-    FireController   Fire;
+    FireController Fire;
+
+    // FSM
     [SerializeField]
     V2UmbraStates CurrentState;
     [SerializeField]

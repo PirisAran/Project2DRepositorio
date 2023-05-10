@@ -13,7 +13,7 @@ public class UmbraAnimator : MonoBehaviour
     Sprite ChasingSprite;
 
     UmbraFSM _umbraFSM;
-    V2UmbraFSM _V2umbraFSM;
+    UmbraController _V2umbraFSM;
     SpriteRenderer _spriteRenderer;
 
     [SerializeField]
@@ -22,7 +22,7 @@ public class UmbraAnimator : MonoBehaviour
     private void Awake()
     {
         _umbraFSM = GetComponent<UmbraFSM>();
-        _V2umbraFSM = GetComponent<V2UmbraFSM>();
+        _V2umbraFSM = GetComponent<UmbraController>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
