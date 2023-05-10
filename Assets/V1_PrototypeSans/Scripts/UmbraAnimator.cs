@@ -11,13 +11,12 @@ public class UmbraAnimator : MonoBehaviour
     Sprite ChasingSprite;
     [SerializeField]
     Sprite KillerSprite;
+    [SerializeField]
+    Sprite ChangingSprite;
 
     UmbraFSM _umbraFSM;
     UmbraController _umbraController;
     SpriteRenderer _spriteRenderer;
-
-    [SerializeField]
-    List<Transform> EyeLights;
 
     private void Awake()    
     {
@@ -30,6 +29,7 @@ public class UmbraAnimator : MonoBehaviour
         _umbraController.OnCuteState += OnCuteState;
         _umbraController.OnChasingState += OnChasingState;
         _umbraController.OnKillerState += OnKillerState;
+        _umbraController.OnChangingState += OnChangingState;
     }
 
     private void OnDisable()
@@ -37,6 +37,7 @@ public class UmbraAnimator : MonoBehaviour
         _umbraController.OnCuteState -= OnCuteState;
         _umbraController.OnChasingState -= OnChasingState;
         _umbraController.OnKillerState -= OnKillerState;
+        _umbraController.OnChangingState -= OnChangingState;
     }
 
     private void Update()
@@ -59,5 +60,9 @@ public class UmbraAnimator : MonoBehaviour
     void OnKillerState()
     {
         ChangeSprite(KillerSprite);
+    }
+    void OnChangingState()
+    {
+        ChangeSprite(ChangingSprite);
     }
 }

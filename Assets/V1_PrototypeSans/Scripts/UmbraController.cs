@@ -13,16 +13,27 @@ public class UmbraController : MonoBehaviour
     // FSM
     [SerializeField]
     UmbraStates CurrentState;
-    UmbraStates _desiredState;
+    UmbraStates _nextState;
+    UmbraStates _previousState;
     [SerializeField]
-    float ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
+    float CuteSpeed = 1.0f, ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
     [SerializeField]
-    float ToCuteTimer = 0.5f, FromCuteTimer = 1.5f;
+    float FromCuteTime = 1.5f, ToCuteTime = 0.5f, ToChasingTime = 0.5f, ToKillerTime = 0.75f ;
     float _changeTimer;
+
+
+    //Movement
+    [SerializeField]
+    float Acceleration = 2.0f;
+    float _currentDeceleration;
+    float _deltaTime;
+    float _currentSpeed;
+    Vector2 _direction;
     //Actions
     public Action OnCuteState;
     public Action OnChasingState;
     public Action OnKillerState;
+    public Action OnChangingState;
 
     Vector2 _fireDir => (Fire.transform.position - transform.position).normalized;
     Vector2 _playerDir => (Player.transform.position - transform.position).normalized;
@@ -34,13 +45,13 @@ public class UmbraController : MonoBehaviour
         CurrentState = UmbraStates.Chasing;
         OnEnterState(CurrentState);
     }
-
     private void ChangeState(UmbraStates nextState)
     {
         Debug.Log("Changed IS CHANGING from " + CurrentState + " to " + nextState);
-        CurrentState = UmbraStates.ChangingState;
-        _desiredState = nextState;
-        OnChangingState();
+        _previousState = CurrentState;
+        CurrentState = UmbraStates.Changing;
+        _nextState = nextState;
+        InitChangingState();
     }
     private void OnEnterState(UmbraStates state)
     {
@@ -48,6 +59,7 @@ public class UmbraController : MonoBehaviour
         {
             case UmbraStates.Cute:
                 OnCuteState?.Invoke();
+                _currentSpeed = 0;
                 break;
             case UmbraStates.Chasing:
                 OnChasingState?.Invoke();
@@ -55,34 +67,54 @@ public class UmbraController : MonoBehaviour
             case UmbraStates.Killer:
                 OnKillerState?.Invoke();
                 break;
-            case UmbraStates.ChangingState:
+            case UmbraStates.Changing:
                 break;
             default:
                 break;
         }
     }
 
-    private void OnChangingState()
+    private void InitChangingState()
     {
-        switch (_desiredState)
+        OnChangingState?.Invoke();
+        if (_previousState == UmbraStates.Cute)
+        {
+            _changeTimer = FromCuteTime;
+            SetDeceleration();
+            return;
+        }
+
+        switch (_nextState)
         {
             case UmbraStates.Cute:
+                _changeTimer = ToCuteTime;
                 break;
             case UmbraStates.Chasing:
+                _changeTimer = ToChasingTime;
                 break;
             case UmbraStates.Killer:
+                _changeTimer = ToKillerTime;
+                break;
+            case UmbraStates.Changing:
                 break;
             default:
                 break;
         }
+        SetDeceleration();
+    }
 
+    private void SetDeceleration()
+    {
+        _deltaTime = _changeTimer;
+        float deltaSpeed = 0 - _currentSpeed;
+        _currentDeceleration = deltaSpeed / _deltaTime;
     }
 
     void Update()
     {
         switch (CurrentState)
         {
-            case UmbraStates.ChangingState:
+            case UmbraStates.Changing:
                 UpdateChangingState();
                 break;
             case UmbraStates.Cute:
@@ -97,6 +129,7 @@ public class UmbraController : MonoBehaviour
             default:
                 break;
         }
+        MoveUmbra();
     }
 
     private void UpdateChangingState()
@@ -104,9 +137,13 @@ public class UmbraController : MonoBehaviour
         _changeTimer -= Time.deltaTime;
         if (_changeTimer <= 0)
         {
-            CurrentState = _desiredState;
+            CurrentState = _nextState;
             OnEnterState(CurrentState);
         }
+
+        //Mientras cambia, va decelerando hasta alcanzar 0 SIEMPRE. Asi, entre estados el umbra frena hasta llegar a 0;
+        if (_currentSpeed > 0)
+            _currentSpeed = Mathf.Clamp(_currentSpeed + _currentDeceleration * Time.deltaTime, 0, 999); 
     }
 
     private void UpdateCute()
@@ -121,6 +158,17 @@ public class UmbraController : MonoBehaviour
             ChangeState(UmbraStates.Killer);
             return;
         }
+
+        //No se mueve
+        _direction = -_fireDir;
+        if (_currentSpeed < CuteSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, CuteSpeed);
+        }
+        else
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, 0, CuteSpeed);
+        }
     }
     private void UpdateChasing()
     {
@@ -133,6 +181,18 @@ public class UmbraController : MonoBehaviour
         {
             ChangeState(UmbraStates.Killer);
             return;
+        }
+
+        //Se mueve a distancia del jugador
+        _direction = _playerDir;
+
+        if (_currentSpeed < ChasingSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, ChasingSpeed);
+        }
+        else
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, ChasingSpeed, 999);
         }
     }
     private void UpdateKiller()
@@ -147,7 +207,23 @@ public class UmbraController : MonoBehaviour
             ChangeState(UmbraStates.Chasing);
             return;
         }
+
+        //Va directo al jugador
+        _direction = _playerDir;
+        _currentSpeed = KillerSpeed;
+        if (_currentSpeed < KillerSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, KillerSpeed);
+        }
     }
+
+    private void MoveUmbra()
+    {
+        Vector2 distance = _direction * _currentSpeed * Time.deltaTime;
+        transform.Translate(distance);
+    }
+
+    //Comprovadores del estado de player y de umbra
     private bool PlayerIsSafe()
     {
         //Comprueva si la distancia del player respecto el fuego es mayor o menor q el rango de la luz. 
@@ -179,5 +255,5 @@ public enum UmbraStates
     Cute,                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     Chasing,
     Killer,
-    ChangingState
+    Changing
 }
