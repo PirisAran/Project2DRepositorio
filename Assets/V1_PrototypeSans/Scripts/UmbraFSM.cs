@@ -8,30 +8,54 @@ using UnityEngine.SceneManagement;
 public class UmbraFSM : MonoBehaviour
 {
     [SerializeField]
-    Fire Fire;
-
+    FireController Fire;
     [SerializeField]
-    Transform Player;
-
+    PlayerController Player;
     [SerializeField]
-    float ChillStateSpeed = 2;
+    float TimeToRecover = 2f;
     [SerializeField]
-    float ChasingStateSpeed = 6;
+    float ChillStateSpeed = 2f;
+    [SerializeField]
+    float ChasingStateSpeed = 6f;
+    [SerializeField]
+    float DistToSlowDown = 3;
+    [SerializeField]
+    float ChillStateRespDist = 5;
+    [SerializeField]
+    float ChaseStateRespDist = 1;
 
     public Action OnCuteState;
     public Action OnChillState;
     public Action OnChasingState;
 
-    public Vector2 PlayerOrientation => (Player.transform.position - transform.position).normalized;
+    public Vector2 PlayerDirection => (Player.transform.position - transform.position).normalized;
 
     [SerializeField]
     UmbraStates _currentState = UmbraStates.Chill;
 
-    private float CurrentRespectDistance => (_currentState != UmbraStates.Cute && _currentState == UmbraStates.Chill) ? Fire.LightRange + 5 : 1; 
+    private float CurrentRespectDistance => (_currentState != UmbraStates.Cute 
+        && _currentState == UmbraStates.Chill) ? Fire.LightRange + ChillStateRespDist : ChaseStateRespDist; 
 
     private void Awake()
     {
         ChangeState(_currentState);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var playerPosition = Player.transform.position;
+
+        if (_currentState != UmbraStates.Cute)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(playerPosition, CurrentRespectDistance);
+        }
+        if (_currentState == UmbraStates.Chill)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(playerPosition, DistToSlowDown + CurrentRespectDistance);
+        }
+
     }
 
     private void OnEnable()
@@ -115,15 +139,15 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool CanGoCuteState()
     {
-        return GetDistanceFromFire() <= Fire.LightRange;
+        return IsInsideFire();
     }
     private bool CanGoChillState()
     {
-        return Fire.IsAttached && GetDistanceFromFire() > Fire.LightRange && Fire.LightRange > 0;
+        return Player.HasFire && GetDistanceFromFire() > Fire.LightRange && Fire.LightRange > 0;
     }
     private bool CanGoChasingState()
     {
-        return !Fire.IsAttached && GetDistanceFromFire() > Fire.LightRange || Fire.LightRange <= 0;
+        return !Player.HasFire && GetDistanceFromFire() > Fire.LightRange || Fire.LightRange <= 0;
     }
 
     void UpdateCuteState()
@@ -147,12 +171,20 @@ public class UmbraFSM : MonoBehaviour
 
     void UpdateChillState()
     {
-        float desiredSpeed = 2;
-        
-        if (GetDistanceToPlayer() > CurrentRespectDistance)
+        float maxSpeed = GetStateSpeed(_currentState);
+
+        if (GetDistanceToPlayer() < CurrentRespectDistance)
         {
-            MoveTowardsPlayer(desiredSpeed);
+            BackUpFromFire(maxSpeed);
         }
+        else
+        {
+            float distanceToRespectDistance = GetDistanceToPlayer() - CurrentRespectDistance;
+            float currentSpeed = Mathf.Lerp(1, maxSpeed, Mathf.Clamp01(distanceToRespectDistance / DistToSlowDown ));
+            Move(currentSpeed, PlayerDirection);
+        }
+
+
 
         if (CanGoCuteState())
         {
@@ -163,15 +195,25 @@ public class UmbraFSM : MonoBehaviour
         {
             ChangeState(UmbraStates.Chasing);
         }
-        
     }
+
+    private void BackUpFromFire(float speed)
+    {
+        Move(speed, -PlayerDirection);
+    }
+
+    private bool IsInsideFire()
+    {
+        return GetDistanceFromFire() <= Fire.LightRange;
+    }
+
     void UpdateChasingState()
     {
-        float desiredSpeed = 5;
-        
+        float maxSpeed = GetStateSpeed(_currentState);
+
         if (GetDistanceToPlayer() > CurrentRespectDistance)
         {
-            MoveTowardsPlayer(desiredSpeed);
+            Move(maxSpeed, PlayerDirection);
         }
 
         if (CanGoCuteState())
@@ -186,10 +228,14 @@ public class UmbraFSM : MonoBehaviour
         }
     }
 
-    void MoveTowardsPlayer(float speed)
+    void Move(float speed, Vector2 dir)
     {
-        Vector2 playerDir = PlayerOrientation;
-        Vector2 distanceToMove = playerDir * speed * Time.deltaTime;
+
+        Vector2 distanceToMove = dir * speed * Time.deltaTime;
+        if (distanceToMove.magnitude > GetDistanceToPlayer() + CurrentRespectDistance)
+        {
+             
+        }
         transform.Translate(distanceToMove);
     }
 }

@@ -6,15 +6,14 @@ public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField]
     SpriteRenderer SpriteRenderer;
-    [SerializeField]
-    PlayerMovement PlayerMovement;
+    PlayerController Player;
 
     private void Awake()
     {
     }
     void Update()
     {
-        if (PlayerMovement.Direction.x != 0)
-            SpriteRenderer.flipX = (PlayerMovement.Direction.x < 0); 
+        if (Player.Forward.x != 0)
+            SpriteRenderer.flipX = (Player.Forward.x < 0); 
     }
 }
