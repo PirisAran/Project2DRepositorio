@@ -21,8 +21,7 @@ public class PlayerController : MonoBehaviour
     float NoFireSpeed = 8, FireSpeed = 5 ;
     float _currentStateSpeed;
     public Vector2 Forward => new Vector2(_horizontalMov, 0).normalized;
-    public float Speed => _speed;
-    float _speed;
+    public float XSpeed { get; private set; }
 
 
     //Jumping------------------------
@@ -35,8 +34,8 @@ public class PlayerController : MonoBehaviour
     float MaxJumps = 2;
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
-    public bool IsJumping => _isJumping;
-    bool _isJumping;
+    public float YSpeed { get; private set; }
+    public bool IsLanding { get; private set; }
     bool _doingJump = false;
     bool _firstAddedForce = true;
 
@@ -109,7 +108,7 @@ public class PlayerController : MonoBehaviour
     // ---- MOVEMENT ---- //
     private void MoveInput()
     {
-        _horizontalMov = Input.GetAxis("Horizontal");
+        _horizontalMov = Input.GetAxisRaw("Horizontal");
     }
     private void UpdateMove()
     {
@@ -119,7 +118,9 @@ public class PlayerController : MonoBehaviour
     {
         var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
         _rb.velocity = vel;
-        _speed = vel.x;
+        XSpeed = vel.x;
+        Debug.Log(vel.x);
+
     }
 
 
@@ -131,6 +132,9 @@ public class PlayerController : MonoBehaviour
         //Comprueba si tiene el fuego y si esta saltando, que son las condiciones para poder hacer el salto alto
         if (!_hasFire && _doingJump)
             TryAddExtraJumpForce();
+        
+        YSpeed = _rb.velocity.y;
+        IsLanding = false;
     }
     private void JumpInput()
     {
@@ -172,7 +176,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        _isJumping = true;
         _doingJump = true;
         _jumpStartTime = Time.time;
         AddJumpForce(LowJumpHeight);
@@ -208,7 +211,7 @@ public class PlayerController : MonoBehaviour
     {
         ResetJumps();
         _firstAddedForce = true;
-        _isJumping = false;
+        IsLanding = true;
     }
     private void ResetJumps()
     {
