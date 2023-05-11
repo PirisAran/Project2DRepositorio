@@ -19,8 +19,9 @@ public class PlayerController : MonoBehaviour
     float _horizontalMov;
     [SerializeField]
     float NoFireSpeed = 8, FireSpeed = 5 ;
-    float _currentSpeed;
+    float _currentStateSpeed;
     public Vector2 Forward => new Vector2(_horizontalMov, 0).normalized;
+    public float XSpeed { get; private set; }
 
 
     //Jumping------------------------
@@ -33,7 +34,9 @@ public class PlayerController : MonoBehaviour
     float MaxJumps = 2;
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
-    bool _isJumping = false;
+    public float YSpeed { get; private set; }
+    public bool IsLanding { get; private set; }
+    bool _doingJump = false;
     bool _firstAddedForce = true;
 
     //Fire Throwing and picking----------------------
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<CollisionChecker>();
         _lr = GetComponent<LineRenderer>();
-        _currentSpeed = FireSpeed;
+        _currentStateSpeed = FireSpeed;
         ResetJumps();
     }
 
@@ -105,7 +108,7 @@ public class PlayerController : MonoBehaviour
     // ---- MOVEMENT ---- //
     private void MoveInput()
     {
-        _horizontalMov = Input.GetAxis("Horizontal");
+        _horizontalMov = Input.GetAxisRaw("Horizontal");
     }
     private void UpdateMove()
     {
@@ -113,8 +116,11 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        var vel = new Vector2(_horizontalMov * _currentSpeed, _rb.velocity.y);
+        var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
         _rb.velocity = vel;
+        XSpeed = vel.x;
+        Debug.Log(vel.x);
+
     }
 
 
@@ -124,8 +130,11 @@ public class PlayerController : MonoBehaviour
     private void UpdateJump()
     {
         //Comprueba si tiene el fuego y si esta saltando, que son las condiciones para poder hacer el salto alto
-        if (!_hasFire && _isJumping)
+        if (!_hasFire && _doingJump)
             TryAddExtraJumpForce();
+        
+        YSpeed = _rb.velocity.y;
+        IsLanding = false;
     }
     private void JumpInput()
     {
@@ -167,7 +176,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        _isJumping = true;
+        _doingJump = true;
         _jumpStartTime = Time.time;
         AddJumpForce(LowJumpHeight);
     }
@@ -196,12 +205,13 @@ public class PlayerController : MonoBehaviour
     private void JumpFinished()
     {
         //Se acaba el salto
-        _isJumping = false;
+        _doingJump = false;
     }
     private void OnLanding()
     {
         ResetJumps();
         _firstAddedForce = true;
+        IsLanding = true;
     }
     private void ResetJumps()
     {
@@ -269,7 +279,7 @@ public class PlayerController : MonoBehaviour
     public void SetHasFire(bool v)
     {
         _hasFire = v;
-        _currentSpeed = _hasFire ? FireSpeed : NoFireSpeed;
+        _currentStateSpeed = _hasFire ? FireSpeed : NoFireSpeed;
     }
 
     private void PickUpInput()

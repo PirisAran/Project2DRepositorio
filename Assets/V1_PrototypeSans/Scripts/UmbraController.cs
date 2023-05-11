@@ -12,14 +12,28 @@ public class UmbraController : MonoBehaviour
 
     // FSM
     [SerializeField]
-    V2UmbraStates CurrentState;
+    UmbraStates CurrentState;
+    UmbraStates _nextState;
+    UmbraStates _previousState;
     [SerializeField]
-    float ChasingSpeed = 2.0f;
+    float CuteSpeed = 1.0f, ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
     [SerializeField]
-    float KillerSpeed = 4.0f;
-    public Action OnHarmlessState;
+    float FromCuteTime = 1.5f, ToCuteTime = 0.5f, ToChasingTime = 0.5f, ToKillerTime = 0.75f ;
+    float _changeTimer;
+
+
+    //Movement
+    [SerializeField]
+    float Acceleration = 2.0f;
+    float _currentDeceleration;
+    float _deltaTime;
+    float _currentSpeed;
+    Vector2 _direction;
+    //Actions
+    public Action OnCuteState;
     public Action OnChasingState;
     public Action OnKillerState;
+    public Action OnChangingState;
 
     Vector2 _fireDir => (Fire.transform.position - transform.position).normalized;
     Vector2 _playerDir => (Player.transform.position - transform.position).normalized;
@@ -28,93 +42,218 @@ public class UmbraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        CurrentState = UmbraStates.Chasing;
+        OnEnterState(CurrentState);
     }
-
-    private void ChangeState(V2UmbraStates nextState)
+    private void ChangeState(UmbraStates nextState)
     {
-        CurrentState = nextState;
-        DoStateInvoke(CurrentState);
+        Debug.Log("Changed IS CHANGING from " + CurrentState + " to " + nextState);
+        _previousState = CurrentState;
+        CurrentState = UmbraStates.Changing;
+        _nextState = nextState;
+        InitChangingState();
     }
-    private void DoStateInvoke(V2UmbraStates state)
+    private void OnEnterState(UmbraStates state)
     {
         switch (state)
         {
-            case V2UmbraStates.Harmless:
-                OnHarmlessState?.Invoke();
+            case UmbraStates.Cute:
+                OnCuteState?.Invoke();
+                _currentSpeed = 0;
                 break;
-            case V2UmbraStates.Chasing:
+            case UmbraStates.Chasing:
                 OnChasingState?.Invoke();
                 break;
-            case V2UmbraStates.Killer:
+            case UmbraStates.Killer:
                 OnKillerState?.Invoke();
+                break;
+            case UmbraStates.Changing:
                 break;
             default:
                 break;
         }
     }
+
+    private void InitChangingState()
+    {
+        OnChangingState?.Invoke();
+        if (_previousState == UmbraStates.Cute)
+        {
+            _changeTimer = FromCuteTime;
+            SetDeceleration();
+            return;
+        }
+
+        switch (_nextState)
+        {
+            case UmbraStates.Cute:
+                _changeTimer = ToCuteTime;
+                break;
+            case UmbraStates.Chasing:
+                _changeTimer = ToChasingTime;
+                break;
+            case UmbraStates.Killer:
+                _changeTimer = ToKillerTime;
+                break;
+            case UmbraStates.Changing:
+                break;
+            default:
+                break;
+        }
+        SetDeceleration();
+    }
+
+    private void SetDeceleration()
+    {
+        _deltaTime = _changeTimer;
+        float deltaSpeed = 0 - _currentSpeed;
+        _currentDeceleration = deltaSpeed / _deltaTime;
+    }
+
     void Update()
     {
         switch (CurrentState)
         {
-            case V2UmbraStates.Harmless:
-                UpdateHarmless();
+            case UmbraStates.Changing:
+                UpdateChangingState();
                 break;
-            case V2UmbraStates.Chasing:
+            case UmbraStates.Cute:
+                UpdateCute();
+                break;
+            case UmbraStates.Chasing:
                 UpdateChasing();
                 break;
-            case V2UmbraStates.Killer:
+            case UmbraStates.Killer:
                 UpdateKiller();
                 break;
             default:
                 break;
         }
+        MoveUmbra();
     }
-    private void UpdateHarmless()
-    {
 
-        if (UmbraIsLit())
+    private void UpdateChangingState()
+    {
+        _changeTimer -= Time.deltaTime;
+        if (_changeTimer <= 0)
+        {
+            CurrentState = _nextState;
+            OnEnterState(CurrentState);
+        }
+
+        //Mientras cambia, va decelerando hasta alcanzar 0 SIEMPRE. Asi, entre estados el umbra frena hasta llegar a 0;
+        if (_currentSpeed > 0)
+            _currentSpeed = Mathf.Clamp(_currentSpeed + _currentDeceleration * Time.deltaTime, 0, 999); 
+    }
+
+    private void UpdateCute()
+    {
+        if (CanTurnChasing())
+        {
+            ChangeState(UmbraStates.Chasing);
             return;
-        if (PlayerIsSafe())
-            ChangeState(V2UmbraStates.Chasing);
+        }
+        if (CanTurnKiller())
+        {
+            ChangeState(UmbraStates.Killer);
+            return;
+        }
+
+        //No se mueve
+        _direction = -_fireDir;
+        if (_currentSpeed < CuteSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, CuteSpeed);
+        }
         else
-            ChangeState(V2UmbraStates.Killer);
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, 0, CuteSpeed);
+        }
     }
     private void UpdateChasing()
     {
-        if (UmbraIsLit())
-            ChangeState(V2UmbraStates.Harmless);
+        if (CanTurnCute())
+        {
+            ChangeState(UmbraStates.Cute);
+            return;
+        }
+        if (CanTurnKiller())
+        {
+            ChangeState(UmbraStates.Killer);
+            return;
+        }
+
+        //Se mueve a distancia del jugador
+        _direction = _playerDir;
+
+        if (_currentSpeed < ChasingSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, ChasingSpeed);
+        }
+        else
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, ChasingSpeed, 999);
+        }
     }
     private void UpdateKiller()
     {
-        if (UmbraIsLit())
-            ChangeState(V2UmbraStates.Harmless);
+        if (CanTurnCute())
+        {
+            ChangeState(UmbraStates.Cute);
+            return;
+        }
+        if (CanTurnChasing())
+        {
+            ChangeState(UmbraStates.Chasing);
+            return;
+        }
+
+        //Va directo al jugador
+        _direction = _playerDir;
+        _currentSpeed = KillerSpeed;
+        if (_currentSpeed < KillerSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, KillerSpeed);
+        }
     }
 
-    private void RunFromFire()
+    private void MoveUmbra()
     {
-        //Move(-_fireDir, 1);
+        Vector2 distance = _direction * _currentSpeed * Time.deltaTime;
+        transform.Translate(distance);
     }
 
-    private void Move(Vector2 dir, float speed)
-    {
-        Vector2 disToMove = dir * speed * Time.deltaTime;
-        transform.Translate(disToMove);
-    }
-
+    //Comprovadores del estado de player y de umbra
     private bool PlayerIsSafe()
     {
+        //Comprueva si la distancia del player respecto el fuego es mayor o menor q el rango de la luz. 
         return Vector2.Distance(Player.transform.position, Fire.transform.position) < Fire.LightRange;
     }
     private bool UmbraIsLit()
     {
+        //Comprueva si la distancia del Umbra respecto el fuego y mira si el umbra esta dentro del rango de luz.
         return Vector2.Distance(transform.position, Fire.transform.position) < Fire.LightRange;
+    }
+
+    //Comprovadores de si se puede cambiar a un estado o no
+    private bool CanTurnCute()
+    {
+        return UmbraIsLit();
+    }
+    private bool CanTurnChasing()
+    {
+        return !UmbraIsLit() && PlayerIsSafe();
+    }
+    private bool CanTurnKiller()
+    {
+        return !UmbraIsLit() && !PlayerIsSafe();
     }
 }
 
-public enum V2UmbraStates
+public enum UmbraStates
 {
-    Harmless,                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    Cute,                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     Chasing,
-    Killer
+    Killer,
+    Changing
 }
