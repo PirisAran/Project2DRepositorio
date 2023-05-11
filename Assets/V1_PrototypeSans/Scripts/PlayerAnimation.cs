@@ -20,7 +20,10 @@ public class PlayerAnimation : MonoBehaviour
         if (Player.Speed != 0)
         {
             Animator.SetBool("Running", true);
-        }
+            var bodyScale = transform.localScale;
+            bodyScale.x = Mathf.Abs(bodyScale.x) * Mathf.Sign(Player.Speed);
+            transform.localScale = bodyScale;
+        }   
         else
             Animator.SetBool("Running", false);
 

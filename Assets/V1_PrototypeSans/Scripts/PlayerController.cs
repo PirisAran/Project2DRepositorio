@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
     public bool IsJumping => _isJumping;
-    bool _isJumping = false;
+    bool _isJumping;
+    bool _doingJump = false;
     bool _firstAddedForce = true;
 
     //Fire Throwing and picking----------------------
@@ -128,7 +129,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateJump()
     {
         //Comprueba si tiene el fuego y si esta saltando, que son las condiciones para poder hacer el salto alto
-        if (!_hasFire && _isJumping)
+        if (!_hasFire && _doingJump)
             TryAddExtraJumpForce();
     }
     private void JumpInput()
@@ -172,6 +173,7 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         _isJumping = true;
+        _doingJump = true;
         _jumpStartTime = Time.time;
         AddJumpForce(LowJumpHeight);
     }
@@ -200,12 +202,13 @@ public class PlayerController : MonoBehaviour
     private void JumpFinished()
     {
         //Se acaba el salto
-        _isJumping = false;
+        _doingJump = false;
     }
     private void OnLanding()
     {
         ResetJumps();
         _firstAddedForce = true;
+        _isJumping = false;
     }
     private void ResetJumps()
     {
