@@ -31,10 +31,10 @@ public class UmbraFSM : MonoBehaviour
     public Vector2 PlayerDirection => (Player.transform.position - transform.position).normalized;
 
     [SerializeField]
-    UmbraStates _currentState = UmbraStates.Chill;
+    UmbraStatesOld _currentState = UmbraStatesOld.Chill;
 
-    private float CurrentRespectDistance => (_currentState != UmbraStates.Cute 
-        && _currentState == UmbraStates.Chill) ? Fire.LightRange + ChillStateRespDist : ChaseStateRespDist; 
+    private float CurrentRespectDistance => (_currentState != UmbraStatesOld.Cute 
+        && _currentState == UmbraStatesOld.Chill) ? Fire.LightRange + ChillStateRespDist : ChaseStateRespDist; 
 
     private void Awake()
     {
@@ -45,12 +45,12 @@ public class UmbraFSM : MonoBehaviour
     {
         var playerPosition = Player.transform.position;
 
-        if (_currentState != UmbraStates.Cute)
+        if (_currentState != UmbraStatesOld.Cute)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(playerPosition, CurrentRespectDistance);
         }
-        if (_currentState == UmbraStates.Chill)
+        if (_currentState == UmbraStatesOld.Chill)
         {
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(playerPosition, DistToSlowDown + CurrentRespectDistance);
@@ -69,13 +69,13 @@ public class UmbraFSM : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == Player && _currentState != UmbraStates.Cute)
+        if (collision.transform == Player && _currentState != UmbraStatesOld.Cute)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
-    void ChangeState(UmbraStates nextState)
+    void ChangeState(UmbraStatesOld nextState)
     {
         Debug.Log("Umbra went from " + _currentState.ToString() 
             + " to " + nextState.ToString());
@@ -84,17 +84,17 @@ public class UmbraFSM : MonoBehaviour
         DoStateInvoke(_currentState);
     }
 
-    private void DoStateInvoke(UmbraStates currentState)
+    private void DoStateInvoke(UmbraStatesOld currentState)
     {
         switch (currentState)
         {
-            case UmbraStates.Cute:
+            case UmbraStatesOld.Cute:
                 OnCuteState?.Invoke();
                 break;
-            case UmbraStates.Chill:
+            case UmbraStatesOld.Chill:
                 OnChillState?.Invoke();
                 break;
-            case UmbraStates.Chasing:
+            case UmbraStatesOld.Chasing:
                 OnChasingState?.Invoke();
                 break;
             default:
@@ -102,13 +102,13 @@ public class UmbraFSM : MonoBehaviour
         }
     }
 
-    float GetStateSpeed(UmbraStates state)
+    float GetStateSpeed(UmbraStatesOld state)
     {
         switch (state)
         {
-            case UmbraStates.Chill:
+            case UmbraStatesOld.Chill:
                 return ChillStateSpeed;
-            case UmbraStates.Chasing:
+            case UmbraStatesOld.Chasing:
                 return ChasingStateSpeed;
             default:
                 return 0;
@@ -119,13 +119,13 @@ public class UmbraFSM : MonoBehaviour
     {
         switch (_currentState)
         {
-            case UmbraStates.Cute:
+            case UmbraStatesOld.Cute:
                 UpdateCuteState();
                 break;
-            case UmbraStates.Chill:
+            case UmbraStatesOld.Chill:
                 UpdateChillState();
                 break;
-            case UmbraStates.Chasing:
+            case UmbraStatesOld.Chasing:
                 UpdateChasingState();
                 break;
             default:
@@ -154,12 +154,12 @@ public class UmbraFSM : MonoBehaviour
     {
         if (CanGoChillState())
         {
-            ChangeState(UmbraStates.Chill);
+            ChangeState(UmbraStatesOld.Chill);
             return;
         }
         else if (CanGoChasingState())
         {
-            ChangeState(UmbraStates.Chasing);
+            ChangeState(UmbraStatesOld.Chasing);
             return;
         }
     }
@@ -188,12 +188,12 @@ public class UmbraFSM : MonoBehaviour
 
         if (CanGoCuteState())
         {
-            ChangeState(UmbraStates.Cute);
+            ChangeState(UmbraStatesOld.Cute);
             return;
         }
         else if (CanGoChasingState())
         {
-            ChangeState(UmbraStates.Chasing);
+            ChangeState(UmbraStatesOld.Chasing);
         }
     }
 
@@ -218,12 +218,12 @@ public class UmbraFSM : MonoBehaviour
 
         if (CanGoCuteState())
         {
-            ChangeState(UmbraStates.Cute);
+            ChangeState(UmbraStatesOld.Cute);
             return;
         }
         else if (CanGoChillState())
         {
-            ChangeState(UmbraStates.Chill);
+            ChangeState(UmbraStatesOld.Chill);
             return;
         }
     }
@@ -241,7 +241,7 @@ public class UmbraFSM : MonoBehaviour
 }
 
 
-public enum UmbraStates
+public enum UmbraStatesOld
 {
     Cute,
     Chill,
