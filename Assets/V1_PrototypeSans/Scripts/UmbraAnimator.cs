@@ -14,7 +14,6 @@ public class UmbraAnimator : MonoBehaviour
     [SerializeField]
     Sprite ChangingSprite;
 
-    UmbraFSM _umbraFSM;
     UmbraController _umbraController;
     SpriteRenderer _spriteRenderer;
 
