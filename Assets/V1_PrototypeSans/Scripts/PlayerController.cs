@@ -19,8 +19,10 @@ public class PlayerController : MonoBehaviour
     float _horizontalMov;
     [SerializeField]
     float NoFireSpeed = 8, FireSpeed = 5 ;
-    float _currentSpeed;
+    float _currentStateSpeed;
     public Vector2 Forward => new Vector2(_horizontalMov, 0).normalized;
+    public float Speed => _speed;
+    float _speed;
 
 
     //Jumping------------------------
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
     float MaxJumps = 2;
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
+    public bool IsJumping => _isJumping;
     bool _isJumping = false;
     bool _firstAddedForce = true;
 
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<CollisionChecker>();
         _lr = GetComponent<LineRenderer>();
-        _currentSpeed = FireSpeed;
+        _currentStateSpeed = FireSpeed;
         ResetJumps();
     }
 
@@ -113,8 +116,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        var vel = new Vector2(_horizontalMov * _currentSpeed, _rb.velocity.y);
+        var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
         _rb.velocity = vel;
+        _speed = vel.x;
     }
 
 
@@ -269,7 +273,7 @@ public class PlayerController : MonoBehaviour
     public void SetHasFire(bool v)
     {
         _hasFire = v;
-        _currentSpeed = _hasFire ? FireSpeed : NoFireSpeed;
+        _currentStateSpeed = _hasFire ? FireSpeed : NoFireSpeed;
     }
 
     private void PickUpInput()

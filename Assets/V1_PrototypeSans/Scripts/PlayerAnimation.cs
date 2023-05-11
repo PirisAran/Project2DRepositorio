@@ -5,15 +5,27 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField]
-    SpriteRenderer SpriteRenderer;
+    GameObject Body;
     PlayerController Player;
+    [SerializeField]
+    Animator Animator;
 
     private void Awake()
     {
+        Player = GetComponent<PlayerController>();
     }
     void Update()
     {
-        if (Player.Forward.x != 0)
-            SpriteRenderer.flipX = (Player.Forward.x < 0); 
+        //Animator manager provisional
+        if (Player.Speed != 0)
+        {
+            Animator.SetBool("Running", true);
+        }
+        else
+            Animator.SetBool("Running", false);
+
+        Animator.SetBool("Jumping", Player.IsJumping);
     }
+
+
 }
