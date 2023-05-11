@@ -119,8 +119,6 @@ public class PlayerController : MonoBehaviour
         var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
         _rb.velocity = vel;
         XSpeed = vel.x;
-        Debug.Log(vel.x);
-
     }
 
 
