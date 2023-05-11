@@ -11,20 +11,17 @@ public class UmbraController : MonoBehaviour
     FireController Fire;
 
     // FSM
-    [SerializeField]
-    UmbraStates CurrentState;
+    [SerializeField] UmbraStates CurrentState;
     UmbraStates _nextState;
     UmbraStates _previousState;
-    [SerializeField]
-    float CuteSpeed = 1.0f, ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
-    [SerializeField]
-    float FromCuteTime = 1.5f, ToCuteTime = 0.5f, ToChasingTime = 0.5f, ToKillerTime = 0.75f ;
+    [SerializeField] float CuteSpeed = 1.0f, ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
+    [SerializeField] float FromCuteTime = 1.5f, ToCuteTime = 0.5f, ToChasingTime = 0.5f, ToKillerTime = 0.75f ;
     float _changeTimer;
-
-
+    [SerializeField] float AddedChasingDistance = 3.0f;
+    [SerializeField] float ChaseZoneOffset = 0.5f;
+    [SerializeField] float DistToAccelerate = 6;
     //Movement
-    [SerializeField]
-    float Acceleration = 2.0f;
+    [SerializeField] float CuteAcceleration = 2.0f, ChasingAcceleration = 2.0f, KillerAcceleration = 5.0f;
     float _currentDeceleration;
     float _deltaTime;
     float _currentSpeed;
@@ -39,6 +36,14 @@ public class UmbraController : MonoBehaviour
     Vector2 _playerDir => (Player.transform.position - transform.position).normalized;
 
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange);
+
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +52,6 @@ public class UmbraController : MonoBehaviour
     }
     private void ChangeState(UmbraStates nextState)
     {
-        Debug.Log("Changed IS CHANGING from " + CurrentState + " to " + nextState);
         _previousState = CurrentState;
         CurrentState = UmbraStates.Changing;
         _nextState = nextState;
@@ -159,16 +163,18 @@ public class UmbraController : MonoBehaviour
             return;
         }
 
-        //No se mueve
         _direction = -_fireDir;
-        if (_currentSpeed < CuteSpeed)
-        {
-            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, CuteSpeed);
-        }
-        else
-        {
-            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, 0, CuteSpeed);
-        }
+
+        AdjustSpeed();
+
+        //if (_currentSpeed < GetMaxSpeedState(CurrentState))
+        //{
+        //    _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, CuteSpeed);
+        //}
+        //else if (_currentSpeed > GetMaxSpeedState(CurrentState))
+        //{
+        //    _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, CuteSpeed, 999);
+        //}
     }
     private void UpdateChasing()
     {
@@ -184,16 +190,39 @@ public class UmbraController : MonoBehaviour
         }
 
         //Se mueve a distancia del jugador
-        _direction = _playerDir;
 
-        if (_currentSpeed < ChasingSpeed)
+        float maxSpeed = GetMaxSpeedState(CurrentState);
+        _direction = _playerDir;
+        float distanceToPlayer = ToPlayerDist();
+        float decelerateZoneRadius = DistToAccelerate + Fire.LightRange;
+        float respectDistance = AddedChasingDistance + Fire.LightRange;
+
+        if (distanceToPlayer > decelerateZoneRadius)
         {
-            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, ChasingSpeed);
+            float distFraction = Mathf.Clamp01(distanceToPlayer / distanceToPlayer - respectDistance);
+            //_currentSpeed = Mathf.Lerp(maxSpeed, Player.XSpeed,  );
         }
-        else
+        else if (distanceToPlayer > respectDistance)
         {
-            _currentSpeed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, ChasingSpeed, 999);
+
         }
+
+
+       
+
+
+        //AdjustSpeed();
+
+        //float speed;
+        //if (_currentSpeed < ChasingSpeed)
+        //{
+        //    speed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, ChasingSpeed);
+        //}
+        //else
+        //{
+        //    speed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, ChasingSpeed, 999);
+        //}    
+
     }
     private void UpdateKiller()
     {
@@ -210,11 +239,14 @@ public class UmbraController : MonoBehaviour
 
         //Va directo al jugador
         _direction = _playerDir;
-        _currentSpeed = KillerSpeed;
-        if (_currentSpeed < KillerSpeed)
-        {
-            _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, KillerSpeed);
-        }
+
+        AdjustSpeed();
+
+        //_currentSpeed = KillerSpeed;
+        //if (_currentSpeed < KillerSpeed)
+        //{
+        //    _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, KillerSpeed);
+        //}
     }
 
     private void MoveUmbra()
@@ -248,6 +280,73 @@ public class UmbraController : MonoBehaviour
     {
         return !UmbraIsLit() && !PlayerIsSafe();
     }
+
+    //Comprovadores de distancia
+    private float ToPlayerDist()
+    {
+        return Vector2.Distance(transform.position, Player.transform.position);
+    }
+    private float ToFireDist()
+    {
+        return Vector2.Distance(transform.position, Fire.transform.position);
+    }
+
+    private float GetMaxSpeedState(UmbraStates state)
+    {
+        float speed = 0;
+
+        switch (state)
+        {
+            case UmbraStates.Cute:
+                speed = CuteSpeed;
+                break;
+            case UmbraStates.Chasing:
+                speed = ChasingSpeed;
+                break;
+            case UmbraStates.Killer:
+                speed = KillerSpeed;
+                break;
+            default:
+                break;
+        }
+        Debug.Log("STATE SPEED " + speed);
+        return speed;
+    }
+    private float GetAccelerationState (UmbraStates state)
+    {
+        float acc = 0;
+
+        switch (state)
+        {
+            case UmbraStates.Cute:
+                acc = CuteAcceleration;
+                break;
+            case UmbraStates.Chasing:
+                acc = ChasingAcceleration;
+                break;
+            case UmbraStates.Killer:
+                acc = KillerAcceleration;
+                break;
+            default:
+                break;
+        }
+        return acc;
+    }
+    private void AdjustSpeed()
+    {
+        float maxSpeed = GetMaxSpeedState(CurrentState);
+        float acc = GetAccelerationState(CurrentState);
+
+        if (_currentSpeed < maxSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed + acc * Time.deltaTime, 0, maxSpeed);
+        }
+        else if (_currentSpeed > maxSpeed)
+        {
+            _currentSpeed = Mathf.Clamp(_currentSpeed - acc * Time.deltaTime, maxSpeed, 0);
+        }
+    }
+
 }
 
 public enum UmbraStates
