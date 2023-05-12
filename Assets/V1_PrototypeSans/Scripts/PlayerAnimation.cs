@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    PlayerController Player;
+    Runner Player;
+    Jumper jump;
     [SerializeField] Animator Animator;
+    [SerializeField] GameObject Body;
 
     private enum PlayerStates { Idle, Running, Jumping, Falling}
 
     private void Awake()
     {
-        Player = GetComponent<PlayerController>();
+        Player = GetComponent<Runner>();
+        jump = GetComponent<Jumper>();
     }
     void Update()
     {
@@ -21,9 +24,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private void UpdateFlipX()
     {
-        var bodyScale = transform.localScale;
+        var bodyScale = Body.transform.localScale;
         bodyScale.x = Mathf.Abs(bodyScale.x) * Mathf.Sign(Player.XSpeed);
-        transform.localScale = bodyScale;
+        Body.transform.localScale = bodyScale;
     }
 
     private void UpdateAnimationState()
@@ -42,9 +45,9 @@ public class PlayerAnimation : MonoBehaviour
         }
         else state = PlayerStates.Idle;
 
-        if (Player.YSpeed != 0)
+        if (jump.YSpeed != 0)
         {
-            if (Player.YSpeed > .1f)
+            if (jump.YSpeed > .1f)
                 state = PlayerStates.Jumping;
             else
                 state = PlayerStates.Falling;

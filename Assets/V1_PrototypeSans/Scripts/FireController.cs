@@ -8,8 +8,7 @@ using Random = UnityEngine.Random;
 public class FireController : MonoBehaviour
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
-    [SerializeField]
-    PlayerController Player;
+    [SerializeField] Thrower PlayerThrower;
     
     //Components
     SpriteRenderer _spriteRd;
@@ -40,7 +39,7 @@ public class FireController : MonoBehaviour
     CircleCollider2D PickUpCollider;
     [SerializeField]
     float PickUpRadius = 1;
-    public bool OnPickUpRange => Player.PickUpCollider.IsTouching(PickUpCollider);
+    public bool OnPickUpRange => PlayerThrower.PickUpCollider.IsTouching(PickUpCollider);
     
     //Health Parameters---------------------
     [SerializeField]
@@ -81,8 +80,9 @@ public class FireController : MonoBehaviour
     void Update()
     {
         UpdateLightEffect();
+        if (IsAttached())
+            transform.localPosition = Vector2.zero;
     }
-
 
     /* ------ PICK UP AND BE THROWN ------ */
     public void BeThrown(Vector2 dir, float currentThrowSpeed)
@@ -101,14 +101,14 @@ public class FireController : MonoBehaviour
 
     private void SetAttached(bool v)
     {
-        Player.SetHasFire(v);
-        transform.parent = v ? Player.transform : null;
-        _rb.simulated = !v;
+        PlayerThrower.SetHasFire(v);
+        transform.parent = v ? PlayerThrower.transform : null;
+        _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 
     private bool IsAttached()
     {
-        return Player.HasFire;
+        return PlayerThrower.HasFire;
     }
 
     private void OnLanding()
