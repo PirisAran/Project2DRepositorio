@@ -80,7 +80,6 @@ public class Thrower : MonoBehaviour
             ThrowFireFinish();
     }
 
-
     private void ThrowFireStart()
     {
         //empieza a cargar el disparo y se guarda el momento de inicio
@@ -119,7 +118,6 @@ public class Thrower : MonoBehaviour
     {
         if (_hasFire)
             return;
-        Debug.Log("no fire");
         if (Input.GetKeyDown(PickUpKey))
             TryPickUp();
     }

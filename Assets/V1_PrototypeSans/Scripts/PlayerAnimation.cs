@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour
     Runner Player;
     Jumper jump;
     [SerializeField] Animator Animator;
+    [SerializeField] GameObject Body;
 
     private enum PlayerStates { Idle, Running, Jumping, Falling}
 
@@ -23,9 +24,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private void UpdateFlipX()
     {
-        var bodyScale = transform.localScale;
+        var bodyScale = Body.transform.localScale;
         bodyScale.x = Mathf.Abs(bodyScale.x) * Mathf.Sign(Player.XSpeed);
-        transform.localScale = bodyScale;
+        Body.transform.localScale = bodyScale;
     }
 
     private void UpdateAnimationState()
