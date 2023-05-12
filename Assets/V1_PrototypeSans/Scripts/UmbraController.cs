@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UmbraController : MonoBehaviour
 {
@@ -45,7 +46,10 @@ public class UmbraController : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange);
-
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + AddedChasingDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + DistToAccelerate);
     }
 
 
@@ -138,7 +142,6 @@ public class UmbraController : MonoBehaviour
             default:
                 break;
         }
-        MoveUmbra();
     }
 
     private void UpdateChangingState()
@@ -152,7 +155,9 @@ public class UmbraController : MonoBehaviour
 
         //Mientras cambia, va decelerando hasta alcanzar 0 SIEMPRE. Asi, entre estados el umbra frena hasta llegar a 0;
         if (_currentSpeed > 0)
-            _currentSpeed = Mathf.Clamp(_currentSpeed + _currentDeceleration * Time.deltaTime, 0, 999); 
+            _currentSpeed = Mathf.Clamp(_currentSpeed + _currentDeceleration * Time.deltaTime, 0, 999);
+        MoveUmbra();
+
     }
 
     private void UpdateCute()
@@ -171,6 +176,7 @@ public class UmbraController : MonoBehaviour
         _direction = -_fireDir;
 
         AdjustSpeed();
+        MoveUmbra();
 
         //if (_currentSpeed < GetMaxSpeedState(CurrentState))
         //{
@@ -198,36 +204,41 @@ public class UmbraController : MonoBehaviour
 
         float maxSpeed = GetMaxSpeedState(CurrentState);
         _direction = _playerDir;
-        float distanceToPlayer = ToPlayerDist();
+        float distanceToPlayer = ToFireDist();
         float decelerateZoneRadius = DistToAccelerate + Fire.LightRange;
         float respectDistance = AddedChasingDistance + Fire.LightRange;
+        float playerSpeed = Math.Abs(_playerRunner.XSpeed);
 
         if (distanceToPlayer > decelerateZoneRadius)
         {
-            float distFraction = Mathf.Clamp01(distanceToPlayer / distanceToPlayer - respectDistance);
-            //_currentSpeed = Mathf.Lerp(maxSpeed, _playerRunner.XSpeed,  );
+            _currentSpeed = maxSpeed;
+            _direction = _playerDir;
         }
         else if (distanceToPlayer > respectDistance)
         {
+            float maxDistanceFraction = decelerateZoneRadius - respectDistance;
+            float currentDistance = distanceToPlayer - respectDistance;
+            _currentSpeed = Mathf.Lerp(maxSpeed, playerSpeed, Mathf.Clamp01(currentDistance / maxDistanceFraction));
+            _direction = _playerDir;
 
+            float mov = _currentSpeed * Time.deltaTime;
+            if (mov > currentDistance)
+                mov = currentDistance;
+            _currentSpeed = mov / Time.deltaTime;
+            
         }
-
-
-       
-
-
-        //AdjustSpeed();
-
-        //float speed;
-        //if (_currentSpeed < ChasingSpeed)
-        //{
-        //    speed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, ChasingSpeed);
-        //}
-        //else
-        //{
-        //    speed = Mathf.Clamp(_currentSpeed - Acceleration * Time.deltaTime, ChasingSpeed, 999);
-        //}    
-
+        else if (distanceToPlayer < respectDistance)
+        {
+            float maxDistanceFraction = respectDistance - Fire.LightRange;
+            float currentDistance = distanceToPlayer - Fire.LightRange;
+            _currentSpeed = Mathf.Lerp(playerSpeed, maxSpeed, currentDistance / maxDistanceFraction);
+            _direction = -_fireDir;
+            float mov = _currentSpeed * Time.deltaTime;
+            if (mov > currentDistance)
+                mov = currentDistance;
+            _currentSpeed = mov / Time.deltaTime;
+        }
+        MoveUmbra();
     }
     private void UpdateKiller()
     {
@@ -246,12 +257,8 @@ public class UmbraController : MonoBehaviour
         _direction = _playerDir;
 
         AdjustSpeed();
-
-        //_currentSpeed = KillerSpeed;
-        //if (_currentSpeed < KillerSpeed)
-        //{
-        //    _currentSpeed = Mathf.Clamp(_currentSpeed + Acceleration * Time.deltaTime, 0, KillerSpeed);
-        //}
+        MoveUmbra();
+        
     }
 
     private void MoveUmbra()
@@ -350,6 +357,16 @@ public class UmbraController : MonoBehaviour
         {
             _currentSpeed = Mathf.Clamp(_currentSpeed - acc * Time.deltaTime, maxSpeed, 0);
         }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (CurrentState == UmbraStates.Cute || CurrentState == UmbraStates.Changing)
+            return;
+
+        if (collision.transform == Player.transform)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 }
