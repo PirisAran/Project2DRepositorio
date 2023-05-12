@@ -572,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 215e5148dc4f3874dbdaf858a43fa004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1184702663}
+  Player: {fileID: 1184702651}
   Fire: {fileID: 1277321793}
   CurrentState: 1
   CuteSpeed: 1
@@ -1322,10 +1322,12 @@ GameObject:
   - component: {fileID: 1184702654}
   - component: {fileID: 1184702653}
   - component: {fileID: 1184702652}
-  - component: {fileID: 1184702663}
   - component: {fileID: 1184702660}
+  - component: {fileID: 1184702667}
+  - component: {fileID: 1184702666}
   - component: {fileID: 1184702662}
   - component: {fileID: 1184702664}
+  - component: {fileID: 1184702665}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -1552,35 +1554,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &1184702663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184702651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b99d9abf08fd9440a6bb60e0c8d435e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Fire: {fileID: 1277321793}
-  NoFireSpeed: 6.5
-  FireSpeed: 5
-  HighJumpHeight: 3
-  LowJumpHeight: 1.5
-  PressTimeToHighJump: 0.1
-  MaxJumps: 2
-  PickUpCollider: {fileID: 1184702653}
-  MinThrowSpeed: 2
-  MaxThrowSpeed: 15
-  TimeMaxThrow: 0.5
-  ParabolicShootMaxPoints: 200
-  ParabolicShootTime: 7
-  JumpKey: 32
-  ThrowKey: 323
-  PickUpKey: 101
-  CancelThrowKey: 324
 --- !u!114 &1184702664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1598,6 +1571,59 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   GroundCheckerOrigin: {fileID: 515159477}
+--- !u!114 &1184702665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184702651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf17f0f540b7ac34488607cdc80cebfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpKey: 32
+  HighJumpHeight: 2.5
+  LowJumpHeight: 1
+  PressTimeToHighJump: 0.1
+  MaxJumps: 2
+--- !u!114 &1184702666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184702651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f6697ff9a579c4bb0f89776e37388a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fire: {fileID: 1277321793}
+  ThrowKey: 323
+  PickUpKey: 101
+  CancelThrowKey: 324
+  PickUpCollider: {fileID: 1184702653}
+  MinThrowSpeed: 2
+  MaxThrowSpeed: 20
+  TimeMaxThrow: 0.5
+  ParabolicShootMaxPoints: 200
+  ParabolicShootTime: 4
+--- !u!114 &1184702667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184702651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb584a79ecdfd114c8271544651a0ea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoFireSpeed: 8
+  FireSpeed: 5
 --- !u!1 &1277321785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,7 +1783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a375d8f6005df6e40bf291a0a0743f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1184702663}
+  PlayerThrower: {fileID: 1184702666}
   Light: {fileID: 1690612780}
   MaxLightRange: 6
   LightColor: {r: 0.9528302, g: 0.60332257, b: 0.111463115, a: 1}

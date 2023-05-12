@@ -6,7 +6,7 @@ using UnityEngine;
 public class UmbraController : MonoBehaviour
 {
     [SerializeField]
-    PlayerController Player;
+    GameObject Player;
     [SerializeField]
     FireController Fire;
 
