@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class CepoTrap : MonoBehaviour
 {
+    [SerializeField]
+    GameObject Player;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (true)
+        if (collision.transform == Player.transform)
         {
-
+            Debug.Log("Atrapado");
         }
     }
 }
