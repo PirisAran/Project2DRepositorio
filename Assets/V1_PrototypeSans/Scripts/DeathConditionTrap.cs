@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DeathConditionTrap : MonoBehaviour
 {
     [SerializeField]
-    PlayerController Player;
+    GameObject Player;
 
     [SerializeField]
     Collider2D TerrainCollider;

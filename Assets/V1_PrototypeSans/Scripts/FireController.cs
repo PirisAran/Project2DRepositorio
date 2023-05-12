@@ -8,8 +8,7 @@ using Random = UnityEngine.Random;
 public class FireController : MonoBehaviour
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
-    [SerializeField]
-    PlayerController Player;
+    [SerializeField] Thrower PlayerThrower;
     
     //Components
     SpriteRenderer _spriteRd;
@@ -40,12 +39,13 @@ public class FireController : MonoBehaviour
     CircleCollider2D PickUpCollider;
     [SerializeField]
     float PickUpRadius = 1;
-    public bool OnPickUpRange => Player.PickUpCollider.IsTouching(PickUpCollider);
+    public bool OnPickUpRange => PlayerThrower.PickUpCollider.IsTouching(PickUpCollider);
     
     //Health Parameters---------------------
     [SerializeField]
     float MaxFireHealth = 10;
     float _currentFireHealth;
+    public float CurrentFireHealth { get { return _currentFireHealth;} set { _currentFireHealth = value;} }
     [SerializeField]
     CircleCollider2D DamageCollider;
 
@@ -64,6 +64,9 @@ public class FireController : MonoBehaviour
         _spriteRd = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<CollisionChecker>();
+    }
+    private void Start()
+    {
         Init();
     }
 
@@ -81,8 +84,13 @@ public class FireController : MonoBehaviour
     void Update()
     {
         UpdateLightEffect();
+        
+        if (transform.parent != null)
+        {
+            transform.localPosition = Vector2.zero;
+            Debug.Log("Centered");
+        }
     }
-
 
     /* ------ PICK UP AND BE THROWN ------ */
     public void BeThrown(Vector2 dir, float currentThrowSpeed)
@@ -101,14 +109,14 @@ public class FireController : MonoBehaviour
 
     private void SetAttached(bool v)
     {
-        Player.SetHasFire(v);
-        transform.parent = v ? Player.transform : null;
-        _rb.simulated = !v;
+        PlayerThrower.SetHasFire(v);
+        transform.parent = v ? PlayerThrower.gameObject.transform : null;
+        _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 
     private bool IsAttached()
     {
-        return Player.HasFire;
+        return PlayerThrower.HasFire;
     }
 
     private void OnLanding()
@@ -144,17 +152,10 @@ public class FireController : MonoBehaviour
 
     /* ----- HEALTH AND DAMAGE HERE  ------- */
 
-    private void OnTriggerEnter2D(Collider2D other)
+    
+    public void TakeDamage(float damageDealt)
     {
-        IDamageFire water = other.GetComponent<IDamageFire>();
-        if (water != null)
-        {
-            TakeDamage(water.DamageDealt);
-            water.Destroy();
-        }
-    }
-    private void TakeDamage(float damageDealt)
-    {
+        Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
         AdjustLight(Mathf.Clamp01(_currentFireHealth / MaxFireHealth));
     }
