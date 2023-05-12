@@ -43,6 +43,7 @@ public class Thrower : MonoBehaviour
     {
         _lr = GetComponent<LineRenderer>();
         _runner = GetComponent<Runner>();
+        Debug.Log(_runner == null);
     }
 
     // Update is called once per frame

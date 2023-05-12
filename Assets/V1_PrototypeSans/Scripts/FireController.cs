@@ -64,6 +64,9 @@ public class FireController : MonoBehaviour
         _spriteRd = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<CollisionChecker>();
+    }
+    private void Start()
+    {
         Init();
     }
 
@@ -81,8 +84,12 @@ public class FireController : MonoBehaviour
     void Update()
     {
         UpdateLightEffect();
+        
         if (transform.parent != null)
+        {
             transform.localPosition = Vector2.zero;
+            Debug.Log("Centered");
+        }
     }
 
     /* ------ PICK UP AND BE THROWN ------ */
@@ -103,7 +110,7 @@ public class FireController : MonoBehaviour
     private void SetAttached(bool v)
     {
         PlayerThrower.SetHasFire(v);
-        transform.parent = v ? PlayerThrower.transform : null;
+        transform.parent = v ? PlayerThrower.gameObject.transform : null;
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 
