@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Traps : MonoBehaviour
+public class RockTrap : MonoBehaviour
 {
     Rigidbody2D _rb;
 
