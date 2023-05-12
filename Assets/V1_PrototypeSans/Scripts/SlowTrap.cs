@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlowTrap : MonoBehaviour
 {
     [SerializeField]
-    PlayerController _player;
+    GameObject Player;
     FireController _fire;
 
     [SerializeField]
@@ -19,7 +19,7 @@ public class SlowTrap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == _player.transform)
+        if (collision.transform == Player.transform)
         {
             _lastTimeDamage = Time.time;
             ApplyEffect(true);
@@ -36,13 +36,10 @@ public class SlowTrap : MonoBehaviour
         if (v)
         {
             Debug.Log("speeds and jumps CHANGED");
-            _player.ChangeSpeeds(VelocityReduction);
-            _player.ChangeJumps(JumpReduction);
         }
         else
         {
             Debug.Log("speeds and jumps RESET");
-            _player.ResetValues();
         }
     }
     

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class CepoTrap : MonoBehaviour
 {
-    [SerializeField]
-    PlayerController Player;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == Player)
+        if (true)
         {
 
         }
