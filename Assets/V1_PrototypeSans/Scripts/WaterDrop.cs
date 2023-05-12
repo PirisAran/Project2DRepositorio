@@ -38,11 +38,6 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var fire = other.GetComponentInParent<FireController>();
-        if (fire!=null)
-        {
-            fire.TakeDamage(Damage);
-            Destroy();
-        }
+        Destroy();
     }
 }
