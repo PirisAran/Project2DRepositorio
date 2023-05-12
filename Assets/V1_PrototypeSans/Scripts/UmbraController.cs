@@ -46,7 +46,10 @@ public class UmbraController : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange);
-
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + AddedChasingDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + DistToAccelerate);
     }
 
 
