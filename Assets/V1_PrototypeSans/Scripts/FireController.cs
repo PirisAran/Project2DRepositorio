@@ -80,7 +80,7 @@ public class FireController : MonoBehaviour
     void Update()
     {
         UpdateLightEffect();
-        if (IsAttached())
+        if (transform.parent != null)
             transform.localPosition = Vector2.zero;
     }
 
