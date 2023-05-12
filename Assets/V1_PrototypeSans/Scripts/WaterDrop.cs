@@ -9,7 +9,6 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     [SerializeField]
     float Damage = 2;
 
-
     [SerializeField]
     float GravityTweak = 1;
 
@@ -37,8 +36,13 @@ public class WaterDrop : MonoBehaviour, IDamageFire
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy();
+        var fire = other.GetComponentInParent<FireController>();
+        if (fire!=null)
+        {
+            fire.TakeDamage(Damage);
+            Destroy();
+        }
     }
 }
