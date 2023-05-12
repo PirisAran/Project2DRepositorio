@@ -66,14 +66,22 @@ public class PlayerController : MonoBehaviour
     KeyCode PickUpKey = KeyCode.E;
     [SerializeField]
     KeyCode CancelThrowKey = KeyCode.Mouse1;
+    
+    //Provisonal Variables
+    float previousFireSpeed;
+    float previousNoFireSpeed;
+    float previousLowJump;
+    float previousHighJump;
 
     private void OnEnable()
     {
         _collCheck.OnLanding += OnLanding;
     }
+
     private void OnDisable()
     {
         _collCheck.OnLanding -= OnLanding;
+
     }
     private void Awake()
     {
@@ -82,7 +90,9 @@ public class PlayerController : MonoBehaviour
         _lr = GetComponent<LineRenderer>();
         _currentSpeed = FireSpeed;
         ResetJumps();
+        PreviousValues();
     }
+
 
     private void Update()
     {
@@ -101,7 +111,34 @@ public class PlayerController : MonoBehaviour
     }
 
     /* ----------------- PLAYER MOVEMENT AND JUMPING --------------------- */
-    
+
+    //
+    private void PreviousValues()
+    {
+        previousFireSpeed = FireSpeed;
+        previousNoFireSpeed = NoFireSpeed;
+        previousHighJump = HighJumpHeight;
+        previousLowJump = LowJumpHeight;
+    }
+    public void ChangeSpeeds(float v)
+    {
+        FireSpeed *= v;
+        NoFireSpeed *= v;
+    }
+    public void ChangeJumps(float v)
+    {
+        LowJumpHeight *= v;
+        HighJumpHeight *= v;
+    }
+
+    public void ResetValues()
+    {
+        FireSpeed = previousFireSpeed;
+        NoFireSpeed = previousNoFireSpeed;
+        HighJumpHeight = previousHighJump;
+        LowJumpHeight = previousLowJump;
+    }
+
     // ---- MOVEMENT ---- //
     private void MoveInput()
     {
@@ -127,6 +164,7 @@ public class PlayerController : MonoBehaviour
         if (!_hasFire && _isJumping)
             TryAddExtraJumpForce();
     }
+
     private void JumpInput()
     {
         if (Input.GetKeyDown(JumpKey))
@@ -148,6 +186,7 @@ public class PlayerController : MonoBehaviour
         if (OnGround())
             Jump();
     }
+    
     //SALTO SIN EL FUEGO
     private void DoMultipleJump()
     {

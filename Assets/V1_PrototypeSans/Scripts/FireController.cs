@@ -46,6 +46,7 @@ public class FireController : MonoBehaviour
     [SerializeField]
     float MaxFireHealth = 10;
     float _currentFireHealth;
+    public float CurrentFireHealth { get { return _currentFireHealth;} set { _currentFireHealth = value;} }
     [SerializeField]
     CircleCollider2D DamageCollider;
 
