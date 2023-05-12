@@ -80,8 +80,9 @@ public class FireController : MonoBehaviour
     void Update()
     {
         UpdateLightEffect();
+        if (IsAttached())
+            transform.localPosition = Vector2.zero;
     }
-
 
     /* ------ PICK UP AND BE THROWN ------ */
     public void BeThrown(Vector2 dir, float currentThrowSpeed)
@@ -102,7 +103,7 @@ public class FireController : MonoBehaviour
     {
         PlayerThrower.SetHasFire(v);
         transform.parent = v ? PlayerThrower.transform : null;
-        _rb.simulated = !v;
+        _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 
     private bool IsAttached()
