@@ -7,6 +7,7 @@ public class SlowTrap : MonoBehaviour
 {
     [SerializeField]
     GameObject Player;
+
     FireController _fire;
 
     [SerializeField]
@@ -21,6 +22,7 @@ public class SlowTrap : MonoBehaviour
     {
         if (collision.transform == Player.transform)
         {
+            Debug.Log("In Slow Trap");
             _lastTimeDamage = Time.time;
             ApplyEffect(true);
         }
@@ -28,6 +30,7 @@ public class SlowTrap : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("Out of Slow Trap");
         ApplyEffect(false);
     }
 
