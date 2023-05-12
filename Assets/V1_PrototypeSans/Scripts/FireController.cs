@@ -151,16 +151,9 @@ public class FireController : MonoBehaviour
     }
 
     /* ----- HEALTH AND DAMAGE HERE  ------- */
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        IDamageFire water = collision.GetComponent<IDamageFire>();
-        if (water != null)
-        {
-            TakeDamage(water.DamageDealt);
-        }
-    }
 
-    private void TakeDamage(float damageDealt)
+    
+    public void TakeDamage(float damageDealt)
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
