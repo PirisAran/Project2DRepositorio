@@ -11,7 +11,7 @@ public class Traps : MonoBehaviour
     //Collision2D _rockCollider;
 
     [SerializeField]
-    PlayerController Player;
+    GameObject Player;
 
     private void Awake()
     {
