@@ -9,6 +9,7 @@ public class UmbraController : MonoBehaviour
     GameObject Player;
     [SerializeField]
     FireController Fire;
+    Runner _playerRunner;
 
     // FSM
     [SerializeField] UmbraStates CurrentState;
@@ -35,6 +36,10 @@ public class UmbraController : MonoBehaviour
     Vector2 _fireDir => (Fire.transform.position - transform.position).normalized;
     Vector2 _playerDir => (Player.transform.position - transform.position).normalized;
 
+    private void Awake()
+    {
+        _playerRunner = Player.GetComponent<Runner>();
+    }
 
     private void OnDrawGizmosSelected()
     {
@@ -200,7 +205,7 @@ public class UmbraController : MonoBehaviour
         if (distanceToPlayer > decelerateZoneRadius)
         {
             float distFraction = Mathf.Clamp01(distanceToPlayer / distanceToPlayer - respectDistance);
-            //_currentSpeed = Mathf.Lerp(maxSpeed, Player.XSpeed,  );
+            //_currentSpeed = Mathf.Lerp(maxSpeed, _playerRunner.XSpeed,  );
         }
         else if (distanceToPlayer > respectDistance)
         {
