@@ -1,18 +1,251 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UmbraFSM : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    GameObject _player;
+    [SerializeField]
+    FireController _fire;
+
+    //Player Components
+    Runner _runner;
+    Thrower _thrower;
+
+    //FSM variables
+    [SerializeField]
+    States _currentState;
+    States _nextState;
+    [SerializeField]
+    float _cuteSpeed, _followSpeed, _killerSpeed;
+    [SerializeField]
+    float _currentSpeed;
+    [SerializeField]
+    float _cuteAccelerationTime, _followAccelerationTime, _killerAccelerationTime;
+    [SerializeField]
+    float _transitionTime;
+    float _timeCurrentState;
+
+    public Action OnEnterCuteState;
+    public Action OnEnterFollowState;
+    public Action OnEnterKillerState;
+    public Action OnEnterTransitionState;
+
+    private Vector2 _playerDirection => (_player.transform.position - transform.position).normalized;
+    private Vector2 _fireDirection => (_fire.transform.position - transform.position).normalized;
+
+    private float _lightRange => _fire.LightRange;
+
+    //FSM States
+    private enum States { Cute, Follow, Killer, Transition}
+
+    private void Awake()
     {
-        
+        GetPlayerComp();
+        Init();
+    }
+    private void Init()
+    {
+        _currentState = States.Follow;
+        _timeCurrentState = 0;
+    }
+    private void GetPlayerComp()
+    {
+        _runner = _player.GetComponent<Runner>();
+        _thrower = _player.GetComponent<Thrower>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        switch (_currentState)
+        {
+            case States.Cute:
+                UpdateCuteState();
+                break;
+            case States.Follow:
+                UpdateFollowState();
+                break;
+            case States.Killer:
+                UpdateKillerState();
+                break;
+            case States.Transition:
+                UpdateTransitionState();
+                break;
+            default:
+                break;
+        }
+        _timeCurrentState += Time.deltaTime;
+    }
+
+    private void OnEnterState(States state)
+    {
+        switch (state)
+        {
+            case States.Cute:
+                OnEnterCuteState?.Invoke();
+                break;
+            case States.Follow:
+                OnEnterFollowState?.Invoke();
+                break;
+            case States.Killer:
+                OnEnterKillerState?.Invoke();
+                break;
+            case States.Transition:
+                OnEnterTransitionState?.Invoke();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void TransitionToState(States nextState)
+    {
+        _currentState = States.Transition;
+        _nextState = nextState;
+        OnEnterState(States.Transition);
+        _timeCurrentState = 0;
+    }
+
+    private void UpdateCuteState()
+    {
+        //Antes de nada, comprovar si puede cambiar de estados
+        if (CanEnterFollowState())
+        {
+            TransitionToState(States.Follow);
+            return;
+        }
+        if (CanEnterKillerState())
+        {
+            TransitionToState(States.Killer);
+            return;
+        }
+
+        float desiredSpeed = _cuteSpeed;
+        float timeToAccelerate = _cuteAccelerationTime;
+        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
+        RunFromFire(_currentSpeed);
+    }
+
+    private float GetCurrentSpeed(float desiredSpeed, float timeToAccelerate)
+    {
+        float t = Mathf.Clamp01(_timeCurrentState / timeToAccelerate);
+        return Mathf.Lerp(_currentSpeed, desiredSpeed, t);
+    }
+
+    private void UpdateFollowState()
+    {
+        //Antes de nada, comprovar si puede cambiar de estados
+        if (CanEnterCuteState())
+        {
+            TransitionToState(States.Cute);
+            return;
+        }
+        if (CanEnterKillerState())
+        {
+            TransitionToState(States.Killer);
+            return;
+        }
+
+        //FER AMB DESIRED POSITION
+
+        //float acceleration = 2;
+        //Vector2 desiredPosition;
+        //Vector2 dir;
+
+        //if (Vector2.Distance(_player.transform.position, transform.position) > _lightRange + 4)
+        //{
+        //    desiredPosition = -_followSpeed;
+        //    dir = _fireDirection;
+        //    _currentSpeed -= acceleration * Time.deltaTime;
+        //    if (_currentSpeed < desiredSpeed)
+        //        _currentSpeed = desiredSpeed;
+            
+        //    var mov = dir * _currentSpeed * Time.deltaTime;
+        //}
+        //else
+        //{
+        //    desiredSpeed = Mathf.Abs(_runner.XSpeed);
+        //    dir = _playerDirection;
+
+        //    _currentSpeed += acceleration * Time.deltaTime;
+
+        //    if (_currentSpeed > desiredSpeed)
+        //        _currentSpeed = desiredSpeed;
+
+        //    var mov = _currentSpeed * Time.deltaTime;
+
+            
+        //}
+
+        //float timeToAccelerate = _followAccelerationTime;
+        //_currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
+        //MoveTowardsPlayer(_currentSpeed);
+    }
+
+    private void UpdateKillerState()
+    {
+        //Antes de nada, comprovar si puede cambiar de estados
+        if (CanEnterCuteState())
+        {
+            TransitionToState(States.Cute);
+            return;
+        }
+        if (CanEnterFollowState())
+        {
+            TransitionToState(States.Follow);
+            return;
+        }
+
+        float desiredSpeed = _killerSpeed;
+        float timeToAccelerate = _killerAccelerationTime;
+        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
         
+        MoveTowardsPlayer(_currentSpeed);
+    }
+
+    private void UpdateTransitionState()
+    {
+        if (_timeCurrentState >= _transitionTime)
+        {
+            _currentState = _nextState;
+            OnEnterState(_currentState);
+            return;
+        }
+        float desiredSpeed = 0;
+        float timeToAccelerate = _transitionTime;
+        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
+        Debug.Log("Transition time "+ _timeCurrentState);
+    }
+
+    private void MoveTowardsPlayer(float speed)
+    {
+        transform.Translate(_playerDirection * speed * Time.deltaTime);
+    }
+    private void RunFromFire(float speed)
+    {
+        transform.Translate(-_fireDirection * speed * Time.deltaTime);
+    }
+    private bool IsInLightRange()
+    {
+        return Vector2.Distance(transform.position, _fire.transform.position) < _lightRange;
+    }
+    private bool IsPlayerSafe()
+    {
+        return Vector2.Distance(_player.transform.position, _fire.transform.position) <= _lightRange;
+    }
+
+    private bool CanEnterCuteState()
+    {
+        return IsInLightRange();
+    }
+    private bool CanEnterFollowState()
+    {
+        return !IsInLightRange() && IsPlayerSafe();
+    }
+    private bool CanEnterKillerState()
+    {
+        return !IsInLightRange() && !IsPlayerSafe();
     }
 }

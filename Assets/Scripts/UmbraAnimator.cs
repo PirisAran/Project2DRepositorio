@@ -6,37 +6,37 @@ using UnityEngine.Rendering.Universal;
 public class UmbraAnimator : MonoBehaviour
 {
     [SerializeField]
-    Sprite CuteSprite;
+    Sprite _cuteSprite;
     [SerializeField]
-    Sprite ChasingSprite;
+    Sprite _followSprite;
     [SerializeField]
-    Sprite KillerSprite;
+    Sprite _killerSprite;
     [SerializeField]
-    Sprite ChangingSprite;
+    Sprite _transitionSprite;
 
-    UmbraController _umbraController;
+    UmbraFSM _umbraController;
     SpriteRenderer _spriteRenderer;
 
     private void Awake()    
     {
-        _umbraController = GetComponent<UmbraController>();
+        _umbraController = GetComponent<UmbraFSM>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
     {
-        _umbraController.OnCuteState += OnCuteState;
-        _umbraController.OnChasingState += OnChasingState;
-        _umbraController.OnKillerState += OnKillerState;
-        _umbraController.OnChangingState += OnChangingState;
+        _umbraController.OnEnterCuteState += OnCuteState;
+        _umbraController.OnEnterFollowState += OnFollowState;
+        _umbraController.OnEnterKillerState += OnKillerState;
+        _umbraController.OnEnterTransitionState += OnTransitionState;
     }
 
     private void OnDisable()
     {
-        _umbraController.OnCuteState -= OnCuteState;
-        _umbraController.OnChasingState -= OnChasingState;
-        _umbraController.OnKillerState -= OnKillerState;
-        _umbraController.OnChangingState -= OnChangingState;
+        _umbraController.OnEnterCuteState -= OnCuteState;
+        _umbraController.OnEnterFollowState -= OnFollowState;
+        _umbraController.OnEnterKillerState -= OnKillerState;
+        _umbraController.OnEnterTransitionState -= OnTransitionState;
     }
 
     private void Update()
@@ -50,18 +50,18 @@ public class UmbraAnimator : MonoBehaviour
 
     void OnCuteState()
     {
-        ChangeSprite(CuteSprite);
+        ChangeSprite(_cuteSprite);
     }
-    void OnChasingState()
+    void OnFollowState()
     {
-        ChangeSprite(ChasingSprite);
+        ChangeSprite(_followSprite);
     }
     void OnKillerState()
     {
-        ChangeSprite(KillerSprite);
+        ChangeSprite(_killerSprite);
     }
-    void OnChangingState()
+    void OnTransitionState()
     {
-        ChangeSprite(ChangingSprite);
+        ChangeSprite(_transitionSprite);
     }
 }
