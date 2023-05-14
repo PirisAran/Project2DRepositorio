@@ -13,7 +13,8 @@ public class UmbraController : MonoBehaviour
     Runner _playerRunner;
 
     // FSM
-    [SerializeField] UmbraStates CurrentState;
+    [SerializeField] 
+    UmbraStates m_currentState;
     UmbraStates _nextState;
     UmbraStates _previousState;
     [SerializeField] float CuteSpeed = 1.0f, ChasingSpeed = 2.0f, KillerSpeed = 4.0f;
@@ -48,21 +49,19 @@ public class UmbraController : MonoBehaviour
         Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + AddedChasingDistance);
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(Fire.transform.position, Fire.LightRange + DistToAccelerate);
     }
-
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        CurrentState = UmbraStates.Chasing;
-        OnEnterState(CurrentState);
+        m_currentState = UmbraStates.Chasing;
+        OnEnterState(m_currentState);
     }
     private void ChangeState(UmbraStates nextState)
     {
-        _previousState = CurrentState;
-        CurrentState = UmbraStates.Changing;
+        _previousState = m_currentState;
+        m_currentState = UmbraStates.Changing;
         _nextState = nextState;
         InitChangingState();
     }
@@ -113,6 +112,7 @@ public class UmbraController : MonoBehaviour
             default:
                 break;
         }
+
         SetDeceleration();
     }
 
@@ -125,7 +125,7 @@ public class UmbraController : MonoBehaviour
 
     void Update()
     {
-        switch (CurrentState)
+        switch (m_currentState)
         {
             case UmbraStates.Changing:
                 UpdateChangingState();
@@ -149,8 +149,8 @@ public class UmbraController : MonoBehaviour
         _changeTimer -= Time.deltaTime;
         if (_changeTimer <= 0)
         {
-            CurrentState = _nextState;
-            OnEnterState(CurrentState);
+            m_currentState = _nextState;
+            OnEnterState(m_currentState);
         }
 
         //Mientras cambia, va decelerando hasta alcanzar 0 SIEMPRE. Asi, entre estados el umbra frena hasta llegar a 0;
@@ -202,7 +202,7 @@ public class UmbraController : MonoBehaviour
 
         //Se mueve a distancia del jugador
 
-        float maxSpeed = GetMaxSpeedState(CurrentState);
+        float maxSpeed = GetMaxSpeedState(m_currentState);
         _direction = _playerDir;
         float distanceToPlayer = ToFireDist();
         float decelerateZoneRadius = DistToAccelerate + Fire.LightRange;
@@ -346,8 +346,8 @@ public class UmbraController : MonoBehaviour
     }
     private void AdjustSpeed()
     {
-        float maxSpeed = GetMaxSpeedState(CurrentState);
-        float acc = GetAccelerationState(CurrentState);
+        float maxSpeed = GetMaxSpeedState(m_currentState);
+        float acc = GetAccelerationState(m_currentState);
 
         if (_currentSpeed < maxSpeed)
         {
@@ -362,7 +362,7 @@ public class UmbraController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (CurrentState == UmbraStates.Cute || CurrentState == UmbraStates.Changing)
+        if (m_currentState == UmbraStates.Cute || m_currentState == UmbraStates.Changing)
             return;
 
         if (collision.transform == Player.transform)
