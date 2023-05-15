@@ -8,22 +8,20 @@ public class SlowTrap : MonoBehaviour
     [SerializeField]
     GameObject Player;
 
-    FireController _fire;
+    [SerializeField]
+    Runner _velocity;
+
+    [SerializeField]
+    Jumper _jump; 
 
     [SerializeField]
     float VelocityReduction = 0.5f, JumpReduction = 0.5f;
-
-    float _lastTimeDamage;
-
-    [SerializeField]
-    float WaterDamageRate = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform == Player.transform)
         {
             Debug.Log("In Slow Trap");
-            _lastTimeDamage = Time.time;
             ApplyEffect(true);
         }
     }
@@ -39,20 +37,22 @@ public class SlowTrap : MonoBehaviour
         if (v)
         {
             Debug.Log("speeds and jumps CHANGED");
+            SetNewSpeedAndJump();
         }
         else
         {
             Debug.Log("speeds and jumps RESET");
+            _velocity.ChangeSpeed();
+            _jump.SetPreviousJumps();
         }
     }
-    
-        
-    private void WaterHurting()
+
+    private void SetNewSpeedAndJump()
     {
-        if (Time.time - _lastTimeDamage >= WaterDamageRate)
-        {
-            //_fire.CurrentFireHealth -= DamageWaterRate;
-            Debug.Log("-1 Fire Life");
-        }
+        _velocity.CurrentSpeed *= VelocityReduction;
+        _jump.HighJump *= JumpReduction;
+        _jump.LowJump *= JumpReduction;
     }
+
+
 }
