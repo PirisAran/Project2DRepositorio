@@ -7,6 +7,7 @@ namespace TecnocampusProjectII
 {
 	public class MainMenuController : MonoBehaviour
 	{
+		[SerializeField] string m_firstLevel;
 		void Start()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
@@ -20,7 +21,7 @@ namespace TecnocampusProjectII
 		}
 		public void OnStartClicked()
 		{
-			SceneManager.LoadSceneAsync("Level1Scene");
+			SceneManager.LoadSceneAsync(m_firstLevel);
 		}
 	}
 }

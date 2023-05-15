@@ -8,12 +8,17 @@ namespace TecnocampusProjectII
 		public string m_NextLevel;
 
 		private void Update()
-		{
-			if(Input.GetKeyDown(KeyCode.N))
-			{
-				Debug.Log("load next level "+m_NextLevel);
-				SceneManager.LoadSceneAsync(m_NextLevel);
-			}
-		}
-	}
+        {
+            if (ConditionNextLevel())
+            {
+                Debug.Log("load next level " + m_NextLevel);
+                SceneManager.LoadSceneAsync(m_NextLevel);
+            }
+        }
+
+        private static bool ConditionNextLevel()
+        {
+            return Input.GetKeyDown(KeyCode.N);
+        }
+    }
 }
