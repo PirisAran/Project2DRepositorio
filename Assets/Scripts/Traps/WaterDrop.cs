@@ -13,10 +13,15 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     float GravityTweak = 1;
 
     Rigidbody2D _rb;
+    Animator _animator;
+
+    
+    private enum States { Falling, Breaking }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
     public void Init()
@@ -38,6 +43,8 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy();
+        _animator.SetBool("Splat", true);
+        transform.Translate(Vector2.up * 0.3f);
+        _rb.simulated = false;
     }
 }
