@@ -10,10 +10,6 @@ public class UmbraFSM : MonoBehaviour
     [SerializeField]
     FireController _fire;
 
-    //Player Components
-    Runner _runner;
-    Thrower _thrower;
-
     [Header("FSM Variables")]
     [SerializeField]States _currentState;
     States _nextState;
