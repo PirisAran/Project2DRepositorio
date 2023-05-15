@@ -8,57 +8,69 @@ using Random = UnityEngine.Random;
 public class FireController : MonoBehaviour
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
-    [SerializeField] Thrower PlayerThrower;
+    [SerializeField] Thrower _playerThrower;
     
     //Components
     SpriteRenderer _spriteRd;
     Rigidbody2D _rb;
     CollisionChecker _collCheck;
 
-    //Light Parameters-------------------
+    [Header ("Light Parameters")]
     [SerializeField]
-    Light2D Light;
+    Light2D _light;
     [SerializeField]
-    float MaxLightRange = 6;
+    float _maxLightRange = 6;
     [SerializeField]
-    Color LightColor;
+    Color _lightColor;
     [SerializeField]
-    GameObject FireParticles;
+    GameObject _fireParticles;
     public float LightRange => _lightRange;
     float _lightRange;
-    //Light Effect Parameters (que la luz tiemble un poco que parezca fuego)
-    [SerializeField]
-    float tremblingValue = 0.5f;
-    [SerializeField]
-    float _intervalTimeMax = 0.15f, _intervalTimeMin = 0.05f;
+    [Space] 
+
+    [Header("Light Effect Parameters")]
+    [SerializeField] float _tremblingValue = 0.5f;
+    [SerializeField] float _intervalTimeMax = 0.15f, _intervalTimeMin = 0.05f;
     float _lastTimeTremble;
+    [SerializeField] float _lightExplosionRangeAdded = 5;
+    [SerializeField] float _timeOfExpanding = 0.3f, _timeOfDecreasing = 0.6f;
+    float _explosionTimer;
+    bool _isExploding = false;
 
 
     //Pick up and throw parameters--------------------
     [SerializeField]
-    CircleCollider2D PickUpCollider;
+    CircleCollider2D _pickUpCollider;
     [SerializeField]
-    float PickUpRadius = 1;
-    public bool OnPickUpRange => PlayerThrower.PickUpCollider.IsTouching(PickUpCollider);
+    float _pickUpRadius = 1;
+    public bool OnPickUpRange => _playerThrower.PickUpCollider.IsTouching(_pickUpCollider);
     
     //Health Parameters---------------------
     [SerializeField]
-    float MaxFireHealth = 10;
+    float _maxFireHealth = 10;
     float _currentFireHealth;
     public float CurrentFireHealth { get { return _currentFireHealth;} set { _currentFireHealth = value;} }
     [SerializeField]
-    CircleCollider2D DamageCollider;
+    CircleCollider2D _damageCollider;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _lightRange);
+    }
 
     private void OnEnable()
     {
         _collCheck.OnLanding += OnLanding;
+        CheckPoint.OnCheckPointActivated += OnCheckPointActivated;
     }
 
     private void OnDisable()
     {
         _collCheck.OnLanding -= OnLanding;
-
+        CheckPoint.OnCheckPointActivated -= OnCheckPointActivated;
     }
+
     private void Awake()
     {
         _spriteRd = GetComponent<SpriteRenderer>();
@@ -72,24 +84,29 @@ public class FireController : MonoBehaviour
 
     private void Init()
     {
-        PickUpCollider.radius = PickUpRadius;
-        _lightRange = MaxLightRange;
-        Light.pointLightOuterRadius = _lightRange;
-        _currentFireHealth = MaxFireHealth;
-        Light.color = LightColor;
+        _pickUpCollider.radius = _pickUpRadius;
+        _lightRange = _maxLightRange;
+        _light.pointLightOuterRadius = _lightRange;
+        _currentFireHealth = _maxFireHealth;
+        _light.color = _lightColor;
         BePickedUp();
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateLightEffect();
-        
         if (transform.parent != null)
         {
             transform.localPosition = Vector2.zero;
         }
+
+        if (_isExploding)
+        {
+            UpdateExplosionEffect();
+        }
+        UpdateLightEffect();
     }
+
 
     /* ------ PICK UP AND BE THROWN ------ */
     public void BeThrown(Vector2 dir, float currentThrowSpeed)
@@ -108,14 +125,14 @@ public class FireController : MonoBehaviour
 
     private void SetAttached(bool v)
     {
-        PlayerThrower.SetHasFire(v);
-        transform.parent = v ? PlayerThrower.gameObject.transform : null;
+        _playerThrower.SetHasFire(v);
+        transform.parent = v ? _playerThrower.gameObject.transform : null;
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 
     private bool IsAttached()
     {
-        return PlayerThrower.HasFire;
+        return _playerThrower.HasFire;
     }
 
     private void OnLanding()
@@ -128,27 +145,48 @@ public class FireController : MonoBehaviour
     {
         if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
         {
-            var tempLightRange = LightRange + Random.Range(-tremblingValue, tremblingValue);
-            Light.pointLightOuterRadius = tempLightRange;
+            var tempLightRange = LightRange + Random.Range(-_tremblingValue, _tremblingValue);
+            _light.pointLightOuterRadius = tempLightRange;
             _lastTimeTremble = Time.time;
         }
     }
     private void Hide()
     {
-        FireParticles.SetActive(false);
+        _fireParticles.SetActive(false);
         _spriteRd.enabled = false;
     }
     void Show()
     {
-        FireParticles.SetActive(true);
+        _fireParticles.SetActive(true);
         _spriteRd.enabled = true;
     }
     private void AdjustLight(float fraction)
     {
-        _lightRange = Mathf.Lerp(0, MaxLightRange, fraction);
-        Light.pointLightOuterRadius = _lightRange;
+        _lightRange = Mathf.Lerp(0, _maxLightRange, fraction);
+        _light.pointLightOuterRadius = _lightRange;
     }
+    private void UpdateExplosionEffect()
+    {
+        if (_explosionTimer >= _timeOfDecreasing + _timeOfExpanding)
+        {
+            _isExploding = false;
+            AdjustLight(_currentFireHealth / _maxFireHealth);
+            _tremblingValue -= 0.5f;
+            return;
+        }
 
+        bool expanding = _explosionTimer <= _timeOfExpanding;
+
+        if (expanding)
+        {
+            _lightRange = Mathf.Lerp(_maxLightRange, _maxLightRange + _lightExplosionRangeAdded, _explosionTimer / _timeOfExpanding);
+        }
+        else
+        {
+            _lightRange = Mathf.Lerp(_maxLightRange + _lightExplosionRangeAdded, _maxLightRange, (_explosionTimer - _timeOfExpanding) / _timeOfDecreasing);
+        }
+        _explosionTimer += Time.fixedDeltaTime;
+    }
     /* ----- HEALTH AND DAMAGE HERE  ------- */
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -163,6 +201,25 @@ public class FireController : MonoBehaviour
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
-        AdjustLight(Mathf.Clamp01(_currentFireHealth / MaxFireHealth));
+        AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
+    }
+
+    private void OnCheckPointActivated()
+    {
+        HealMaximum();
+        StartExplosion();
+    }
+
+    private void StartExplosion()
+    {
+        _explosionTimer = 0;
+        _isExploding = true;
+        _tremblingValue += 0.5f;
+    }
+
+    private void HealMaximum()
+    {
+        _currentFireHealth = _maxFireHealth;
+        AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
 }

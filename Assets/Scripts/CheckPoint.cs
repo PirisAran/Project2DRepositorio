@@ -14,6 +14,8 @@ public class CheckPoint : MonoBehaviour
 
     SpriteRenderer _spriteRenderer;
 
+    public static Action OnCheckPointActivated;
+
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -43,6 +45,7 @@ public class CheckPoint : MonoBehaviour
     private void ActivateCheckpoint()
     {
         Debug.Log("checkpoint activated");
+        OnCheckPointActivated?.Invoke();
         _levelController.SetSpawnpoint(_spawnPoint.position);
         _activated = true;
     }

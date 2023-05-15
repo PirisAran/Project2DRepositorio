@@ -5,7 +5,7 @@ using UnityEngine;
 public class Thrower : MonoBehaviour
 {
     [SerializeField]
-    FireController Fire;
+    public FireController Fire;
 
     //components
     LineRenderer _lr;
