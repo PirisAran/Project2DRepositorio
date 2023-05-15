@@ -88,7 +88,6 @@ public class FireController : MonoBehaviour
         if (transform.parent != null)
         {
             transform.localPosition = Vector2.zero;
-            Debug.Log("Centered");
         }
     }
 

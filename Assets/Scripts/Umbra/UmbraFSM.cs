@@ -63,18 +63,12 @@ public class UmbraFSM : MonoBehaviour
 
     private void Awake()
     {
-        GetPlayerComp();
         Init();
     }
     private void Init()
     {
         _currentState = States.Follow;
         _timeCurrentState = 0;
-    }
-    private void GetPlayerComp()
-    {
-        _runner = _player.GetComponent<Runner>();
-        _thrower = _player.GetComponent<Thrower>();
     }
 
     private void FixedUpdate()
