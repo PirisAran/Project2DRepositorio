@@ -14,29 +14,53 @@ public class UmbraFSM : MonoBehaviour
     Runner _runner;
     Thrower _thrower;
 
-    //FSM variables
-    [SerializeField]
-    States _currentState;
+    [Header("FSM Variables")]
+    [SerializeField]States _currentState;
     States _nextState;
-    [SerializeField]
-    float _cuteSpeed, _followSpeed, _killerSpeed;
-    [SerializeField]
-    float _currentSpeed;
-    [SerializeField]
-    float _cuteAccelerationTime, _followAccelerationTime, _killerAccelerationTime;
-    [SerializeField]
-    float _transitionTime;
+    [SerializeField]float _followStateRange = 3f;
+    [SerializeField]float _transitionTime = 1f;
     float _timeCurrentState;
+    float _speedBeforeTransition;
+    [Space]
+
+    [Header("States Base Speed")]
+    [SerializeField] float _cuteBaseSpeed = 0f;
+    [SerializeField] float _followBaseSpeed = 1f;
+    [SerializeField] float _killerBaseSpeed = 6f;
+    [Space]
+
+    [Header("States Maximum Speed")]
+    [SerializeField]float _cuteMaxSpeed = 2f;
+    [SerializeField]float _followMaxSpeed = 10f;
+    [SerializeField]float _killerMaxSpeed = 10f;
+    [Space]
+
+    [Header("Movement Values")]
+    [SerializeField]float _currentSpeed;
+    [SerializeField]float _acceleration;
+
+    Vector3 _desiredPosition;
 
     public Action OnEnterCuteState;
     public Action OnEnterFollowState;
     public Action OnEnterKillerState;
     public Action OnEnterTransitionState;
 
-    private Vector2 _playerDirection => (_player.transform.position - transform.position).normalized;
-    private Vector2 _fireDirection => (_fire.transform.position - transform.position).normalized;
-
+    public Vector3 Forward => (_desiredPosition - transform.position).normalized;
+    private Vector3 _playerDirection => (_player.transform.position - transform.position).normalized;
+    private Vector3 _fireDirection => (_fire.transform.position - transform.position).normalized;
     private float _lightRange => _fire.LightRange;
+    private float _respectRange => _fire.LightRange + _followStateRange;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(_desiredPosition, 0.5f);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(_player.transform.position, _respectRange);
+        
+    }
 
     //FSM States
     private enum States { Cute, Follow, Killer, Transition}
@@ -57,7 +81,7 @@ public class UmbraFSM : MonoBehaviour
         _thrower = _player.GetComponent<Thrower>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         switch (_currentState)
         {
@@ -105,6 +129,7 @@ public class UmbraFSM : MonoBehaviour
         _currentState = States.Transition;
         _nextState = nextState;
         OnEnterState(States.Transition);
+        _speedBeforeTransition = _currentSpeed;
         _timeCurrentState = 0;
     }
 
@@ -121,19 +146,10 @@ public class UmbraFSM : MonoBehaviour
             TransitionToState(States.Killer);
             return;
         }
-
-        float desiredSpeed = _cuteSpeed;
-        float timeToAccelerate = _cuteAccelerationTime;
-        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
-        RunFromFire(_currentSpeed);
+        
+        _desiredPosition = _fire.transform.position + (-_fireDirection) * _respectRange;
+        MoveTowardsPosition(_desiredPosition, _cuteBaseSpeed, _cuteMaxSpeed, _acceleration);
     }
-
-    private float GetCurrentSpeed(float desiredSpeed, float timeToAccelerate)
-    {
-        float t = Mathf.Clamp01(_timeCurrentState / timeToAccelerate);
-        return Mathf.Lerp(_currentSpeed, desiredSpeed, t);
-    }
-
     private void UpdateFollowState()
     {
         //Antes de nada, comprovar si puede cambiar de estados
@@ -148,12 +164,8 @@ public class UmbraFSM : MonoBehaviour
             return;
         }
 
-        //FER AMB DESIRED POSITION
-        float acceleration = 2;
-        
-        //Mathf.MoveTowardsTo
-        //Sha de moure sobre una mateixa recta, si es pasa del punt, ha de frenar y despres accelerar. Si encara no arriba, ha d accelerar y frenar dps.
-       
+        _desiredPosition = _player.transform.position + (-_playerDirection) * _respectRange;
+        MoveTowardsPosition(_desiredPosition, _followBaseSpeed, _followMaxSpeed, _acceleration);
     }
 
     private void UpdateKillerState()
@@ -170,11 +182,8 @@ public class UmbraFSM : MonoBehaviour
             return;
         }
 
-        float desiredSpeed = _killerSpeed;
-        float timeToAccelerate = _killerAccelerationTime;
-        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
-        
-        MoveTowardsPlayer(_currentSpeed);
+        _desiredPosition = _player.transform.position;
+        MoveTowardsPosition(_desiredPosition, _killerBaseSpeed, _killerMaxSpeed, _acceleration);
     }
 
     private void UpdateTransitionState()
@@ -186,26 +195,36 @@ public class UmbraFSM : MonoBehaviour
             return;
         }
         float desiredSpeed = 0;
-        float timeToAccelerate = _transitionTime;
-        _currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
-        Debug.Log("Transition time "+ _timeCurrentState);
+        float timeToDecelerate = _transitionTime;
+        _currentSpeed = Mathf.Lerp(_speedBeforeTransition, desiredSpeed, Mathf.Clamp01(_timeCurrentState / timeToDecelerate));
+        transform.Translate(Forward * _currentSpeed * Time.fixedDeltaTime);
     }
 
-    private void MoveTowardsPlayer(float speed)
+    private void MoveTowardsPosition(Vector3 desiredPosition, float baseSpeed, float maxSpeed, float acceleration)
     {
-        transform.Translate(_playerDirection * speed * Time.deltaTime);
-    }
-    private void RunFromFire(float speed)
-    {
-        transform.Translate(-_fireDirection * speed * Time.deltaTime);
+        float distance = Vector3.Distance(transform.position, desiredPosition);
+
+        // calcular la velocidad actual del objeto
+        _currentSpeed = baseSpeed + acceleration * distance;
+
+        // limitar la velocidad máxima del objeto
+        _currentSpeed = Mathf.Clamp(_currentSpeed, baseSpeed, maxSpeed);
+
+        // mover el objeto hacia la posición del mouse con velocidad acelerada
+        //transform.position = Vector3.MoveTowards(transform.position, desiredPosition, _currentSpeed * Time.deltaTime);
+        float mov = _currentSpeed * Time.fixedDeltaTime;
+
+        if (mov > distance) mov = distance;
+
+        transform.Translate(Forward * mov);
     }
     private bool IsInLightRange()
     {
-        return Vector2.Distance(transform.position, _fire.transform.position) < _lightRange;
+        return Vector3.Distance(transform.position, _fire.transform.position) < _lightRange;
     }
     private bool IsPlayerSafe()
     {
-        return Vector2.Distance(_player.transform.position, _fire.transform.position) <= _lightRange;
+        return Vector3.Distance(_player.transform.position, _fire.transform.position) <= _lightRange;
     }
 
     private bool CanEnterCuteState()

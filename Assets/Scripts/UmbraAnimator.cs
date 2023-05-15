@@ -41,6 +41,7 @@ public class UmbraAnimator : MonoBehaviour
 
     private void Update()
     {
+        _spriteRenderer.flipX = _umbraController.Forward.x < 0;
     }
 
     void ChangeSprite(Sprite nextSprite)
