@@ -149,39 +149,11 @@ public class UmbraFSM : MonoBehaviour
         }
 
         //FER AMB DESIRED POSITION
-
-        //float acceleration = 2;
-        //Vector2 desiredPosition;
-        //Vector2 dir;
-
-        //if (Vector2.Distance(_player.transform.position, transform.position) > _lightRange + 4)
-        //{
-        //    desiredPosition = -_followSpeed;
-        //    dir = _fireDirection;
-        //    _currentSpeed -= acceleration * Time.deltaTime;
-        //    if (_currentSpeed < desiredSpeed)
-        //        _currentSpeed = desiredSpeed;
-            
-        //    var mov = dir * _currentSpeed * Time.deltaTime;
-        //}
-        //else
-        //{
-        //    desiredSpeed = Mathf.Abs(_runner.XSpeed);
-        //    dir = _playerDirection;
-
-        //    _currentSpeed += acceleration * Time.deltaTime;
-
-        //    if (_currentSpeed > desiredSpeed)
-        //        _currentSpeed = desiredSpeed;
-
-        //    var mov = _currentSpeed * Time.deltaTime;
-
-            
-        //}
-
-        //float timeToAccelerate = _followAccelerationTime;
-        //_currentSpeed = GetCurrentSpeed(desiredSpeed, timeToAccelerate);
-        //MoveTowardsPlayer(_currentSpeed);
+        float acceleration = 2;
+        
+        //Mathf.MoveTowardsTo
+        //Sha de moure sobre una mateixa recta, si es pasa del punt, ha de frenar y despres accelerar. Si encara no arriba, ha d accelerar y frenar dps.
+       
     }
 
     private void UpdateKillerState()
