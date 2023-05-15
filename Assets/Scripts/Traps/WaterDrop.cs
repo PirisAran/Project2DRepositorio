@@ -14,7 +14,7 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     Rigidbody2D _rb;
     Animator _animator;
-
+    ParticleSystem _particleSystem;
     
     private enum States { Falling, Breaking }
 
@@ -22,6 +22,9 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _particleSystem = GetComponent<ParticleSystem>();
+
+        
     }
 
     public void Init()
@@ -43,8 +46,9 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        _particleSystem.Play(true);
         _animator.SetBool("Splat", true);
-        transform.Translate(Vector2.up * 0.3f);
+        transform.Translate(Vector2.up * 0.0f);
         _rb.simulated = false;
     }
 }
