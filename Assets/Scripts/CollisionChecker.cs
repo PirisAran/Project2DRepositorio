@@ -6,11 +6,14 @@ using UnityEngine;
 public class CollisionChecker : MonoBehaviour
 {
     [SerializeField]
-    private float DetectionRadius = 0.15f;
+    private Vector2 _boxSize = new Vector2(1.25f, 0.1f);
     [SerializeField]
-    LayerMask WhatIsCollision;
+    LayerMask _whatIsCollision;
     [SerializeField]
-    Transform GroundCheckerOrigin;
+    Transform _groundCheckerOrigin;
+    [SerializeField]
+    float _coyoteTime = 0.2f;
+    float _timer;
 
     public Action OnLanding;
 
@@ -19,17 +22,34 @@ public class CollisionChecker : MonoBehaviour
 
     bool lastOnGround = false;
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(_groundCheckerOrigin.position, _boxSize);
+    }
+
     private void Update()
     {
-        CheckOnGround();
+        //if (CheckOnGround())
+        //{
+        //    _timer = 0;
+        //}
+
+        //if (_timer <= _coyoteTime)
+        //{
+        //    _colliding = true;      
+        //}
+
+        _colliding = CheckOnGround();
+
         CheckLanding();
     }
 
-    private void CheckOnGround()
+    private bool CheckOnGround()
     {
         _colliding = false;
-        var colliders = Physics2D.OverlapCircleAll(GroundCheckerOrigin.position, DetectionRadius, WhatIsCollision);
-        _colliding = (colliders.Length > 0);
+        var colliders = Physics2D.OverlapBoxAll(_groundCheckerOrigin.position, _boxSize, 0, _whatIsCollision);
+        return (colliders.Length > 0);
     }
 
     private void CheckLanding()
