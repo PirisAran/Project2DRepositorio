@@ -5,38 +5,38 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] FireActivationObject _switch;
+    [SerializeField] DoorSwitch _switch;
     [SerializeField] float _openSpeed;
     [SerializeField] Transform _openPosition;
     bool _isOpening = false;
 
     private void OnEnable()
     {
-        
+        _switch.OnSwitchActivated += OnSwitchActivated;
     }
 
     private void OnDisable()
     {
-        
+        _switch.OnSwitchActivated -= OnSwitchActivated;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_isOpening)
         {
-            Vector2.MoveTowards(transform.position, _openPosition.position, _openSpeed * Time.fixedDeltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, _openPosition.position, _openSpeed * Time.fixedDeltaTime);
             if (transform.position == _openPosition.position) FinishOpenDoor();
         }
     }
 
     private void FinishOpenDoor()
     {
+        Debug.Log("Door opening finish");
         _isOpening = false;
     }
 
@@ -47,6 +47,7 @@ public class Door : MonoBehaviour
 
     private void StartOpenDoor()
     {
+        Debug.Log("Door opening start");
         _isOpening = true;
     }
 }

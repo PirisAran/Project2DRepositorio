@@ -7,50 +7,45 @@ using TecnocampusProjectII;
 public abstract class FireActivationObject : MonoBehaviour
 {
     [SerializeField] protected KeyCode _interactKey = KeyCode.E;
-    bool _isActivated;
-    bool _canActivate = false;
+    protected bool _isActivated;
+    protected bool _canActivate = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //DETECTAR SI EL QUE ENTRA ES PLAYER, TIENE FUEGO
-
         if (_isActivated) return;
 
         Thrower thrower = collision.GetComponent<Thrower>();
         if (thrower == null) return;
-        _canActivate = true;
+
+        if (thrower.HasFire)
+        {
+            _canActivate = true;
+            Debug.Log("Player is inside");
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _canActivate = false;
-    }
+        if (_isActivated) return;
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (_isActivated)
-            return;
         Thrower thrower = collision.GetComponent<Thrower>();
-        if (thrower != null)
+        if (thrower == null) return;
+
+        if (thrower.HasFire)
         {
-            if (thrower.HasFire && Input.GetKeyDown(_interactKey))
-            {
-                Activate();
-            }
+            Debug.Log("Player is outside");
+            _canActivate = false;
         }
     }
-
 
     private void Update()
     {
         if (_isActivated)
             return;
-        Thrower thrower = collision.GetComponent<Thrower>();
-        if (thrower != null)
+
+        if (_canActivate && Input.GetKeyDown(_interactKey))
         {
-            if (thrower.HasFire && Input.GetKeyDown(_interactKey))
-            {
-                Activate();
-            }
+            Activate();
         }
     }
     protected virtual void Activate()
