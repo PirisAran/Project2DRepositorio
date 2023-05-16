@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
 public class UmbraFSM : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class UmbraFSM : MonoBehaviour
     public Action OnEnterTransitionState;
 
     public Vector3 Forward => (_desiredPosition - transform.position).normalized;
+    public States CurrentState => _currentState;
     private Vector3 _playerDirection => (_player.transform.position - transform.position).normalized;
     private Vector3 _fireDirection => (_fire.transform.position - transform.position).normalized;
     private float _lightRange => _fire.LightRange;
@@ -59,11 +61,17 @@ public class UmbraFSM : MonoBehaviour
     }
 
     //FSM States
-    private enum States { Cute, Follow, Killer, Transition}
+    public enum States { Cute, Follow, Killer, Transition}
 
     private void Awake()
     {
         Init();
+    }
+
+    private void Start()
+    {
+        _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
+        _fire = _player.GetComponentInChildren<FireController>();
     }
     private void Init()
     {

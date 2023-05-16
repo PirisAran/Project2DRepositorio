@@ -6,14 +6,23 @@ namespace TecnocampusProjectII
 {
 	public class LevelController : MonoBehaviour
 	{
-        [SerializeField] GameObject _player;
-		public string m_NextLevel;
+        Transform _player;
+        [SerializeField] Transform _umbra;
+        public string m_NextLevel;
         
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private Transform _playerSpawnPoint;
+        [SerializeField] private Transform _umbraSpawnPoint;
+
+        public static LevelController Instance;
         private void Awake()
         {
-            _spawnPoint.position = Vector2.zero;
-            _player.transform.position = _spawnPoint.position;
+        }
+
+        private void Start()
+        {
+            Instance = this;
+            _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+            RespawnPlayer();
         }
 
         private void Update()
@@ -36,12 +45,14 @@ namespace TecnocampusProjectII
 
         public void RespawnPlayer()
         {
-            _player.transform.position = _spawnPoint.position;
+            _player.position = _playerSpawnPoint.position;
+            _umbra.position = _umbraSpawnPoint.position;
         }
 
-        public void SetSpawnpoint(Vector3 pos)
+        public void SetSpawnpoint(Vector3 playerPos, Vector3 umbraPos)
         {
-            _spawnPoint.position = pos;
+            _playerSpawnPoint.position = playerPos;
+            _umbraSpawnPoint.position = umbraPos;
         }
     }
 }

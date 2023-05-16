@@ -6,9 +6,9 @@ using TecnocampusProjectII;
 
 public class CheckPoint : MonoBehaviour
 {
-    [SerializeField] Transform _spawnPoint;
+    [SerializeField] Transform _playerSpawnPoint;
+    [SerializeField] Transform _umbraSpawnPoint;
     [SerializeField] KeyCode _interactKey = KeyCode.E;
-    [SerializeField] LevelController _levelController;
 
     bool _activated = false;
 
@@ -30,7 +30,7 @@ public class CheckPoint : MonoBehaviour
         if (_activated)
             return;
         
-        if (Input.GetKey(_interactKey) && thrower.HasFire)
+        if (Input.GetKeyDown(_interactKey) && thrower.HasFire)
         {
             ActivateCheckpoint();
             ActivateAnim();
@@ -46,7 +46,8 @@ public class CheckPoint : MonoBehaviour
     {
         Debug.Log("checkpoint activated");
         OnCheckPointActivated?.Invoke();
-        _levelController.SetSpawnpoint(_spawnPoint.position);
+        LevelController.Instance.SetSpawnpoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         _activated = true;
+
     }
 }

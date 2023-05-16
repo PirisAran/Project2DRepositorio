@@ -33,7 +33,7 @@ public class FireController : MonoBehaviour
     [SerializeField] float _intervalTimeMax = 0.15f, _intervalTimeMin = 0.05f;
     float _lastTimeTremble;
     [SerializeField] float _lightExplosionRangeAdded = 5;
-    [SerializeField] float _timeOfExpanding = 0.3f, _timeOfDecreasing = 0.6f;
+    [SerializeField] float _timeOfExpanding = 0.3f, _timeOfHolding = 0.3f, _timeOfDecreasing = 0.6f;
     float _explosionTimer;
     bool _isExploding = false;
 
@@ -165,9 +165,10 @@ public class FireController : MonoBehaviour
         _lightRange = Mathf.Lerp(0, _maxLightRange, fraction);
         _light.pointLightOuterRadius = _lightRange;
     }
+
     private void UpdateExplosionEffect()
     {
-        if (_explosionTimer >= _timeOfDecreasing + _timeOfExpanding)
+        if (_explosionTimer >= _timeOfDecreasing + _timeOfExpanding + _timeOfHolding)
         {
             _isExploding = false;
             AdjustLight(_currentFireHealth / _maxFireHealth);
@@ -175,15 +176,22 @@ public class FireController : MonoBehaviour
             return;
         }
 
-        bool expanding = _explosionTimer <= _timeOfExpanding;
+        float _increasingTimer = _explosionTimer;
+        float _holdingTimer = _increasingTimer - _timeOfExpanding;
+        float _decreasingTimer = _holdingTimer - _timeOfHolding;
 
-        if (expanding)
+        if (_increasingTimer <= _timeOfExpanding)
         {
-            _lightRange = Mathf.Lerp(_maxLightRange, _maxLightRange + _lightExplosionRangeAdded, _explosionTimer / _timeOfExpanding);
+            _lightRange = Mathf.Lerp(_maxLightRange, _maxLightRange + _lightExplosionRangeAdded, _increasingTimer / _timeOfExpanding);
         }
-        else
+        else if (_holdingTimer <= _timeOfHolding)
         {
-            _lightRange = Mathf.Lerp(_maxLightRange + _lightExplosionRangeAdded, _maxLightRange, (_explosionTimer - _timeOfExpanding) / _timeOfDecreasing);
+            //Do Nothing
+        }
+        else if (_decreasingTimer <= _timeOfDecreasing)
+        {
+            _lightRange = Mathf.Lerp(_maxLightRange + _lightExplosionRangeAdded, _maxLightRange, (_decreasingTimer) / _timeOfDecreasing);
+            _lightRange += -1 - Time.fixedDeltaTime;
         }
         _explosionTimer += Time.fixedDeltaTime;
     }
@@ -222,4 +230,6 @@ public class FireController : MonoBehaviour
         _currentFireHealth = _maxFireHealth;
         AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
+
+
 }

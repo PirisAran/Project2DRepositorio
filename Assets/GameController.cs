@@ -5,7 +5,6 @@ namespace TecnocampusProjectII
 	public class GameController : MonoBehaviour
 	{
 		public PlayerController m_Player;
-		public LevelController m_levelController; //tener el levelcontroller del momento
 
 		public void Awake()
 		{
