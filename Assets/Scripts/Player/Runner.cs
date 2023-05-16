@@ -15,8 +15,11 @@ public class Runner : MonoBehaviour
     [SerializeField]
     float NoFireSpeed = 8, FireSpeed = 5;
     float _currentStateSpeed;
+
+    public float CurrentSpeed { get { return _currentStateSpeed; } set { _currentStateSpeed = value; } }
+
     public Vector2 Forward => new Vector2(_horizontalMov, 0).normalized;
-    public float XSpeed { get; private set; }
+    public float XSpeed { get; set; }
 
     private void Awake()
     {

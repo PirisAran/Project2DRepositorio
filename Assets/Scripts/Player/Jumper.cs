@@ -17,6 +17,9 @@ public class Jumper : MonoBehaviour
     //Jumping------------------------
     [SerializeField]
     float HighJumpHeight = 2.5f, LowJumpHeight = 1.0f;
+    public float HighJump { get { return HighJumpHeight; } set { HighJumpHeight = value; } }
+    public float LowJump { get { return LowJumpHeight; } set { LowJumpHeight = value; } }
+    float _previousHighJUmp, _previousLowJump;
     [SerializeField]
     float PressTimeToHighJump = 0.1f;
     float _jumpStartTime;
@@ -35,6 +38,7 @@ public class Jumper : MonoBehaviour
         _collCheck = GetComponent<CollisionChecker>();
         _rb = GetComponent<Rigidbody2D>();
         _thrower = GetComponent<Thrower>();
+        GetPreviousJumps();
     }
 
     private void OnEnable()
@@ -141,5 +145,15 @@ public class Jumper : MonoBehaviour
     private void ResetJumps()
     {
         _multipleJumpsLeft = MaxJumps;
+    }
+    private void GetPreviousJumps()
+    {
+        _previousHighJUmp = HighJumpHeight;
+        _previousLowJump = LowJumpHeight;
+    }
+    public void SetPreviousJumps()
+    {
+        HighJumpHeight = _previousHighJUmp;
+        LowJumpHeight = _previousLowJump;
     }
 }
