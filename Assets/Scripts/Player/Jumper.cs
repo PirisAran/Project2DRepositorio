@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class Jumper : MonoBehaviour
 {
     //Components
-    CollisionChecker _collCheck;
+    PlayerGroundChecker _collCheck;
     Rigidbody2D _rb;
     Thrower _thrower;
 
@@ -23,19 +24,23 @@ public class Jumper : MonoBehaviour
     [SerializeField]
     float PressTimeToHighJump = 0.1f;
     float _jumpStartTime;
+    [SerializeField] float _coyoteTime;
+    float _timer;
+    bool _canJump;
+    bool _jumping;
     [SerializeField]
     float MaxJumps = 2;
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
     public float YSpeed { get; private set; }
-    bool _doingJump = false;
+    bool _pressingJumpKey = false;
     bool _firstAddedForce = true;
     bool _hasFire = true;
 
     // Start is called before the first frame update
     void Awake()
     {
-        _collCheck = GetComponent<CollisionChecker>();
+        _collCheck = GetComponent<PlayerGroundChecker>();
         _rb = GetComponent<Rigidbody2D>();
         _thrower = GetComponent<Thrower>();
         GetPreviousJumps();
@@ -53,15 +58,33 @@ public class Jumper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateCoyoteTime();
         JumpInput();
         UpdateJump();
+    }
+
+    private void UpdateCoyoteTime()
+    {
+        _canJump = false;
+        if (_collCheck.OnGround)
+        {
+            _timer = 0;
+            _canJump = true;
+        }
+        else if (!_jumping)
+        {
+            _canJump = _timer <= _coyoteTime;
+            _timer += Time.fixedDeltaTime;
+        }
+        Debug.Log(_timer);
+        Debug.Log(_canJump);
     }
 
     private void UpdateJump()
     {
         //Comprueba si tiene el fuego y si esta saltando, que son las condiciones para poder hacer el salto alto
         _hasFire = _thrower.HasFire;
-        if (!_hasFire && _doingJump)
+        if (!_hasFire && _pressingJumpKey)
             TryAddExtraJumpForce();
 
         YSpeed = _rb.velocity.y;
@@ -73,9 +96,9 @@ public class Jumper : MonoBehaviour
         if (Input.GetKeyUp(JumpKey))
             JumpFinished();
     }
-    private bool OnGround()
+    private bool CanJump()
     {
-        return _collCheck.Colliding;
+        return _canJump;
     }
     private void JumpStarted()
     {
@@ -84,7 +107,7 @@ public class Jumper : MonoBehaviour
             DoMultipleJump();
             return;
         }
-        if (OnGround())
+        if (CanJump())
             DoJump();
     }
     //SALTO SIN EL FUEGO
@@ -92,7 +115,7 @@ public class Jumper : MonoBehaviour
     {
         if (_multipleJumpsLeft == MaxJumps)
         {
-            if (!OnGround())
+            if (!CanJump())
             {
                 _multipleJumpsLeft--;
             }
@@ -106,7 +129,8 @@ public class Jumper : MonoBehaviour
     }
     private void DoJump()
     {
-        _doingJump = true;
+        _jumping = true;
+        _pressingJumpKey = true;
         _jumpStartTime = Time.time;
         AddJumpForce(LowJumpHeight);
     }
@@ -135,10 +159,11 @@ public class Jumper : MonoBehaviour
     private void JumpFinished()
     {
         //Se acaba el salto
-        _doingJump = false;
+        _pressingJumpKey = false;
     }
     private void OnLanding()
     {
+        _jumping = false;
         ResetJumps();
         _firstAddedForce = true;
     }
