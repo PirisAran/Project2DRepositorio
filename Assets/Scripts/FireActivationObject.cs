@@ -21,7 +21,6 @@ public abstract class FireActivationObject : MonoBehaviour
         if (thrower.HasFire)
         {
             _canActivate = true;
-            Debug.Log("Player is inside");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -33,7 +32,6 @@ public abstract class FireActivationObject : MonoBehaviour
 
         if (thrower.HasFire)
         {
-            Debug.Log("Player is outside");
             _canActivate = false;
         }
     }

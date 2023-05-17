@@ -63,6 +63,16 @@ public class UmbraFSM : MonoBehaviour
     //FSM States
     public enum States { Cute, Follow, Killer, Transition}
 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (_currentState == States.Cute || _currentState == States.Transition) return;
+
+        HealthSystem healthSystem = collision.GetComponent<HealthSystem>();
+        if (healthSystem != null)
+            healthSystem.KillPlayer();
+    }
+
     private void Awake()
     {
         Init();
