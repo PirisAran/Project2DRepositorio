@@ -78,8 +78,6 @@ public class Jumper : MonoBehaviour
             _canJump = _timer <= _coyoteTime;
             _timer += Time.fixedDeltaTime;
         }
-        Debug.Log(_timer);
-        Debug.Log(_canJump);
     }
 
     private void UpdateJump()
