@@ -24,16 +24,18 @@ public class Jumper : MonoBehaviour
     [SerializeField]
     float PressTimeToHighJump = 0.1f;
     float _jumpStartTime;
+    
+    //Coyote time
     [SerializeField] float _coyoteTime;
-    float _timer;
-    bool _canJump;
-    bool _jumping;
+    float _timer; // controla el tiempo que esta en el aire, despues de dejar de tocar el suelo
+    bool _canJump; // es la variable que se mantiene true si el jugador puede saltar. Es true cuando: esta tocando suelo, hace poco que ha dejado de tocar suelo. Es false cuando: ya ha saltado una vez o ya hace tiempo que ha dejado de tocar suelo
+    bool _jumping; // es true desde que salta hasta que aterriza
     [SerializeField]
     float MaxJumps = 2;
     float _multipleJumpsLeft;
     Vector2 _initialPosition;
     public float YSpeed { get; private set; }
-    bool _pressingJumpKey = false;
+    bool _pressingJumpKey = false; // es true desde que pulsa la tecla, salta y hasta que la suelta.
     bool _firstAddedForce = true;
     bool _hasFire = true;
 
