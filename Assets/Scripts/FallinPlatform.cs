@@ -43,17 +43,16 @@ public class FallinPlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(FireOnPlatform());
         switch (_currentState)
         {
-            case States.Idle:
-                UpdateIdleState();
-                break;
             case States.MovingDown:
                 UpdateMovingDownState();
                 break;
             case States.MovingUp:
                 UpdateMovingUpState();
+                break;
+            case States.Idle:
+                UpdateIdleState();
                 break;
             default:
                 break;
@@ -62,13 +61,11 @@ public class FallinPlatform : MonoBehaviour
 
     private void UpdateIdleState()
     {
-        if (PlayerOnPlatform())
+        if (PlayerOnPlatform() || FireOnPlatform())
         {
             ChangeState(States.MovingDown);
-            return;
         }
     }
-
 
     private void UpdateMovingDownState()
     {
@@ -78,27 +75,40 @@ public class FallinPlatform : MonoBehaviour
             return;
         }
 
-        float downSpeed;
+        float speed;
 
         if (PlayerOnPlatform() && !PlayerHasFire() && !FireOnPlatform())
         {
-            downSpeed = _playerMassSpeed;
+            speed = _playerMassSpeed;
+            MoveAlongPlatform(speed, _fPosition.position, _player);
+            Debug.Log("PLAYER ONLY");
         }
         else if (FireOnPlatform() && !PlayerOnPlatform())
         {
-            downSpeed = _fireMassSpeed;
+            speed = _fireMassSpeed;
+            MoveAlongPlatform(speed, _fPosition.position, _fire.transform);
+            Debug.Log("FIRE ONLY");
         }
         else
         {
-            downSpeed = _playerMassSpeed + _fireMassSpeed;
+            speed = _playerMassSpeed + _fireMassSpeed;
+            MoveAlongPlatform(speed, _fPosition.position, _player);
+            MoveAlongPlatform(speed, _fPosition.position, _fire.transform);
+            Debug.Log("BOTH");
         }
 
-        MovePlatform(downSpeed, _fPosition.position);
+        MovePlatform(speed, _fPosition.position);
     }
 
-    private void MovePlatform(float downSpeed, Vector2 desiredPosition)
+    private void MovePlatform(float speed, Vector2 desiredPosition)
     {
-        transform.position = Vector2.MoveTowards(transform.position, desiredPosition, downSpeed * Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, desiredPosition, speed * Time.fixedDeltaTime);
+    }
+    private void MoveAlongPlatform(float speed, Vector2 platformDesiredPosition, Transform entity)
+    {
+        Vector2 entityPlatformOffset = entity.position - transform.position;
+        Vector2 entityDesiredPos = platformDesiredPosition + entityPlatformOffset;
+        entity.position = Vector2.MoveTowards(entity.position, entityDesiredPos, speed * Time.fixedDeltaTime);
     }
 
     private bool PlayerHasFire()
@@ -123,6 +133,10 @@ public class FallinPlatform : MonoBehaviour
         if (PlayerOnPlatform() || FireOnPlatform())
         {
             ChangeState(States.MovingDown);
+        }
+        else if (transform.position == _fPosition.position)
+        {
+            ChangeState(States.Idle);
         }
 
         MovePlatform(_upwardsSpeed, _oPosition.position);
