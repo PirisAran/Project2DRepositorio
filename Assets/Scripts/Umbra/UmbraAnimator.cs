@@ -14,34 +14,35 @@ public class UmbraAnimator : MonoBehaviour
     [SerializeField]
     Sprite _transitionSprite;
 
-    UmbraFSM _umbraController;
+    UmbraFSM _umbraFSM;
     SpriteRenderer _spriteRenderer;
 
     private void Awake()    
     {
-        _umbraController = GetComponent<UmbraFSM>();
+        _umbraFSM = GetComponent<UmbraFSM>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
     {
-        _umbraController.OnEnterCuteState += OnCuteState;
-        _umbraController.OnEnterFollowState += OnFollowState;
-        _umbraController.OnEnterKillerState += OnKillerState;
-        _umbraController.OnEnterTransitionState += OnTransitionState;
+        _umbraFSM.OnEnterCuteState += OnCuteState;
+        _umbraFSM.OnEnterFollowState += OnFollowState;
+        _umbraFSM.OnEnterKillerState += OnKillerState;
+        _umbraFSM.OnEnterTransitionState += OnTransitionState;
     }
 
     private void OnDisable()
     {
-        _umbraController.OnEnterCuteState -= OnCuteState;
-        _umbraController.OnEnterFollowState -= OnFollowState;
-        _umbraController.OnEnterKillerState -= OnKillerState;
-        _umbraController.OnEnterTransitionState -= OnTransitionState;
+        _umbraFSM.OnEnterCuteState -= OnCuteState;
+        _umbraFSM.OnEnterFollowState -= OnFollowState;
+        _umbraFSM.OnEnterKillerState -= OnKillerState;
+        _umbraFSM.OnEnterTransitionState -= OnTransitionState;
     }
 
     private void Update()
     {
-        _spriteRenderer.flipX = _umbraController.Forward.x < 0;
+        if (_umbraFSM.Forward.x != 0 && _umbraFSM.CurrentState != UmbraFSM.States.Transition)
+        _spriteRenderer.flipX = _umbraFSM.Forward.x < 0;
     }
 
     void ChangeSprite(Sprite nextSprite)
