@@ -8,6 +8,7 @@ public class Door : MonoBehaviour
     [SerializeField] DoorSwitch _switch;
     [SerializeField] float _openSpeed;
     [SerializeField] Transform _openPosition;
+    [SerializeField] Animator _anim;
     bool _isOpening = false;
 
     private void OnEnable()
@@ -19,7 +20,6 @@ public class Door : MonoBehaviour
     {
         _switch.OnSwitchActivated -= OnSwitchActivated;
     }
-
     void Start()
     {
         
@@ -42,12 +42,13 @@ public class Door : MonoBehaviour
 
     private void OnSwitchActivated()
     {
-        StartOpenDoor();
+        _anim.SetBool("activated", true);
     }
 
-    private void StartOpenDoor()
+    public void StartOpenDoor()
     {
         Debug.Log("Door opening start");
         _isOpening = true;
+        _anim.SetBool("activated", true);
     }
 }
