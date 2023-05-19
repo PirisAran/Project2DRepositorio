@@ -13,7 +13,7 @@ public class FireController : MonoBehaviour
     //Components
     SpriteRenderer _spriteRd;
     Rigidbody2D _rb;
-    CollisionChecker _collCheck;
+    FireGroundChecker _collCheck;
 
     [Header ("Light Parameters")]
     [SerializeField]
@@ -75,7 +75,7 @@ public class FireController : MonoBehaviour
     {
         _spriteRd = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
-        _collCheck = GetComponent<CollisionChecker>();
+        _collCheck = GetComponent<FireGroundChecker>();
     }
     private void Start()
     {

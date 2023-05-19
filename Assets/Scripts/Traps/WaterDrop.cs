@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,20 +9,20 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     
     [SerializeField]
     float Damage = 2;
-
     [SerializeField]
     float GravityTweak = 1;
+    [SerializeField]
+    AnimationClip _splatterClip;
 
     Rigidbody2D _rb;
-    Animator _animator;
 
+    [SerializeField] GameObject _particlesPrefab;
     
     private enum States { Falling, Breaking }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
     }
 
     public void Init()
@@ -33,18 +34,24 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     private void Update()
     {
         if (!GetComponent<SpriteRenderer>().isVisible)
-            Destroy();
-    }
-
-    public void Destroy()
-    {
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        _animator.SetBool("Splat", true);
-        transform.Translate(Vector2.up * 0.3f);
         _rb.simulated = false;
+        InstantiateParticles();
+        StartCoroutine(DestroyAtEndFrame());
+    }
+
+    private void InstantiateParticles()
+    {
+        Instantiate(_particlesPrefab, transform.position, Quaternion.identity);
+    }
+
+    IEnumerator DestroyAtEndFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        Destroy(gameObject);
     }
 }

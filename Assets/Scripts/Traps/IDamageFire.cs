@@ -5,5 +5,4 @@ using UnityEngine;
 public interface IDamageFire
 {
     public float DamageDealt { get; }
-    public void Destroy();
 }

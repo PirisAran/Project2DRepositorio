@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Thrower : MonoBehaviour
 {
-    [SerializeField]
-    public FireController Fire;
+    [SerializeField] LayerMask WhatIsFireCollision;
+    [SerializeField] public FireController _fire;
 
     //components
     LineRenderer _lr;
@@ -59,12 +60,27 @@ public class Thrower : MonoBehaviour
         if (_isChargingThrow)
         {
             //DIBUJA LA LINIA DEL LANZAMIENTO CON EL COMPONENTE LINE RENDERER (_lr)
-            _lr.positionCount = ParabolicShootMaxPoints;
-            List<Vector3> l_Positions = GetParabolicPositions(Fire.transform.position, (Vector2.Angle(Vector2.right, GetMouseDir())) * Mathf.Deg2Rad,
+            List<Vector3> l_Positions = GetParabolicPositions(_fire.transform.position, (Vector2.Angle(Vector2.right, GetMouseDir())) * Mathf.Deg2Rad,
                 GetCurrentThrowSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);
+            int currentParabolicShootPoints = GetUnblockedParabolicShootPointsNumber(l_Positions);
+            _lr.positionCount = currentParabolicShootPoints;
             _lr.SetPositions(l_Positions.ToArray());
         }
     }
+
+    private int GetUnblockedParabolicShootPointsNumber(List<Vector3> l_Positions)
+    {
+        int count = 0;
+        for (int i = 0; i < l_Positions.Count; i++)
+        {
+            count++;
+            Vector3 point = l_Positions[i];
+            bool isBlocked = Physics2D.OverlapCircleAll(point, 0.01f, WhatIsFireCollision).Length > 0;
+            if (isBlocked) break;
+        }
+        return count;
+    }
+
     private void ThrowInput()
     {
         //Si no tiene fuego, hace return directamente
@@ -99,7 +115,7 @@ public class Thrower : MonoBehaviour
     private void ThrowFire(Vector2 dir, float speed)
     {
         //se llama el metodo de FireController para lanzar el fuego, dandole dir y speed.
-        Fire.BeThrown(dir, speed);
+        _fire.BeThrown(dir, speed);
         //ya no tiene fuego y no esta cargando
         _isChargingThrow = false;
     }
@@ -125,13 +141,13 @@ public class Thrower : MonoBehaviour
     //Try pick uf the fire
     private void TryPickUp()
     {
-        if (Fire.OnPickUpRange)
+        if (_fire.OnPickUpRange)
             PickUpFire();
     }
 
     private void PickUpFire()
     {
-        Fire.BePickedUp();
+        _fire.BePickedUp();
     }
 
     private Vector2 GetMouseDir()
