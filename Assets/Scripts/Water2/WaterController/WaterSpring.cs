@@ -7,7 +7,6 @@ using TecnocampusProjectII;
 public class WaterSpring : MonoBehaviour
 {
     [SerializeField] Transform _player;
-    Rigidbody2D _playerRB;
     public float velocity = 0;
     public float force = 0;
     // current height
@@ -24,7 +23,6 @@ public class WaterSpring : MonoBehaviour
     private void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
-        _playerRB = _player.GetComponent<Rigidbody2D>();
     }
 
     public void Init(SpriteShapeController ssc) { 
@@ -61,14 +59,15 @@ public class WaterSpring : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.transform == _player.transform)
-        {
-            Debug.Log("Object with RB");
+        var rb = collision.GetComponent<Rigidbody2D>();
+        if (rb == null) return;
 
-            Rigidbody2D rb = _playerRB;
-            var speed = rb.velocity;
-            velocity += speed.y / resistance;
-        }
+        Debug.Log("Object with RB");
+
+        var speed = rb.velocity;
+        velocity += speed.y / resistance;
+
+}
         //if (collision.gameObject.tag.Equals("FallingObject"))
         //{
         //    FallingObject fallingObject = collision.gameObject.GetComponent<FallingObject>();
@@ -78,5 +77,3 @@ public class WaterSpring : MonoBehaviour
         //    velocity += speed.y / resistance;
         //}
     }
-
-}
