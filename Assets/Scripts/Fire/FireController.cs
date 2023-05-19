@@ -10,8 +10,8 @@ public class FireController : MonoBehaviour
                                              /* ---------- FIRE CONTROLLER ----------- */
     [SerializeField] Thrower _playerThrower;
     
-    //Components
-    SpriteRenderer _spriteRd;
+    //Components    
+    [SerializeField] List<SpriteRenderer> _sprites;
     Rigidbody2D _rb;
     FireGroundChecker _collCheck;
 
@@ -23,7 +23,7 @@ public class FireController : MonoBehaviour
     [SerializeField]
     Color _lightColor;
     [SerializeField]
-    GameObject _fireParticles;
+    GameObject _fireParticlesPrefab;
     public float LightRange => _lightRange;
     float _lightRange;
     [Space] 
@@ -36,6 +36,9 @@ public class FireController : MonoBehaviour
     [SerializeField] float _timeOfExpanding = 0.3f, _timeOfHolding = 0.3f, _timeOfDecreasing = 0.6f;
     float _explosionTimer;
     bool _isExploding = false;
+
+    ParticleSystem _particleSystem;
+ 
 
 
     //Pick up and throw parameters--------------------
@@ -73,7 +76,6 @@ public class FireController : MonoBehaviour
 
     private void Awake()
     {
-        _spriteRd = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
     }
@@ -82,7 +84,7 @@ public class FireController : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         _pickUpCollider.radius = _pickUpRadius;
         _lightRange = _maxLightRange;
@@ -143,6 +145,11 @@ public class FireController : MonoBehaviour
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */
     private void UpdateLightEffect()
     {
+        if (_currentFireHealth <= 0)
+        {
+            _lightRange = 0;
+            return;
+        }
         if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
         {
             var tempLightRange = LightRange + Random.Range(-_tremblingValue, _tremblingValue);
@@ -152,18 +159,25 @@ public class FireController : MonoBehaviour
     }
     private void Hide()
     {
-        _fireParticles.SetActive(false);
-        _spriteRd.enabled = false;
+        _fireParticlesPrefab.SetActive(false);
+        foreach (var sprite in _sprites)
+        {
+            sprite.enabled = false;
+        }
     }
     void Show()
     {
-        _fireParticles.SetActive(true);
-        _spriteRd.enabled = true;
+        _fireParticlesPrefab.SetActive(true);
+        foreach (var sprite in _sprites)
+        {
+            sprite.enabled = true;
+        }
     }
     private void AdjustLight(float fraction)
     {
         _lightRange = Mathf.Lerp(0, _maxLightRange, fraction);
         _light.pointLightOuterRadius = _lightRange;
+        var particleSystem = _fireParticlesPrefab.GetComponent<ParticleSystem>();
     }
 
     private void UpdateExplosionEffect()
@@ -209,6 +223,12 @@ public class FireController : MonoBehaviour
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
+        Debug.Log("health: " + _currentFireHealth);
+        if (_currentFireHealth < 0)
+        {
+            _currentFireHealth = 0;
+            _fireParticlesPrefab.SetActive(false);
+        }
         AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
 

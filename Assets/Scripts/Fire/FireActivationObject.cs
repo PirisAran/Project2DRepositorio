@@ -8,7 +8,7 @@ public abstract class FireActivationObject : MonoBehaviour
 {
     [SerializeField] protected KeyCode _interactKey = KeyCode.E;
     protected bool _isActivated = false;
-    protected bool _canActivate = false;
+    protected bool _inTrigger = false;
     Thrower _thrower;
 
     private void Start()
@@ -23,14 +23,14 @@ public abstract class FireActivationObject : MonoBehaviour
 
         
         if (_thrower.transform != collision.transform) return;
-        _canActivate = true;
+        _inTrigger = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (_isActivated) return;
 
         if (_thrower.transform != collision.transform) return;
-        _canActivate = false;
+        _inTrigger = false;
     }
 
     private void Update()
@@ -38,11 +38,25 @@ public abstract class FireActivationObject : MonoBehaviour
         if (_isActivated)
             return;
 
-        if (_canActivate && Input.GetKeyDown(_interactKey) && _thrower.HasFire)
+        if (_inTrigger && Input.GetKeyDown(_interactKey))
         {
-            Activate();
+            if (_thrower.HasFire)
+            {
+                Activate();
+            }
+            else
+            {
+                ShowPlayerHeCant();
+            }
         }
+        
     }
+
+    protected virtual void ShowPlayerHeCant()
+    {
+
+    }
+
     protected virtual void Activate()
     {
         DoAnimation();
