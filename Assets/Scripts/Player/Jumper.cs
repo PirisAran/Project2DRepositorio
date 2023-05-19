@@ -10,8 +10,6 @@ public class Jumper : MonoBehaviour
     Rigidbody2D _rb;
     Thrower _thrower;
 
-
-
     //Input Jumping
     [SerializeField] KeyCode JumpKey = KeyCode.Space;
 

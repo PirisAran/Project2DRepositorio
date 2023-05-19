@@ -12,19 +12,20 @@ public class CheckPoint : FireActivationObject
     [SerializeField] Animator _anim;
     [SerializeField] Light2D _light;
     [SerializeField] Color _innactiveLightColor, _activeLightColor;
-    SpriteRenderer _spriteRenderer;
+    [SerializeField] Sprite _noLeafsSprite;
+    [SerializeField] SpriteRenderer _spriteRenderer;
+
     public static Action OnCheckPointActivated;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _light.color = _innactiveLightColor;
     }
 
     protected override void DoAnimation()
     {
-        _light.color = _activeLightColor;
-        _anim.SetBool("activated", true);
+        _anim.SetBool("startActivation", true);
+        StartCoroutine(DoAnimationTimeLater(1f));
     }
 
     protected override void Activate()
@@ -34,4 +35,12 @@ public class CheckPoint : FireActivationObject
         LevelController.Instance.SetSpawnpoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         Debug.Log("checkpoint activated");
     }
+
+    IEnumerator DoAnimationTimeLater(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _light.color = _activeLightColor;
+        _anim.SetBool("activated", true);
+    }
+
 }

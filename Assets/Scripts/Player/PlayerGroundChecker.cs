@@ -7,8 +7,6 @@ public class PlayerGroundChecker : CollisionChecker
 {
     [SerializeField]
     private Vector2 _boxSize = new Vector2(1.25f, 0.1f);
-    [SerializeField]
-    float _coyoteTime = 0.2f;
     public bool OnGround => _colliding;
 
 
