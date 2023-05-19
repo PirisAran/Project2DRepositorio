@@ -84,7 +84,7 @@ public class FireController : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         _pickUpCollider.radius = _pickUpRadius;
         _lightRange = _maxLightRange;
@@ -145,6 +145,11 @@ public class FireController : MonoBehaviour
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */
     private void UpdateLightEffect()
     {
+        if (_currentFireHealth <= 0)
+        {
+            _lightRange = 0;
+            return;
+        }
         if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
         {
             var tempLightRange = LightRange + Random.Range(-_tremblingValue, _tremblingValue);
@@ -218,6 +223,12 @@ public class FireController : MonoBehaviour
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
+        Debug.Log("health: " + _currentFireHealth);
+        if (_currentFireHealth < 0)
+        {
+            _currentFireHealth = 0;
+            _fireParticlesPrefab.SetActive(false);
+        }
         AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
 

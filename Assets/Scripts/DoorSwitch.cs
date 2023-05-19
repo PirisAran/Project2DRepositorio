@@ -6,16 +6,19 @@ using System;
 public class DoorSwitch : FireActivationObject
 {
     SpriteRenderer _spriteRenderer;
+    Animator _anim;
 
     public Action OnSwitchActivated;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _anim = GetComponent<Animator>();
     }
     protected override void DoAnimation()
     {
-        _spriteRenderer.color = Color.red + Color.yellow;
+        _anim.SetBool("activated", true);
+        //StartCoroutine(DoActivationAnim());
     }
 
     protected override void Activate()
@@ -29,6 +32,13 @@ public class DoorSwitch : FireActivationObject
         StartCoroutine(DoErrorAnimation());
     }
     
+    //IEnumerator DoActivationAnim()
+    //{
+    //    yield return new WaitForSeconds();
+    //    _anim.SetBool("activated",true);
+
+    //}
+
     IEnumerator DoErrorAnimation()
     {
         Color previousColor = _spriteRenderer.color;
