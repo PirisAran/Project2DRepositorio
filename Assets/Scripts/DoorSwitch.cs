@@ -23,4 +23,22 @@ public class DoorSwitch : FireActivationObject
         base.Activate();
         OnSwitchActivated?.Invoke();
     }
+
+    protected override void ShowPlayerHeCant()
+    {
+        StartCoroutine(DoErrorAnimation());
+    }
+    
+    IEnumerator DoErrorAnimation()
+    {
+        Color previousColor = _spriteRenderer.color;
+        
+        for (int i = 0; i < 3; i++)
+        {
+            _spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.2f);
+            _spriteRenderer.color = previousColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
