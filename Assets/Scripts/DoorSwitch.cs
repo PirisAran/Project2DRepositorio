@@ -24,20 +24,20 @@ public class DoorSwitch : FireActivationObject
     protected override void Activate()
     {
         base.Activate();
-        OnSwitchActivated?.Invoke();
+        StartCoroutine(DoInvokeDelayed());
     }
 
     protected override void ShowPlayerHeCant()
     {
         StartCoroutine(DoErrorAnimation());
     }
-    
-    //IEnumerator DoActivationAnim()
-    //{
-    //    yield return new WaitForSeconds();
-    //    _anim.SetBool("activated",true);
 
-    //}
+    IEnumerator DoInvokeDelayed()
+    {
+        yield return new WaitForSeconds(1);
+        OnSwitchActivated?.Invoke();
+
+    }
 
     IEnumerator DoErrorAnimation()
     {
