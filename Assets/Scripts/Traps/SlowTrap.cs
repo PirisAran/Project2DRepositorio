@@ -21,14 +21,12 @@ public class SlowTrap : MonoBehaviour
     {
         if (collision.transform == Player.transform)
         {
-            Debug.Log("In Slow Trap");
             ApplyEffect(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Out of Slow Trap");
         ApplyEffect(false);
     }
 
