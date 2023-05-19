@@ -38,7 +38,7 @@ public class FireController : MonoBehaviour
     bool _isExploding = false;
 
     ParticleSystem _particleSystem;
-    float 
+ 
 
 
     //Pick up and throw parameters--------------------
