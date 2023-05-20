@@ -2,24 +2,29 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
 public class SlowTrap : MonoBehaviour
 {
-    [SerializeField]
-    GameObject Player;
+    [SerializeField] Transform _player;
 
-    [SerializeField]
     Runner _velocity;
 
-    [SerializeField]
-    Jumper _jump; 
+    Jumper _jump;
 
     [SerializeField]
     float VelocityReduction = 0.5f, JumpReduction = 0.5f;
 
+    private void Start()
+    {
+        _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+        _velocity = _player.GetComponent<Runner>();
+        _jump = _player.GetComponent<Jumper>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == Player.transform)
+        if (collision.transform == _player.transform)
         {
             ApplyEffect(true);
         }
