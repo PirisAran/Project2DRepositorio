@@ -46,7 +46,11 @@ namespace TecnocampusProjectII
         public void RespawnPlayer()
         {
             _player.position = _playerSpawnPoint.position;
-            _umbra.position = _umbraSpawnPoint.position;
+
+            if (_umbra != null)
+            {
+                _umbra.position = _umbraSpawnPoint.position;
+            }
         }
 
         public void SetSpawnpoint(Vector3 playerPos, Vector3 umbraPos)
