@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] DoorSwitch _switch;
+    [SerializeField] ActivationObject _activatorObject;
     [SerializeField] float _openSpeed;
     [SerializeField] Transform _openPosition;
     [SerializeField] Animator _anim;
@@ -14,12 +14,12 @@ public class Door : MonoBehaviour
 
     private void OnEnable()
     {
-        _switch.OnSwitchActivated += OnSwitchActivated;
+        _activatorObject.OnActivated += OnActivated;
     }
 
     private void OnDisable()
     {
-        _switch.OnSwitchActivated -= OnSwitchActivated;
+        _activatorObject.OnActivated -= OnActivated;
     }
     void Start()
     {
@@ -41,7 +41,7 @@ public class Door : MonoBehaviour
         _isOpening = false;
     }
 
-    private void OnSwitchActivated()
+    private void OnActivated()
     {
         StartCoroutine(StartOpenDoor());
     }

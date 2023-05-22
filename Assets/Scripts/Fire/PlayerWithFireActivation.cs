@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TecnocampusProjectII;
 
-public abstract class FireActivationObject : MonoBehaviour
+public abstract class PlayerWithFireActivation : ActivationObject
 {
     [SerializeField] protected KeyCode _interactKey = KeyCode.E;
     protected bool _isActivated = false;
