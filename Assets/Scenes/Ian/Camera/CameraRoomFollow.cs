@@ -10,6 +10,7 @@ public class CameraRoomFollow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("TriggerEnter     ");
         if (other.CompareTag("Player") && !other.isTrigger)
         {
 
