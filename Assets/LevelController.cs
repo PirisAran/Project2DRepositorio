@@ -22,7 +22,7 @@ namespace TecnocampusProjectII
         {
             Instance = this;
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
-            RespawnPlayer();
+            //RespawnPlayer();
         }
 
         private void Update()

@@ -5,7 +5,6 @@ namespace TecnocampusProjectII
 	public class GameController : MonoBehaviour
 	{
 		public PlayerController m_Player;
-
 		public void Awake()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
@@ -17,5 +16,6 @@ namespace TecnocampusProjectII
 			else
 				Destroy(gameObject);
 		}
+
 	}
 }

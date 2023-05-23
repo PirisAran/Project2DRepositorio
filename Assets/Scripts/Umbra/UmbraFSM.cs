@@ -228,11 +228,11 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool IsInLightRange()
     {
-        return Vector3.Distance(transform.position, _fire.transform.position) < _lightRange;
+        return Vector3.Distance(transform.position, _fire.transform.position) < _lightRange && _lightRange > 0;
     }
     private bool IsPlayerSafe()
     {
-        return Vector3.Distance(_player.transform.position, _fire.transform.position) <= _lightRange;
+        return Vector3.Distance(_player.transform.position, _fire.transform.position) <= _lightRange && _lightRange > 0;
     }
 
     private bool CanEnterCuteState()
@@ -245,6 +245,6 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool CanEnterKillerState()
     {
-        return !IsInLightRange() && !IsPlayerSafe();
+        return !IsInLightRange() && !IsPlayerSafe() || _fire.LightRange <= 0;
     }
 }

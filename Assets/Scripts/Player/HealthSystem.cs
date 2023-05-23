@@ -8,5 +8,6 @@ public class HealthSystem : MonoBehaviour
     public void KillPlayer()
     {
         LevelController.Instance.RespawnPlayer();
+        FindObjectOfType<FireController>().OnPlayerRespawn();
     }
 }
