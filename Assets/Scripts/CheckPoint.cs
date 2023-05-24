@@ -5,7 +5,7 @@ using UnityEngine;
 using TecnocampusProjectII;
 using UnityEngine.Rendering.Universal;
 
-public class CheckPoint : FireActivationObject
+public class CheckPoint : PlayerWithFireActivation
 {
     [SerializeField] Transform _playerSpawnPoint;
     [SerializeField] Transform _umbraSpawnPoint;
@@ -32,7 +32,8 @@ public class CheckPoint : FireActivationObject
     {
         base.Activate();
         OnCheckPointActivated?.Invoke();
-        LevelController.Instance.SetSpawnpoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
+        GameLogic l_GameLogic = GameLogic.GetGameLogic();
+        l_GameLogic.GetGameController().GetLevelController().SetSpawnPoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         Debug.Log("checkpoint activated");
     }
 

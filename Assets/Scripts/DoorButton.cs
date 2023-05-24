@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DoorSwitch : FireActivationObject
+public class DoorButton : PlayerWithFireActivation
 {
     SpriteRenderer _spriteRenderer;
     Animator _anim;
-
-    public Action OnSwitchActivated;
 
     private void Awake()
     {
@@ -18,7 +16,6 @@ public class DoorSwitch : FireActivationObject
     protected override void DoAnimation()
     {
         _anim.SetBool("activated", true);
-        //StartCoroutine(DoActivationAnim());
     }
 
     protected override void Activate()
@@ -35,7 +32,7 @@ public class DoorSwitch : FireActivationObject
     IEnumerator DoInvokeDelayed()
     {
         yield return new WaitForSeconds(1);
-        OnSwitchActivated?.Invoke();
+        OnActivated?.Invoke();
 
     }
 
