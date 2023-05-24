@@ -32,7 +32,8 @@ public class CheckPoint : PlayerWithFireActivation
     {
         base.Activate();
         OnCheckPointActivated?.Invoke();
-        LevelController.Instance.SetSpawnpoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
+        GameLogic l_GameLogic = GameLogic.GetGameLogic();
+        l_GameLogic.GetGameController().GetLevelController().SetSpawnPoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         Debug.Log("checkpoint activated");
     }
 

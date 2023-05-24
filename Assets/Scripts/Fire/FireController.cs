@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
+using TecnocampusProjectII;
 
-public class FireController : MonoBehaviour
+public class FireController : MonoBehaviour, IRestartLevelElement
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
     [SerializeField] Thrower _playerThrower;
@@ -150,7 +151,7 @@ public class FireController : MonoBehaviour
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        Hide();
+        //Hide();
     }
 
     private void SetAttached(bool v)
@@ -272,7 +273,7 @@ public class FireController : MonoBehaviour
         _currentFireHealth = _maxFireHealth;
     }
 
-    public void OnPlayerRespawn()
+    public void RestartLevel()
     {
         HealMaximum();
         BePickedUp();
