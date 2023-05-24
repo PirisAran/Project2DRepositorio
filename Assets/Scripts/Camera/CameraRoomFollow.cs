@@ -10,7 +10,7 @@ public class CameraRoomFollow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !other.isTrigger)
+        if (other.CompareTag("Player"))
         {
 
             virtualCamera.SetActive(true);
@@ -21,7 +21,7 @@ public class CameraRoomFollow : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !other.isTrigger)
+        if (other.CompareTag("Player"))
         {
 
             virtualCamera.SetActive(false);
