@@ -25,6 +25,8 @@ namespace TecnocampusProjectII
         {
             Instance = this;
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+            _player.position = _playerSpawnPoint.position;
+            _umbra.position = _umbraSpawnPoint.position;
         }
 
         private void Update()
