@@ -5,7 +5,7 @@ using UnityEngine;
 using TecnocampusProjectII;
 using UnityEngine.Rendering.Universal;
 
-public class CheckPoint : FireActivationObject
+public class CheckPoint : PlayerWithFireActivation
 {
     [SerializeField] Transform _playerSpawnPoint;
     [SerializeField] Transform _umbraSpawnPoint;
