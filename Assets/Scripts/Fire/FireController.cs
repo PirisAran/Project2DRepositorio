@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
+using TecnocampusProjectII;
 
-public class FireController : MonoBehaviour
+public class FireController : MonoBehaviour, IRestartLevelElement
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
     [SerializeField] Thrower _playerThrower;
@@ -29,7 +30,7 @@ public class FireController : MonoBehaviour
     [Space] 
 
     [Header("Light Effect Parameters")]
-    [SerializeField] float _tremblingValue = 0.5f;
+    [SerializeField] float _tremblingValue = 0.3f;
     [SerializeField] float _intervalTimeMax = 0.15f, _intervalTimeMin = 0.05f;
     float _lastTimeTremble;
     [SerializeField] float _lightExplosionRangeAdded = 5;
@@ -38,7 +39,9 @@ public class FireController : MonoBehaviour
     bool _isExploding = false;
 
     ParticleSystem _particleSystem;
- 
+    [SerializeField] float _minParticleSize = 0.3f, _maxParticleSize = 1.2f;
+    [SerializeField] int _minParticleRate = 10, _maxParticleRate = 40;
+
 
 
     //Pick up and throw parameters--------------------
@@ -78,20 +81,43 @@ public class FireController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
+        _particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
     }
     private void Start()
     {
-        Init();
+        SetDefaultValues();
     }
 
-    public void Init()
+    public void SetDefaultValues()
     {
+        BePickedUp();
         _pickUpCollider.radius = _pickUpRadius;
         _lightRange = _maxLightRange;
-        _light.pointLightOuterRadius = _lightRange;
         _currentFireHealth = _maxFireHealth;
         _light.color = _lightColor;
-        BePickedUp();
+
+        //_pickUpCollider.radius = _pickUpRadius;
+        //_lightRange = _maxLightRange;
+        //_currentFireHealth = _maxFireHealth;
+        //_light.color = _lightColor;
+        //BePickedUp();
+        //AdjustLight(_currentFireHealth / _maxFireHealth);
+    }
+
+    private void AdjustLightEffect()
+    {
+        var healthFraction = Mathf.Clamp01(_currentFireHealth / _maxFireHealth);
+        _lightRange = Mathf.Lerp(0, _maxLightRange, healthFraction);
+
+        //cambiar emision particulas
+        var emissionRate = Mathf.Lerp(_minParticleRate, _maxParticleRate, healthFraction);
+        var emission = _particleSystem.emission;
+        emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionRate);
+
+        //cambiar tamaño particulas
+        var maxSize = Mathf.Lerp(_minParticleSize, _maxParticleSize, healthFraction);
+        var mainModule = _particleSystem.main;
+        mainModule.startSize = new ParticleSystem.MinMaxCurve(maxSize);
     }
 
     // Update is called once per frame
@@ -105,8 +131,11 @@ public class FireController : MonoBehaviour
         if (_isExploding)
         {
             UpdateExplosionEffect();
+            return;
         }
-        UpdateLightEffect();
+
+        AdjustLightEffect();
+        UpdateTremblingEffect();
     }
 
 
@@ -122,7 +151,7 @@ public class FireController : MonoBehaviour
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        Hide();
+        //Hide();
     }
 
     private void SetAttached(bool v)
@@ -143,19 +172,20 @@ public class FireController : MonoBehaviour
     }
 
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */
-    private void UpdateLightEffect()
+    private void UpdateTremblingEffect()
     {
-        if (_currentFireHealth <= 0)
-        {
-            _lightRange = 0;
-            return;
-        }
         if (Time.time - _lastTimeTremble >= Random.Range(_intervalTimeMin, _intervalTimeMax))
         {
             var tempLightRange = LightRange + Random.Range(-_tremblingValue, _tremblingValue);
             _light.pointLightOuterRadius = tempLightRange;
             _lastTimeTremble = Time.time;
+
+            if (_light.pointLightOuterRadius <= 0)
+            {
+                _light.pointLightOuterRadius = 0.3f;
+            }
         }
+
     }
     private void Hide()
     {
@@ -173,19 +203,11 @@ public class FireController : MonoBehaviour
             sprite.enabled = true;
         }
     }
-    private void AdjustLight(float fraction)
-    {
-        _lightRange = Mathf.Lerp(0, _maxLightRange, fraction);
-        _light.pointLightOuterRadius = _lightRange;
-        var particleSystem = _fireParticlesPrefab.GetComponent<ParticleSystem>();
-    }
-
     private void UpdateExplosionEffect()
     {
         if (_explosionTimer >= _timeOfDecreasing + _timeOfExpanding + _timeOfHolding)
         {
             _isExploding = false;
-            AdjustLight(_currentFireHealth / _maxFireHealth);
             _tremblingValue -= 0.5f;
             return;
         }
@@ -207,6 +229,8 @@ public class FireController : MonoBehaviour
             _lightRange = Mathf.Lerp(_maxLightRange + _lightExplosionRangeAdded, _maxLightRange, (_decreasingTimer) / _timeOfDecreasing);
             _lightRange += -1 - Time.fixedDeltaTime;
         }
+
+        _light.pointLightOuterRadius = _lightRange;
         _explosionTimer += Time.fixedDeltaTime;
     }
     /* ----- HEALTH AND DAMAGE HERE  ------- */
@@ -229,7 +253,6 @@ public class FireController : MonoBehaviour
             _currentFireHealth = 0;
             _fireParticlesPrefab.SetActive(false);
         }
-        AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
 
     private void OnCheckPointActivated()
@@ -248,8 +271,11 @@ public class FireController : MonoBehaviour
     private void HealMaximum()
     {
         _currentFireHealth = _maxFireHealth;
-        AdjustLight(Mathf.Clamp01(_currentFireHealth / _maxFireHealth));
     }
 
-
+    public void RestartLevel()
+    {
+        HealMaximum();
+        BePickedUp();
+    }
 }

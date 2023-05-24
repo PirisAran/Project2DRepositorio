@@ -2,7 +2,7 @@
 
 namespace TecnocampusProjectII
 {
-	public class PlayerController : MonoBehaviour
+	public class PlayerController : MonoBehaviour, IRestartLevelElement
 	{
 		private void Start()
 		{
@@ -11,6 +11,14 @@ namespace TecnocampusProjectII
 				DontDestroyOnLoad(this.gameObject);
 			else
 				Destroy(gameObject);
+			l_GameLogic.GetGameController().GetLevelController().AddRestartLevelElement(this);
 		}
+
+        public void RestartLevel()
+        {
+			Debug.Log("Rs");
+			GameLogic l_GameLogic = GameLogic.GetGameLogic();
+			transform.position = l_GameLogic.GetGameController().GetLevelController().GetPlayerSpawnPoint().position;
+        }
 	}
 }
