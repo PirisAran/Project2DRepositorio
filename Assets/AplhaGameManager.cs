@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AplhaGameManager : MonoBehaviour
 {
-
     [SerializeField]
     GameObject Umbra;
     [SerializeField]
