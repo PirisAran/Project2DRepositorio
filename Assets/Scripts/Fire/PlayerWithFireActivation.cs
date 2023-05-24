@@ -57,11 +57,9 @@ public abstract class PlayerWithFireActivation : ActivationObject
 
     }
 
-    protected virtual void Activate()
+    protected override void Activate()
     {
         DoAnimation();
         _isActivated = true;
     }
-
-    protected abstract void DoAnimation();
 }

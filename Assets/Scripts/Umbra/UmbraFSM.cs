@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TecnocampusProjectII;
 
-public class UmbraFSM : MonoBehaviour
+public class UmbraFSM : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField]
     GameObject _player;
@@ -82,6 +82,7 @@ public class UmbraFSM : MonoBehaviour
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
     private void Init()
     {
@@ -228,11 +229,11 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool IsInLightRange()
     {
-        return Vector3.Distance(transform.position, _fire.transform.position) < _lightRange;
+        return Vector3.Distance(transform.position, _fire.transform.position) < _lightRange && _lightRange > 0;
     }
     private bool IsPlayerSafe()
     {
-        return Vector3.Distance(_player.transform.position, _fire.transform.position) <= _lightRange;
+        return Vector3.Distance(_player.transform.position, _fire.transform.position) <= _lightRange && _lightRange > 0;
     }
 
     private bool CanEnterCuteState()
@@ -245,6 +246,11 @@ public class UmbraFSM : MonoBehaviour
     }
     private bool CanEnterKillerState()
     {
-        return !IsInLightRange() && !IsPlayerSafe();
+        return !IsInLightRange() && !IsPlayerSafe() || _fire.LightRange <= 0;
+    }
+
+    public void RestartLevel()
+    {
+        transform.position = GameLogic.GetGameLogic().GetGameController().GetLevelController().GetUmbraSpawnPoint().position;
     }
 }
