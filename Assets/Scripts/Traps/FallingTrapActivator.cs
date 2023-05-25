@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TecnocampusProjectII;
-public class RockTrap : MonoBehaviour
+public class FallingTrapActivator : MonoBehaviour
 {
     Rigidbody2D _rb;
 
@@ -21,15 +21,14 @@ public class RockTrap : MonoBehaviour
     {
         //_rockCollider = GetComponentInParent<Collision2D>();
         _rb = GetComponentInParent<Rigidbody2D>();
-       _rb.isKinematic = true;
+        _rb.bodyType = RigidbodyType2D.Static;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform == _player.transform)
         {
-            Debug.Log("detected");
-            _rb.isKinematic = false;
+            _rb.bodyType = RigidbodyType2D.Dynamic;
             //_rb.AddForce(Vector2.down * 10.0f);
         }
     }
