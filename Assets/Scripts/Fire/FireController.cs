@@ -87,6 +87,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     private void Start()
     {
         SetDefaultValues();
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     public void SetDefaultValues()

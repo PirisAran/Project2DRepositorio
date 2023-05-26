@@ -67,7 +67,7 @@ public class Thrower : MonoBehaviour
             _lr.positionCount = currentParabolicShootPoints;
             _lr.SetPositions(l_Positions.ToArray());
         }
-    }
+    }   
 
     private int GetUnblockedParabolicShootPointsNumber(List<Vector3> l_Positions)
     {
