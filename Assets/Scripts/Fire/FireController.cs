@@ -10,6 +10,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
     [SerializeField] Thrower _playerThrower;
+    [SerializeField] Transform _attachedLocation;
     
     //Components    
     [SerializeField] List<SpriteRenderer> _sprites;
@@ -123,9 +124,9 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     // Update is called once per frame
     void Update()
     {
-        if (transform.parent != null)
+        if (IsAttached())
         {
-            transform.localPosition = Vector2.zero;
+            transform.position = _attachedLocation.position;
         }
 
         if (_isExploding)
@@ -156,8 +157,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     private void SetAttached(bool v)
     {
-        _playerThrower.SetHasFire(v);
-        transform.parent = v ? _playerThrower.gameObject.transform : null;
+        _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
     }
 

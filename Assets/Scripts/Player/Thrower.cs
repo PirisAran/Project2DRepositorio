@@ -19,6 +19,7 @@ public class Thrower : MonoBehaviour
     KeyCode PickUpKey = KeyCode.E;
     [SerializeField]
     KeyCode CancelThrowKey = KeyCode.Mouse1;
+    [SerializeField] GameObject _parent;
 
     [SerializeField]
     public Collider2D PickUpCollider;
@@ -124,12 +125,6 @@ public class Thrower : MonoBehaviour
         _isChargingThrow = false;
     }
 
-    public void SetHasFire(bool v)
-    {
-        _hasFire = v;
-        _runner.ChangeSpeed();
-    }
-
     private void PickUpInput()
     {
         if (_hasFire)
@@ -148,6 +143,13 @@ public class Thrower : MonoBehaviour
     private void PickUpFire()
     {
         _fire.BePickedUp();
+    }
+
+    public void SetAttachFireToBody(bool v)
+    {
+        _fire.transform.parent = v? transform: null;
+        _hasFire = v;
+        _runner.ChangeSpeed();
     }
 
     private Vector2 GetMouseDir()
