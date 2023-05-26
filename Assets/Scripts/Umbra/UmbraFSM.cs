@@ -133,10 +133,9 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         }
     }
 
-    private void TransitionToState(States nextState)
+    private void TransitionToState()
     {
         _currentState = States.Transition;
-        _nextState = nextState;
         OnEnterState(States.Transition);
         _speedBeforeTransition = _currentSpeed;
         _timeCurrentState = 0;
@@ -145,60 +144,59 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
     private void UpdateCuteState()
     {
         //Antes de nada, comprovar si puede cambiar de estados
-        if (CanEnterFollowState())
-        {
-            TransitionToState(States.Follow);
-            return;
-        }
-        if (CanEnterKillerState())
-        {
-            TransitionToState(States.Killer);
-            return;
-        }
+        if (CanExitCuteState())
+            TransitionToState();
         
         _desiredPosition = _fire.transform.position + (-_fireDirection) * _respectRange;
         MoveTowardsPosition(_desiredPosition, _cuteBaseSpeed, _cuteMaxSpeed, _acceleration);
     }
+
+    private bool CanExitCuteState()
+    {
+        return CanEnterFollowState() || CanEnterKillerState();
+    }
+
     private void UpdateFollowState()
     {
         //Antes de nada, comprovar si puede cambiar de estados
-        if (CanEnterCuteState())
-        {
-            TransitionToState(States.Cute);
-            return;
-        }
-        if (CanEnterKillerState())
-        {
-            TransitionToState(States.Killer);
-            return;
-        }
+        if (CanExitFollowState())
+            TransitionToState();
 
         _desiredPosition = _player.transform.position + (-_playerDirection) * _respectRange;
         MoveTowardsPosition(_desiredPosition, _followBaseSpeed, _followMaxSpeed, _acceleration);
     }
 
+    private bool CanExitFollowState()
+    {
+        return CanEnterCuteState() || CanEnterKillerState();
+    }
+
     private void UpdateKillerState()
     {
         //Antes de nada, comprovar si puede cambiar de estados
-        if (CanEnterCuteState())
-        {
-            TransitionToState(States.Cute);
-            return;
-        }
-        if (CanEnterFollowState())
-        {
-            TransitionToState(States.Follow);
-            return;
-        }
+        if (CanExitKillerState())
+            TransitionToState();
 
         _desiredPosition = _player.transform.position;
         MoveTowardsPosition(_desiredPosition, _killerBaseSpeed, _killerMaxSpeed, _acceleration);
+    }
+
+    private bool CanExitKillerState()
+    {
+        return CanEnterCuteState() || CanEnterFollowState();
     }
 
     private void UpdateTransitionState()
     {
         if (_timeCurrentState >= _transitionTime)
         {
+            if (CanEnterCuteState())
+                _nextState = States.Cute;
+            else if (CanEnterFollowState())
+                _nextState = States.Follow;
+            else
+                _nextState = States.Killer;
+
             _currentState = _nextState;
             OnEnterState(_currentState);
             return;

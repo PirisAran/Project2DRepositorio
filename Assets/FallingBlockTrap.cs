@@ -34,7 +34,7 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     {
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (_rb.bodyType == RigidbodyType2D.Static) return;
 
@@ -47,6 +47,10 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
         }
         else if (collision.gameObject.GetComponent<FireController>())
         {
+            if (collision.rigidbody.velocity.magnitude != 0)
+            {
+                return;
+            }
             float xOffset = collision.transform.position.x - transform.position.x;
             float width = GetComponent<BoxCollider2D>().bounds.size.x;
 
