@@ -30,9 +30,6 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
         _childCollider = GetComponentInChildren<Collider2D>();
     }
 
-    private void FixedUpdate()
-    {
-    }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
