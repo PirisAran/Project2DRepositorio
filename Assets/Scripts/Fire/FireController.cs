@@ -138,12 +138,15 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
+        CameraManager.GetCameraManager().StartShakeCamera();
+
     }
 
     public void BePickedUp()
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
+        CameraManager.GetCameraManager().StopShakeCamera();
     }
 
     private void SetAttached(bool v)
