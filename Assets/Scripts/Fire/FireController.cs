@@ -57,9 +57,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     float _maxFireHealth = 10;
     float _currentFireHealth;
     public float CurrentFireHealth { get { return _currentFireHealth;} set { _currentFireHealth = value;} }
-    [SerializeField]
-    CircleCollider2D _damageCollider;
-
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -97,13 +95,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _lightRange = _maxLightRange;
         _currentFireHealth = _maxFireHealth;
         _light.color = _lightColor;
-
-        //_pickUpCollider.radius = _pickUpRadius;
-        //_lightRange = _maxLightRange;
-        //_currentFireHealth = _maxFireHealth;
-        //_light.color = _lightColor;
-        //BePickedUp();
-        //AdjustLight(_currentFireHealth / _maxFireHealth);
     }
 
     private void AdjustLightEffect()
@@ -153,13 +144,13 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        //Hide();
     }
 
     private void SetAttached(bool v)
     {
         _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+        GetComponent<Collider2D>().enabled = !v;
     }
 
     private bool IsAttached()

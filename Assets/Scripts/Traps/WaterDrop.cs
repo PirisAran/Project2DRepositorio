@@ -45,7 +45,6 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        _rb.simulated = false;
         InstantiateParticles();
         StartCoroutine(DestroyAtEndFrame());
     }
