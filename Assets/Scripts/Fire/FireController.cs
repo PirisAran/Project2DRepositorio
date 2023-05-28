@@ -237,6 +237,8 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     /* ----- HEALTH AND DAMAGE HERE  ------- */
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (IsAttached()) return;
+
         IDamageFire water = collision.GetComponent<IDamageFire>();
         if (water != null)
         {
@@ -244,7 +246,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         }
     }
 
-    private void TakeDamage(float damageDealt)
+    public void TakeDamage(float damageDealt)
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;

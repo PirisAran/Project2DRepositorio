@@ -40,7 +40,19 @@ public class Thrower : MonoBehaviour
     float _throwStartTime;
     public bool IsChargingThrow => _isChargingThrow;
     bool _isChargingThrow = false;
-    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!_hasFire) return;
+
+        IDamageFire water = collision.GetComponent<IDamageFire>();
+
+        if (water != null)
+        {
+            _fire.TakeDamage(water.DamageDealt);
+        }
+    }
+
     void Awake()
     {
         _lr = GetComponent<LineRenderer>();

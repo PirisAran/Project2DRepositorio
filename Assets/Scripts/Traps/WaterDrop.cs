@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TecnocampusProjectII;
 using UnityEngine;
 
 public class WaterDrop : MonoBehaviour, IDamageFire
 {
+    static Thrower _player;
     public float DamageDealt => Damage;
     
     [SerializeField]
@@ -23,6 +25,10 @@ public class WaterDrop : MonoBehaviour, IDamageFire
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
     }
 
     public void Init()

@@ -14,13 +14,17 @@ public class UmbraAnimator : MonoBehaviour
     [SerializeField]
     Sprite _transitionSprite;
 
+    [SerializeField]
+    GameObject _transformationParticles;
+
     UmbraFSM _umbraFSM;
     SpriteRenderer _spriteRenderer;
 
-    private void Awake()    
+    private void Awake()
     {
         _umbraFSM = GetComponent<UmbraFSM>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _transformationParticles.SetActive(false);
     }
 
     private void OnEnable()
@@ -42,7 +46,7 @@ public class UmbraAnimator : MonoBehaviour
     private void Update()
     {
         if (_umbraFSM.Forward.x != 0 && _umbraFSM.CurrentState != UmbraFSM.States.Transition)
-        _spriteRenderer.flipX = _umbraFSM.Forward.x < 0;
+            _spriteRenderer.flipX = _umbraFSM.Forward.x < 0;
     }
 
     void ChangeSprite(Sprite nextSprite)
@@ -64,6 +68,18 @@ public class UmbraAnimator : MonoBehaviour
     }
     void OnTransitionState()
     {
-        ChangeSprite(_transitionSprite);
+        StartTransformationEffect();
+    }
+
+    private void StartTransformationEffect()
+    {
+        StartCoroutine(DoTransformationAnimation());
+    }
+
+    private IEnumerator DoTransformationAnimation()
+    {
+        _transformationParticles.SetActive(true);
+        yield return new WaitForSeconds(_umbraFSM.TransitionTime + 0.25f);
+        _transformationParticles.SetActive(false);
     }
 }

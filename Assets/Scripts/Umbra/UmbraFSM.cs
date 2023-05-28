@@ -16,6 +16,7 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
     States _nextState;
     [SerializeField]float _followStateRange = 3f;
     [SerializeField]float _transitionTime = 1f;
+    public float TransitionTime => _transitionTime;
     float _timeCurrentState;
     float _speedBeforeTransition;
     [Space]
