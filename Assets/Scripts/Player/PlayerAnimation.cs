@@ -7,8 +7,10 @@ public class PlayerAnimation : MonoBehaviour
 {
     Runner Player;
     Jumper jump;
+    Thrower _thrower;
     [SerializeField] Animator Animator;
     [SerializeField] GameObject Body;
+    
 
     private enum PlayerStates { Idle, Running, Jumping, Falling}
 
@@ -16,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         Player = GetComponent<Runner>();
         jump = GetComponent<Jumper>();
+        _thrower = GetComponent<Thrower>();
     }
     void Update()
     {
@@ -53,6 +56,7 @@ public class PlayerAnimation : MonoBehaviour
                 state = PlayerStates.Falling;
         }
 
+        Animator.SetBool("hasFire", _thrower.HasFire);
         Animator.SetInteger("state", (int)state);
     }
 }

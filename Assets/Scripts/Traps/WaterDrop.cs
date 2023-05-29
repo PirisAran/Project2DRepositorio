@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TecnocampusProjectII;
 using UnityEngine;
 
 public class WaterDrop : MonoBehaviour, IDamageFire
 {
+    static Thrower _player;
     public float DamageDealt => Damage;
     
     [SerializeField]
@@ -25,6 +27,10 @@ public class WaterDrop : MonoBehaviour, IDamageFire
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+    }
+
     public void Init()
     {
         _rb.bodyType = RigidbodyType2D.Dynamic;
@@ -39,7 +45,6 @@ public class WaterDrop : MonoBehaviour, IDamageFire
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        _rb.simulated = false;
         InstantiateParticles();
         StartCoroutine(DestroyAtEndFrame());
     }

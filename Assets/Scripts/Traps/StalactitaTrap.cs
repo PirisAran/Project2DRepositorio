@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TecnocampusProjectII;
-public class KillPlayerOnTouch : MonoBehaviour, IRestartLevelElement
+public class StalactitaTrap : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField]
     GameObject _player;
@@ -20,18 +20,6 @@ public class KillPlayerOnTouch : MonoBehaviour, IRestartLevelElement
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
-    
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    Debug.Log("Detected: " + collision.gameObject.name);
-    //    if (collision.transform == _player.transform)
-    //    {
-    //        _player.GetComponent<HealthSystem>().KillPlayer();
-    //    }
-    //    Destroy(gameObject);
-    //}
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Detected: " + collision.gameObject.name);
@@ -46,9 +34,8 @@ public class KillPlayerOnTouch : MonoBehaviour, IRestartLevelElement
     public void RestartLevel()
     {
         var rb = GetComponent<Rigidbody2D>();
-        rb.isKinematic = true;
+        rb.bodyType = RigidbodyType2D.Static;
         transform.position = _oPosition;
-        rb.velocity = Vector2.zero;
         gameObject.SetActive(true);
     }
 }

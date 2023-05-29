@@ -19,6 +19,7 @@ public class Thrower : MonoBehaviour
     KeyCode PickUpKey = KeyCode.E;
     [SerializeField]
     KeyCode CancelThrowKey = KeyCode.Mouse1;
+    [SerializeField] GameObject _parent;
 
     [SerializeField]
     public Collider2D PickUpCollider;
@@ -39,7 +40,19 @@ public class Thrower : MonoBehaviour
     float _throwStartTime;
     public bool IsChargingThrow => _isChargingThrow;
     bool _isChargingThrow = false;
-    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!_hasFire) return;
+
+        IDamageFire water = collision.GetComponent<IDamageFire>();
+
+        if (water != null)
+        {
+            _fire.TakeDamage(water.DamageDealt);
+        }
+    }
+
     void Awake()
     {
         _lr = GetComponent<LineRenderer>();
@@ -66,7 +79,7 @@ public class Thrower : MonoBehaviour
             _lr.positionCount = currentParabolicShootPoints;
             _lr.SetPositions(l_Positions.ToArray());
         }
-    }
+    }   
 
     private int GetUnblockedParabolicShootPointsNumber(List<Vector3> l_Positions)
     {
@@ -124,12 +137,6 @@ public class Thrower : MonoBehaviour
         _isChargingThrow = false;
     }
 
-    public void SetHasFire(bool v)
-    {
-        _hasFire = v;
-        _runner.ChangeSpeed();
-    }
-
     private void PickUpInput()
     {
         if (_hasFire)
@@ -148,6 +155,13 @@ public class Thrower : MonoBehaviour
     private void PickUpFire()
     {
         _fire.BePickedUp();
+    }
+
+    public void SetAttachFireToBody(bool v)
+    {
+        _fire.transform.parent = v? transform: null;
+        _hasFire = v;
+        _runner.ChangeSpeed();
     }
 
     private Vector2 GetMouseDir()

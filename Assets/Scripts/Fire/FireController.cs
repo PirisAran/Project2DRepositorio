@@ -10,6 +10,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 {
                                              /* ---------- FIRE CONTROLLER ----------- */
     [SerializeField] Thrower _playerThrower;
+    [SerializeField] Transform _attachedLocation;
     
     //Components    
     [SerializeField] List<SpriteRenderer> _sprites;
@@ -56,9 +57,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     float _maxFireHealth = 10;
     float _currentFireHealth;
     public float CurrentFireHealth { get { return _currentFireHealth;} set { _currentFireHealth = value;} }
-    [SerializeField]
-    CircleCollider2D _damageCollider;
-
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -86,6 +85,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     private void Start()
     {
         SetDefaultValues();
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     public void SetDefaultValues()
@@ -95,13 +95,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _lightRange = _maxLightRange;
         _currentFireHealth = _maxFireHealth;
         _light.color = _lightColor;
-
-        //_pickUpCollider.radius = _pickUpRadius;
-        //_lightRange = _maxLightRange;
-        //_currentFireHealth = _maxFireHealth;
-        //_light.color = _lightColor;
-        //BePickedUp();
-        //AdjustLight(_currentFireHealth / _maxFireHealth);
     }
 
     private void AdjustLightEffect()
@@ -123,9 +116,9 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     // Update is called once per frame
     void Update()
     {
-        if (transform.parent != null)
+        if (IsAttached())
         {
-            transform.localPosition = Vector2.zero;
+            transform.position = _attachedLocation.position;
         }
 
         if (_isExploding)
@@ -145,20 +138,22 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
+        CameraManager.GetCameraManager().StartShakeCamera();
+
     }
 
     public void BePickedUp()
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        //Hide();
+        CameraManager.GetCameraManager().StopShakeCamera();
     }
 
     private void SetAttached(bool v)
     {
-        _playerThrower.SetHasFire(v);
-        transform.parent = v ? _playerThrower.gameObject.transform : null;
+        _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+        GetComponent<Collider2D>().enabled = !v;
     }
 
     private bool IsAttached()
@@ -236,6 +231,8 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     /* ----- HEALTH AND DAMAGE HERE  ------- */
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (IsAttached()) return;
+
         IDamageFire water = collision.GetComponent<IDamageFire>();
         if (water != null)
         {
@@ -243,7 +240,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         }
     }
 
-    private void TakeDamage(float damageDealt)
+    public void TakeDamage(float damageDealt)
     {
         Debug.Log("FireDamage");
         _currentFireHealth -= damageDealt;
