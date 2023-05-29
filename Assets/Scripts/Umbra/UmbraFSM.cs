@@ -46,6 +46,7 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
 
     public Vector3 Forward => (_desiredPosition - transform.position).normalized;
     public States CurrentState => _currentState;
+    public float Speed => _currentSpeed;
     private Vector3 _playerDirection => (_player.transform.position - transform.position).normalized;
     private Vector3 _fireDirection => (_fire.transform.position - transform.position).normalized;
     private float _lightRange => _fire.LightRange;
@@ -76,11 +77,11 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
 
     private void Awake()
     {
-        Init();
     }
 
     private void Start()
     {
+        Init();
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
@@ -88,6 +89,7 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
     private void Init()
     {
         _currentState = States.Follow;
+        OnEnterFollowState?.Invoke();
         _timeCurrentState = 0;
     }
 
