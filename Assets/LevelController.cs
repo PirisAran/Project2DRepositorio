@@ -15,18 +15,19 @@ namespace TecnocampusProjectII
         [SerializeField] private Transform _umbraSpawnPoint;
         List<IRestartLevelElement> m_RestartLevelElements = new List<IRestartLevelElement>();
 
-        public static LevelController Instance;
         private void Awake()
         {
-            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
         }
 
         private void Start()
         {
-            Instance = this;
+            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
             _player.position = _playerSpawnPoint.position;
-            _umbra.position = _umbraSpawnPoint.position;
+            if (_umbra != null)
+            {
+                _umbra.position = _umbraSpawnPoint.position;
+            }   
         }
 
         private void Update()

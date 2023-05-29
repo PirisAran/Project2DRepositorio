@@ -51,7 +51,7 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnEnterTransitionState -= OnTransitionState;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_currentAnim == null) return;
         _currentAnim.SetBool("moving", _umbraFSM.Speed > 1.5f);

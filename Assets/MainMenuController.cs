@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace TecnocampusProjectII
 {
+
 	public class MainMenuController : MonoBehaviour
 	{
 		[SerializeField] string m_firstLevel;
@@ -19,7 +22,8 @@ namespace TecnocampusProjectII
 			}
 			l_GameLogic.SetGameStarted(true);
 		}
-		public void OnStartClicked()
+
+        public void OnStartClicked()
 		{
 			SceneManager.LoadSceneAsync(m_firstLevel);
 		}
