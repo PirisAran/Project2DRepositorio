@@ -62,8 +62,6 @@ public class WaterSpring : MonoBehaviour
         var rb = collision.GetComponent<Rigidbody2D>();
         if (rb == null) return;
 
-        Debug.Log("Object with RB");
-
         var speed = rb.velocity;
         velocity += speed.y / resistance;
 
