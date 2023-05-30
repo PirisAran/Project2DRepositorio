@@ -10,7 +10,11 @@ namespace TecnocampusProjectII
 
 	public class MainMenuController : MonoBehaviour
 	{
-		[SerializeField] string m_firstLevel;
+		[SerializeField] string _firstLevelScene;
+
+		[SerializeField] GameObject _mainMenuCanva;
+		[SerializeField] GameObject _optionsMenuCanva;
+
 		void Start()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
@@ -21,11 +25,45 @@ namespace TecnocampusProjectII
 				GameLogic.GetGameLogic().SetGameController(null);
 			}
 			l_GameLogic.SetGameStarted(true);
+
+			DisableAllCanvas();
+			_mainMenuCanva.SetActive(true);
 		}
 
+		// I ENUMERATOR CON ANIMACIONES UJUJU gold
         public void OnStartClicked()
 		{
-			SceneManager.LoadSceneAsync(m_firstLevel);
+			Debug.Log("START");
+			SceneManager.LoadSceneAsync(_firstLevelScene);
+		}
+		public void OnOptionsClicked()
+		{
+			Debug.Log("OPTIONS");
+			DisableAllCanvas();
+			_optionsMenuCanva.SetActive(true);
+		}
+
+		public void OnVolumeClicked()
+        {
+			Debug.Log("VOLUME");
+        }
+
+		public void OnReturnClicked()
+        {
+			DisableAllCanvas();
+			_mainMenuCanva.SetActive(true);
+			Debug.Log("RETURN");
+		}
+
+		private void DisableAllCanvas()
+        {
+			_optionsMenuCanva.SetActive(false);
+			_mainMenuCanva.SetActive(false);
+		}
+
+        public void OnExitClicked()
+		{
+			Application.Quit();
 		}
 	}
 }
