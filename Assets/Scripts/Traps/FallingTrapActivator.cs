@@ -8,6 +8,8 @@ public class FallingTrapActivator : MonoBehaviour
 {
     Rigidbody2D _rb;
 
+    [SerializeField] Collider2D _parentCol;
+
     //Collision2D _rockCollider;
     [SerializeField]
     GameObject _player;
@@ -28,7 +30,9 @@ public class FallingTrapActivator : MonoBehaviour
     {
         if (collision.transform == _player.transform)
         {
+            _parentCol.isTrigger = true;
             _rb.bodyType = RigidbodyType2D.Dynamic;
+            this.enabled = false;
             //_rb.AddForce(Vector2.down * 10.0f);
         }
     }
