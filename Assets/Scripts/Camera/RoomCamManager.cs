@@ -4,49 +4,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour
+public class RoomCamManager : MonoBehaviour
 {
-    static CameraManager _cameraManager;
+    static RoomCamManager _instance;
 
     [SerializeField] float _shakeIntensity = 1, _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
 
-    List<CinemachineVirtualCamera> _cameras = new List<CinemachineVirtualCamera>();
+    List<RoomWithCameraBehaviour> _rooms = new List<RoomWithCameraBehaviour>();
 
-    CinemachineVirtualCamera _currentCamera;
+    CinemachineVirtualCamera _currentRoomCam;
 
     IEnumerator _currentCoroutine;
 
     CinemachineBasicMultiChannelPerlin _currentCBMCP;
 
-    public static CameraManager GetCameraManager()
+    public static RoomCamManager GetCameraManager()
     {
-        if (_cameraManager == null)
+        if (_instance == null)
         {
-            _cameraManager = InitCameraManager();
+            _instance = InitCameraManager();
         }
-        return _cameraManager;
+        return _instance;
     }
 
-    private static CameraManager InitCameraManager()
+    private static RoomCamManager InitCameraManager()
     {
         GameObject cameraManager = new GameObject("CameraManager");
         cameraManager.transform.position = Vector3.zero;
-        return cameraManager.AddComponent<CameraManager>();
+        return cameraManager.AddComponent<RoomCamManager>();
     }
 
-    public void AddToCameraList(CinemachineVirtualCamera camera)
+    public void AddToRoomList(RoomWithCameraBehaviour camera)
     {
-        _cameras.Add(camera);
+        _rooms.Add(camera);
     }
 
-    public void SetCurrentCamera(CinemachineVirtualCamera camera)
+    public void SetCurrentRoomCam(RoomWithCameraBehaviour room)
     {
-        foreach (CinemachineVirtualCamera cam in _cameras)
-            cam.gameObject.SetActive(false);
+        foreach (RoomWithCameraBehaviour r in _rooms)
+            r.Cam.gameObject.SetActive(false);
 
-        _currentCamera = camera;
-        _currentCamera.gameObject.SetActive(true);
-        _currentCBMCP = _currentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _currentRoomCam = room.Cam;
+        _currentRoomCam.gameObject.SetActive(true);
+        _currentCBMCP = _currentRoomCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
 

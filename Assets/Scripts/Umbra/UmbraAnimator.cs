@@ -55,7 +55,6 @@ public class UmbraAnimator : MonoBehaviour
     {
         if (_currentAnim == null) return;
         _currentAnim.SetBool("moving", _umbraFSM.Speed > 1.5f);
-        Debug.Log(_umbraFSM.Speed);
 
         if (_umbraFSM.CurrentState == UmbraFSM.States.Transition) return;
         var scale = _currentAnim.transform.localScale;
