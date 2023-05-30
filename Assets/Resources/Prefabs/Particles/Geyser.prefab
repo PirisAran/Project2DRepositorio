@@ -222,7 +222,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 2
+      minMaxState: 0
       minColor: {r: 0, g: 0.45051003, b: 1, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
@@ -986,26 +986,26 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 1
-          inSlope: -0.3412928
-          outSlope: -0.3412928
+          inSlope: -0.34146455
+          outSlope: -0.34146455
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.6145309
-          value: 0.790265
-          inSlope: -0.58290046
-          outSlope: -0.58290046
-          tangentMode: 34
+          time: 0.6603395
+          value: 0.7745175
+          inSlope: -1.2851915
+          outSlope: -1.2851915
+          tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.33333334
+          outWeight: 0.35778806
         - serializedVersion: 3
-          time: 1
-          value: 0.47244263
-          inSlope: -0.82450813
-          outSlope: -0.82450813
+          time: 0.98114014
+          value: 0.1496048
+          inSlope: -1.9479781
+          outSlope: -1.9479781
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -1310,29 +1310,29 @@ ParticleSystem:
     enabled: 1
     gradient:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 1
       minColor: {r: 1, g: 1, b: 1, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.25098038, g: 0.9138747, b: 1, a: 1}
-        key2: {r: 0.02352941, g: 0.4389817, b: 1, a: 0}
-        key3: {r: 0.2509804, g: 0.91372555, b: 1, a: 0}
+        key0: {r: 0.02352941, g: 0.4389817, b: 1, a: 1}
+        key1: {r: 0.2509804, g: 0.91372555, b: 1, a: 1}
+        key2: {r: 0.9536695, g: 0.9946727, b: 1, a: 0}
+        key3: {r: 0.9536695, g: 0.9946727, b: 1, a: 0}
         key4: {r: 0.9536695, g: 0.9946727, b: 1, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 18697
-        ctime2: 33346
-        ctime3: 48380
+        ctime1: 24672
+        ctime2: 52235
+        ctime3: 65535
         ctime4: 65535
         ctime5: 0
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
+        atime1: 50693
         atime2: 0
         atime3: 0
         atime4: 0
@@ -1340,7 +1340,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 5
+        m_NumColorKeys: 3
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -4851,6 +4851,7 @@ GameObject:
   - component: {fileID: 4300130265227240110}
   - component: {fileID: 4300130265227240097}
   - component: {fileID: 4300130265227240096}
+  - component: {fileID: 1092563792}
   m_Layer: 0
   m_Name: Geyser
   m_TagString: Untagged
@@ -4919,3 +4920,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.5763626, y: 8.279942}
   m_EdgeRadius: 0
+--- !u!114 &1092563792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4300130265227240099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0560193c7acb7c0448e29d0f08ee8775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 999
