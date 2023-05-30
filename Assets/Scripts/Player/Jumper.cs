@@ -15,9 +15,9 @@ public class Jumper : MonoBehaviour
 
     //Jumping------------------------
     [SerializeField]
-    float HighJumpHeight = 2.5f, LowJumpHeight = 1.0f;
-    public float HighJump { get { return HighJumpHeight; } set { HighJumpHeight = value; } }
-    public float LowJump { get { return LowJumpHeight; } set { LowJumpHeight = value; } }
+    float _highJumpHeight = 2.5f, _lowJumpHeight = 1.0f;
+    public float HighJump { get { return _highJumpHeight; } set { _highJumpHeight = value; } }
+    public float LowJump { get { return _lowJumpHeight; } set { _lowJumpHeight = value; } }
     float _previousHighJUmp, _previousLowJump;
     [SerializeField]
     float PressTimeToHighJump = 0.1f;
@@ -86,6 +86,7 @@ public class Jumper : MonoBehaviour
             TryAddExtraJumpForce();
 
         YSpeed = _rb.velocity.y;
+        Debug.Log(_initialPosition);
     }
     private void JumpInput()
     {
@@ -106,7 +107,7 @@ public class Jumper : MonoBehaviour
             return;
         }
         if (CanJump())
-            DoJump();
+            DoJump(_lowJumpHeight);
     }
     //SALTO SIN EL FUEGO
     private void DoMultipleJump()
@@ -121,16 +122,30 @@ public class Jumper : MonoBehaviour
 
         if (_multipleJumpsLeft > 0)
         {
+            if (_multipleJumpsLeft == 1)
+            {
+                if (_rb.velocity.y < 0.0f)
+                {
+                    DoJump(_lowJumpHeight);
+                }
+                else
+                {
+                    float maxHeight = _lowJumpHeight + _highJumpHeight;
+                    float distToMaxHeight = maxHeight - (transform.position.y - _initialPosition.y);
+                    DoJump(distToMaxHeight);
+                }
+            }
+            else
+                DoJump(_lowJumpHeight);
             _multipleJumpsLeft--;
-            DoJump();
         }
     }
-    private void DoJump()
+    private void DoJump(float height)
     {
         _jumping = true;
         _pressingJumpKey = true;
         _jumpStartTime = Time.time;
-        AddJumpForce(LowJumpHeight);
+        AddJumpForce(height);
     }
     // SOLO SE HACE ESTO CUANDO NO TIENE EL FUEGO
     private void TryAddExtraJumpForce()
@@ -139,7 +154,8 @@ public class Jumper : MonoBehaviour
         {
             var currentPosition = transform.position;
             //Le pasamos la altura que le queda para llegar a la HighJumpHeight
-            AddJumpForce(HighJumpHeight - Vector2.Distance(currentPosition, _initialPosition));
+            float distToMaxHeight = _highJumpHeight - (currentPosition.y - _initialPosition.y);
+            AddJumpForce(distToMaxHeight);
             _firstAddedForce = false;
         }
     }
@@ -171,12 +187,12 @@ public class Jumper : MonoBehaviour
     }
     private void GetPreviousJumps()
     {
-        _previousHighJUmp = HighJumpHeight;
-        _previousLowJump = LowJumpHeight;
+        _previousHighJUmp = _highJumpHeight;
+        _previousLowJump = _lowJumpHeight;
     }
     public void SetPreviousJumps()
     {
-        HighJumpHeight = _previousHighJUmp;
-        LowJumpHeight = _previousLowJump;
+        _highJumpHeight = _previousHighJUmp;
+        _lowJumpHeight = _previousLowJump;
     }
 }
