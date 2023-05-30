@@ -16,23 +16,13 @@ public class BossBehaviour : MonoBehaviour
         _currentBoost = speedBoostersBoss;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_currentBoost == null) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + 10 * _currentBoost.Dir);
-    }
-
-
     void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (_currentBoost == null) return;
         _rb.velocity = _currentBoost.BoostSpeed * _currentBoost.Dir;
-        Debug.Log(_currentBoost.BoostSpeed);
     }
 }
