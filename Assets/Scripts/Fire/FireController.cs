@@ -138,7 +138,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
-        CameraManager.GetCameraManager().StartShakeCamera();
+        RoomCamManager.GetCameraManager().StartShakeCamera();
 
     }
 
@@ -146,7 +146,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        CameraManager.GetCameraManager().StopShakeCamera();
+        RoomCamManager.GetCameraManager().StopShakeCamera();
     }
 
     private void SetAttached(bool v)
