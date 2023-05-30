@@ -17,11 +17,11 @@ namespace TecnocampusProjectII
 
         private void Awake()
         {
-            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
         }
 
         private void Start()
         {
+            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
             _player.position = _playerSpawnPoint.position;
             if (_umbra != null)

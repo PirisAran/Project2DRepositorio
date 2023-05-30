@@ -9,7 +9,6 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     GameObject _player;
 
     Rigidbody2D _rb;
-    Collider2D _childCollider;
 
     Vector2 _oPosition;
 
@@ -27,7 +26,6 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
         gameController.GetLevelController().AddRestartLevelElement(this);
         _oPosition = transform.position;
         _rb = GetComponent<Rigidbody2D>();
-        _childCollider = GetComponentInChildren<Collider2D>();
     }
 
 
