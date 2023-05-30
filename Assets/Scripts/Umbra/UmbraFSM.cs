@@ -72,7 +72,10 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
 
         HealthSystem healthSystem = collision.GetComponent<HealthSystem>();
         if (healthSystem != null)
+        {
+            Debug.Log("umbra kills player");
             healthSystem.KillPlayer();
+        }
     }
 
     private void Awake()

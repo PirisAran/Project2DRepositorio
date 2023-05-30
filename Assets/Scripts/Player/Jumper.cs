@@ -86,7 +86,6 @@ public class Jumper : MonoBehaviour
             TryAddExtraJumpForce();
 
         YSpeed = _rb.velocity.y;
-        Debug.Log(_initialPosition);
     }
     private void JumpInput()
     {
