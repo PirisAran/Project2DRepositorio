@@ -9,6 +9,10 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     GameObject _player;
 
     Rigidbody2D _rb;
+    Collider2D _collider;
+
+    [SerializeField]
+    LayerMask _whatIsGround;
 
     Vector2 _oPosition;
     private bool _outsideOrigin = false;
@@ -31,11 +35,15 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
         GetComponent<Collider2D>().isTrigger = true;
         _oPosition = transform.position;
         _rb = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<Collider2D>();
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void Update()
     {
-        GetComponent<Collider2D>().isTrigger = false;
+        if (!_collider.IsTouchingLayers(_whatIsGround))
+        {
+            _collider.isTrigger = false;
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)

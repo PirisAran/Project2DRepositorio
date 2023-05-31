@@ -32,8 +32,6 @@ public class FallingTrapActivator : MonoBehaviour
         {
             _parentCol.isTrigger = true;
             _rb.bodyType = RigidbodyType2D.Dynamic;
-            this.enabled = false;
-            //_rb.AddForce(Vector2.down * 10.0f);
         }
     }
 }
