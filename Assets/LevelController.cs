@@ -55,6 +55,7 @@ namespace TecnocampusProjectII
         public void AddRestartLevelElement(IRestartLevelElement RestartLevelElement)
         {
             m_RestartLevelElements.Add(RestartLevelElement);
+            RoomCamManager.GetCameraManager().StopShakeCamera();
         }
 
         public void SetSpawnPoint(Vector3 playerPos, Vector3 umbraPos)
