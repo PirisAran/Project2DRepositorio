@@ -2,49 +2,60 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
-public class BurnableObject: MonoBehaviour
+public class BurnableObject: MonoBehaviour, IRestartLevelElement
 {
     [SerializeField]
-    float TimeToBurn = 3;
+    float _timeToBurn = 3;
+
+    SpriteRenderer _sr;
+    Color _previousColor;
 
     [SerializeField]
-    GameObject Particles;
-
-    float _timer;
-
+    GameObject _fireParticlesPrefab;
+    
     private void Awake()
     {
-        Particles.SetActive(false);
+        _sr = GetComponent<SpriteRenderer>();
+        _previousColor = _sr.color;
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<FireController>())
-            StartToBurn();
+            Burn();
     }
 
-    void StartToBurn()
+    void Burn()
     {
-        StartCoroutine(StartCountDown());
-        Particles.SetActive(true);
+        Instantiate(_fireParticlesPrefab, transform.position, Quaternion.identity);
+        StartCoroutine(BurnAndDisable());
     }
 
-    IEnumerator StartCountDown()
+    IEnumerator BurnAndDisable()
     {
-        _timer = 0;
-        while (_timer < TimeToBurn)
+        Color desiredColor = Color.black;
+        float timer = _timeToBurn;
+        while (timer > 0)
         {
-            _timer += Time.deltaTime;
+            timer += Time.deltaTime;
+            Color.Lerp(_previousColor, desiredColor, Mathf.Clamp01(timer / _timeToBurn));
             yield return null;
         }
+
         EndBurn();
     }
 
     private void EndBurn()
     {
-        Particles.SetActive(false);
-        Destroy(gameObject);
-        Debug.Log("BURNED OBJECT:" + gameObject.name);
+        gameObject.SetActive(false);
+    }
+
+    public void RestartLevel()
+    {
+        gameObject.SetActive(true);
+        _sr.color = _previousColor;
     }
 }

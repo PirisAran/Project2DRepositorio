@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TecnocampusProjectII;
 
 public abstract class PlayerWithFireActivation : ActivationObject
 {
