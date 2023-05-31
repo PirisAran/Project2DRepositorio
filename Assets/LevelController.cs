@@ -17,11 +17,11 @@ namespace TecnocampusProjectII
 
         private void Awake()
         {
-            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
         }
 
         private void Start()
         {
+            GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
             _player.position = _playerSpawnPoint.position;
             if (_umbra != null)
@@ -55,6 +55,7 @@ namespace TecnocampusProjectII
         public void AddRestartLevelElement(IRestartLevelElement RestartLevelElement)
         {
             m_RestartLevelElements.Add(RestartLevelElement);
+            RoomCamManager.GetCameraManager().StopShakeCamera();
         }
 
         public void SetSpawnPoint(Vector3 playerPos, Vector3 umbraPos)

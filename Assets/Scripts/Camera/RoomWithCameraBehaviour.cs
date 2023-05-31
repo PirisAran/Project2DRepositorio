@@ -21,11 +21,14 @@ public class RoomWithCameraBehaviour : MonoBehaviour
     
     [SerializeField]
     float _scale;
+    [SerializeField]
+    private bool _freeForm = false;
 
     private void OnValidate()
     {
         UpdateBoxSize();
         UpdateCamSize();
+        if (_freeForm) return;    
         UpdateBoxCollider();
     }
 
@@ -71,7 +74,6 @@ public class RoomWithCameraBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("EnteredCam");
         if (other.CompareTag("Player"))
         {
             _playerInTrigger = true;

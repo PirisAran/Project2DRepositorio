@@ -274,5 +274,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         HealMaximum();
         BePickedUp();
+        AdjustLightEffect();
+        _fireParticlesPrefab.SetActive(true);
     }
 }

@@ -110,6 +110,5 @@ public class Geyser : MonoBehaviour, IDamageFire
     private void ChangeState(States nextState)
     {
         _currentState = nextState;
-        Debug.Log("Entered " + nextState);
     }
 }

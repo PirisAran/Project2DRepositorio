@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] ActivationObject _activatorObject;
     [SerializeField] float _openSpeed;
@@ -11,6 +12,7 @@ public class Door : MonoBehaviour
     [SerializeField] Animator _anim;
     [SerializeField] AnimationClip _activateDoorClip;
     bool _isOpening = false;
+    Vector2 _oPosition;
 
     private void OnEnable()
     {
@@ -23,7 +25,8 @@ public class Door : MonoBehaviour
     }
     void Start()
     {
-        
+        _oPosition = transform.position;
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     void Update()
@@ -53,5 +56,18 @@ public class Door : MonoBehaviour
         yield return new WaitForSeconds(_activateDoorClip.length);
         _isOpening = true;
         _anim.SetBool("activated", true);
+    }
+
+    public void RestartLevel()
+    {
+        transform.position = _oPosition;
+        _isOpening = false;
+        UndoAnimation();
+    }
+
+    private void UndoAnimation()
+    {
+        _anim.Rebind();
+        _anim.Update(0f);
     }
 }
