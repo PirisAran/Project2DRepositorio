@@ -9,9 +9,10 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     GameObject _player;
 
     Rigidbody2D _rb;
-    Collider2D _childCollider;
 
     Vector2 _oPosition;
+    private bool _outsideOrigin = false;
+    private bool _playerHit;
 
     public void RestartLevel()
     {
@@ -24,15 +25,22 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     {
         var gameController = GameLogic.GetGameLogic().GetGameController();
         _player = gameController.m_Player.gameObject;
-        gameController.GetLevelController().AddRestartLevelElement(this);
+        _oPosition = transform.position;
+        var lvlController = gameController.GetLevelController();
+        lvlController.AddRestartLevelElement(this);
+        GetComponent<Collider2D>().isTrigger = true;
         _oPosition = transform.position;
         _rb = GetComponent<Rigidbody2D>();
-        _childCollider = GetComponentInChildren<Collider2D>();
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        GetComponent<Collider2D>().isTrigger = false;
+    }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+
         if (_rb.bodyType == RigidbodyType2D.Static) return;
 
         if (collision.transform == _player.transform)
