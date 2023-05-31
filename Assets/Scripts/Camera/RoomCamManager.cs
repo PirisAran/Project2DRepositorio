@@ -58,6 +58,11 @@ public class RoomCamManager : MonoBehaviour
         StartCoroutine(_currentCoroutine);   
     }
 
+    public void ShakeOnce()
+    {
+        StartCoroutine(DoOneShake());
+    }
+
     IEnumerator ShakeCamera()
     {
         while (true)

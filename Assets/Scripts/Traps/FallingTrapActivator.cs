@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TecnocampusProjectII;
 public class FallingTrapActivator : MonoBehaviour
 {
-    Rigidbody2D _rb;
+    Rigidbody2D _parentRb;
 
     [SerializeField] Collider2D _parentCol;
 
@@ -21,17 +21,15 @@ public class FallingTrapActivator : MonoBehaviour
 
     private void Awake()
     {
-        //_rockCollider = GetComponentInParent<Collision2D>();
-        _rb = GetComponentInParent<Rigidbody2D>();
-        _rb.bodyType = RigidbodyType2D.Static;
+        _parentRb = GetComponentInParent<Rigidbody2D>();
+        _parentRb.bodyType = RigidbodyType2D.Static;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform == _player.transform)
         {
-            _parentCol.isTrigger = true;
-            _rb.bodyType = RigidbodyType2D.Dynamic;
+            _parentRb.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 }

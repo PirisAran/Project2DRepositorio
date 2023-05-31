@@ -11,12 +11,8 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     Rigidbody2D _rb;
     Collider2D _collider;
 
-    [SerializeField]
-    LayerMask _whatIsGround;
-
     Vector2 _oPosition;
-    private bool _outsideOrigin = false;
-    private bool _playerHit;
+    Vector2 _previousSpeed;
 
     public void RestartLevel()
     {
@@ -29,10 +25,9 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     {
         var gameController = GameLogic.GetGameLogic().GetGameController();
         _player = gameController.m_Player.gameObject;
-        _oPosition = transform.position;
         var lvlController = gameController.GetLevelController();
         lvlController.AddRestartLevelElement(this);
-        GetComponent<Collider2D>().isTrigger = true;
+
         _oPosition = transform.position;
         _rb = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
@@ -40,28 +35,23 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
 
     private void Update()
     {
-        if (!_collider.IsTouchingLayers(_whatIsGround))
-        {
-            _collider.isTrigger = false;
-        }
+        //if (!_collider.IsTouchingLayers())
+        //{
+        //    _previousSpeed = _rb.velocity;
+        //}
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (_rb.bodyType == RigidbodyType2D.Static)
+            return;
 
-        if (_rb.bodyType == RigidbodyType2D.Static) return;
+        if (collision.gameObject.GetComponent<FireController>())
+        {
 
-        if (collision.transform == _player.transform)
-        {
-            if (_rb.bodyType != RigidbodyType2D.Static)
-            {
-                _player.GetComponent<HealthSystem>().KillPlayer();
-            }
-        }
-        else if (collision.gameObject.GetComponent<FireController>())
-        {
             if (collision.rigidbody.velocity.magnitude != 0)
             {
+                //_rb.velocity = _previousSpeed;
                 return;
             }
             float xOffset = collision.transform.position.x - transform.position.x;
@@ -73,10 +63,16 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
             Debug.Log("before translation");
             collision.transform.Translate(new Vector2(closestEdgeDir * (closestEdgeDist + collision.collider.bounds.size.x / 2), 0));
         }
-        else
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_rb.bodyType == RigidbodyType2D.Static)
+            return;
+
+        if (collision.transform == _player.transform)
         {
-            _rb.bodyType = RigidbodyType2D.Static;
-            transform.GetChild(0).gameObject.SetActive(false);
+            collision.gameObject.GetComponent<HealthSystem>().KillPlayer();
         }
     }
 }
