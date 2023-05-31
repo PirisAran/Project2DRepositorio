@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class P : MonoBehaviour
+[ExecuteInEditMode]
+public class ParallaxLayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float parallaxFactor;
+    public void Move(float delta)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector3 newPos = transform.localPosition;
+        newPos.x -= delta * parallaxFactor;
+        transform.localPosition = newPos;
     }
 }
