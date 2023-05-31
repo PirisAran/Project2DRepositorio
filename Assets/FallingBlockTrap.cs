@@ -8,6 +8,8 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     GameObject _player;
 
+    [SerializeField]
+    bool _canReset = true;
     Rigidbody2D _rb;
     Collider2D _collider;
 
@@ -16,6 +18,8 @@ public class FallingBlockTrap : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        if (!_canReset) return;
+
         transform.position = _oPosition;
         _rb.bodyType = RigidbodyType2D.Static;
         transform.GetChild(0).gameObject.SetActive(true);
