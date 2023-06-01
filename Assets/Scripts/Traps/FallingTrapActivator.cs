@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TecnocampusProjectII;
-public class FallingTrapActivator : MonoBehaviour
+public class FallingTrapActivator : MonoBehaviour, IRestartLevelElement
 {
     Rigidbody2D _parentRb;
 
@@ -17,6 +17,7 @@ public class FallingTrapActivator : MonoBehaviour
     private void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);        
     }
 
     private void Awake()
@@ -30,6 +31,13 @@ public class FallingTrapActivator : MonoBehaviour
         if (collision.transform == _player.transform)
         {
             _parentRb.bodyType = RigidbodyType2D.Dynamic;
+            gameObject.SetActive(false);
         }
+    }
+
+    public void RestartLevel()
+    {
+        gameObject.SetActive(true);
+
     }
 }
