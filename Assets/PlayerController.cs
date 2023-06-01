@@ -16,7 +16,6 @@ namespace TecnocampusProjectII
 
         public void RestartLevel()
         {
-			Debug.Log("Rs");
 			GameLogic l_GameLogic = GameLogic.GetGameLogic();
 			transform.position = l_GameLogic.GetGameController().GetLevelController().GetPlayerSpawnPoint().position;
         }
