@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,12 @@ namespace TecnocampusProjectII
 {
     public class LevelController : MonoBehaviour
     {
+        [SerializeField] Collider2D _childCollider;
         Transform _player;
+        Collider2D _playerCollider;
+
+        Thrower _playerThrower; 
+
         [SerializeField] Transform _umbra;
         public string m_NextLevel;
 
@@ -24,6 +30,10 @@ namespace TecnocampusProjectII
             GameLogic.GetGameLogic().GetGameController().SetLevelController(this);
             _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
             _player.position = _playerSpawnPoint.position;
+            _playerThrower = _player.GetComponent<Thrower>();
+            _playerCollider = _player.GetComponent<Collider2D>();
+
+
             if (_umbra != null)
             {
                 _umbra.position = _umbraSpawnPoint.position;
@@ -35,6 +45,7 @@ namespace TecnocampusProjectII
             if (ConditionNextLevel())
             {
                 Debug.Log("load next level " + m_NextLevel);
+                StartCoroutine(ChangeScene(m_NextLevel));
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -44,7 +55,9 @@ namespace TecnocampusProjectII
 
         private bool ConditionNextLevel()
         {
-            return Input.GetKeyDown(KeyCode.N);
+            bool _passCondition;
+            _passCondition = _childCollider.IsTouching(_playerCollider) && _playerThrower.HasFire;
+            return _passCondition;
         }
 
         public void RestartLevel()
@@ -70,6 +83,13 @@ namespace TecnocampusProjectII
         public Transform GetUmbraSpawnPoint()
         {
             return _umbraSpawnPoint;
+        }
+
+        IEnumerator ChangeScene(string _nextScene)
+        {
+            //do transition scene
+            yield return new WaitForSeconds(2);
+            SceneManager.LoadScene(_nextScene);
         }
     }
 }
