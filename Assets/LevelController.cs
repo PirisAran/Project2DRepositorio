@@ -38,6 +38,7 @@ namespace TecnocampusProjectII
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
+                Debug.Log("KeyDown");
                 RestartLevel();
             }
         }

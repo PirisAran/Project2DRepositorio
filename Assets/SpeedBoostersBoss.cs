@@ -16,6 +16,8 @@ public class SpeedBoostersBoss: MonoBehaviour
     {
         _dir = transform.right;
 
+        GetComponent<SpriteRenderer>().enabled = false;
+
         _velocityValue = _boostSpeed * _dir;
     }
 

@@ -11,7 +11,13 @@ public class BossBehaviour : MonoBehaviour
     [SerializeField] float _xSpeedMax = 10, _ySpeedMax = 200;
 
     [SerializeField]
-    static Vector2 _currentVelocity;
+    static Vector2 _minVelocity;
+
+    [SerializeField]
+    float _maxAddedSpeed = 2;
+
+    [SerializeField]
+    float _maxSpeedDistance = 40;
 
     void Start()
     {
@@ -20,11 +26,32 @@ public class BossBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rb.velocity = _currentVelocity;
+        Vector2 dir = _minVelocity.normalized;
+        float minVelMagnitude = _minVelocity.magnitude;
+
+        float desiredVelMagnitude = GetDesiredVelocityMagnitude(minVelMagnitude);
+
+        if (desiredVelMagnitude < minVelMagnitude) desiredVelMagnitude = minVelMagnitude;
+
+        _rb.velocity = dir * desiredVelMagnitude;
+        
+    }
+
+    private float GetDesiredVelocityMagnitude(float currentMinVel)
+    {
+        float speed = 0;
+
+        float currentMaxVel = currentMinVel + _maxAddedSpeed;
+
+        float currentDistToPlayer = Vector2.Distance(transform.position, _player.transform.position);
+
+        speed = Mathf.Lerp(currentMinVel, currentMaxVel, Mathf.Clamp01(currentDistToPlayer / _maxSpeedDistance));
+
+        return speed;
     }
 
     public static void ModifyVelocity(Vector2 velocityMod)
     {
-        _currentVelocity += velocityMod;
+        _minVelocity += velocityMod;
     }
 }

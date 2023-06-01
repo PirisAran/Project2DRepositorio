@@ -22,7 +22,7 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
         
     }
 
-    public void DestroyObject()
+    public void StartDestroyObject()
     {
         gameObject.SetActive(false);
     }
