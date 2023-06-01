@@ -65,13 +65,7 @@ public class WaterSpring : MonoBehaviour
         var speed = rb.velocity;
         velocity += speed.y / resistance;
 
-}
-        //if (collision.gameObject.tag.Equals("FallingObject"))
-        //{
-        //    FallingObject fallingObject = collision.gameObject.GetComponent<FallingObject>();
-        //    Rigidbody2D rb = fallingObject.rigidbody2D;
-        //    var speed = rb.velocity;
-
-        //    velocity += speed.y / resistance;
-        //}
+        
     }
+
+}
