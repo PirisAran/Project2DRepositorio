@@ -81,22 +81,18 @@ public class FallinPlatform : MonoBehaviour
         {
             speed = _playerMassSpeed;
             MoveAlongPlatform(speed, _fPosition.position, _player);
-            Debug.Log("PLAYER ONLY");
         }
         else if (FireOnPlatform() && !PlayerOnPlatform())
         {
             speed = _fireMassSpeed;
             MoveAlongPlatform(speed, _fPosition.position, _fire.transform);
-            Debug.Log("FIRE ONLY");
         }
         else
         {
             speed = _playerMassSpeed + _fireMassSpeed;
             MoveAlongPlatform(speed, _fPosition.position, _player);
             MoveAlongPlatform(speed, _fPosition.position, _fire.transform);
-            Debug.Log("BOTH");
         }
-
         MovePlatform(speed, _fPosition.position);
     }
 

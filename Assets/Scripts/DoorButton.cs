@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TecnocampusProjectII;
 
-public class DoorButton : PlayerWithFireActivation
+public class DoorButton : PlayerWithFireActivation, IRestartLevelElement
 {
     SpriteRenderer _spriteRenderer;
     Animator _anim;
+
+    private void Start()
+    {
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+    }
 
     private void Awake()
     {
@@ -47,5 +53,16 @@ public class DoorButton : PlayerWithFireActivation
             _spriteRenderer.color = previousColor;
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    public void RestartLevel()
+    {
+        _isActivated = false;
+        UndoAnimation();
+    }
+    private void UndoAnimation()
+    {
+        _anim.Rebind();
+        _anim.Update(0f);
     }
 }

@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
+using System;
 
-public class FireTriggerActivation : ActivationObject
+public class FireTriggerActivation : ActivationObject, IRestartLevelElement
 {
     FireController _fire;
     Thrower _thrower;
     bool _activated = false;
-    [SerializeField] Animator _animator;
+    [SerializeField] Animator _anim;
     private void Start()
     {
         _fire = FindObjectOfType<FireController>();
         _thrower = FindObjectOfType<Thrower>();
-
+        _anim = GetComponent<Animator>();
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,7 +37,19 @@ public class FireTriggerActivation : ActivationObject
 
     protected override void DoAnimation()
     {
-        _animator.SetBool("activated",true);
+        _anim.SetBool("activated",true);
     }
 
+    public void RestartLevel()
+    {
+        _activated = false;
+        UndoAnimation();
+    }
+
+    private void UndoAnimation()
+    {
+            
+        _anim.Rebind();
+        _anim.Update(0f);
+    }
 }

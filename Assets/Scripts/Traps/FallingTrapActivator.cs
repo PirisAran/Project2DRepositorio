@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TecnocampusProjectII;
-public class FallingTrapActivator : MonoBehaviour
+public class FallingTrapActivator : MonoBehaviour, IRestartLevelElement
 {
-    Rigidbody2D _rb;
+    Rigidbody2D _parentRb;
 
     [SerializeField] Collider2D _parentCol;
 
@@ -17,23 +17,27 @@ public class FallingTrapActivator : MonoBehaviour
     private void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);        
     }
 
     private void Awake()
     {
-        //_rockCollider = GetComponentInParent<Collision2D>();
-        _rb = GetComponentInParent<Rigidbody2D>();
-        _rb.bodyType = RigidbodyType2D.Static;
+        _parentRb = GetComponentInParent<Rigidbody2D>();
+        _parentRb.bodyType = RigidbodyType2D.Static;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform == _player.transform)
         {
-            _parentCol.isTrigger = true;
-            _rb.bodyType = RigidbodyType2D.Dynamic;
-            this.enabled = false;
-            //_rb.AddForce(Vector2.down * 10.0f);
+            _parentRb.bodyType = RigidbodyType2D.Dynamic;
+            gameObject.SetActive(false);
         }
+    }
+
+    public void RestartLevel()
+    {
+        gameObject.SetActive(true);
+
     }
 }
