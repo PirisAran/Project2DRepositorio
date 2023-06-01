@@ -74,16 +74,19 @@ public class RoomCamManager : MonoBehaviour
 
     IEnumerator DoOneShake()
     {
-        _currentCBMCP.m_AmplitudeGain = _shakeIntensity;
-        float timer = _shakeDuration;
-        while (timer > 0)
+        if (_currentCBMCP != null)
         {
-            timer -= Time.fixedDeltaTime;
-            if (timer <= 0)
+            _currentCBMCP.m_AmplitudeGain = _shakeIntensity;
+            float timer = _shakeDuration;
+            while (timer > 0)
             {
-                _currentCBMCP.m_AmplitudeGain = 0;
+                timer -= Time.fixedDeltaTime;
+                if (timer <= 0)
+                {
+                    _currentCBMCP.m_AmplitudeGain = 0;
+                }
+                yield return null;
             }
-            yield return null;
         }
     }
 
