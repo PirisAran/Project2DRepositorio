@@ -9,12 +9,9 @@ public class BossBehaviour : MonoBehaviour
     [SerializeField] Rigidbody2D _rb;
     [SerializeField] Transform _player;
     [SerializeField] float _xSpeedMax = 10, _ySpeedMax = 200;
-    static SpeedBoostersBoss _currentBoost;
 
-    public static void SetCurrentBoost(SpeedBoostersBoss speedBoostersBoss)
-    {
-        _currentBoost = speedBoostersBoss;
-    }
+    [SerializeField]
+    static Vector2 _currentVelocity;
 
     void Start()
     {
@@ -23,6 +20,11 @@ public class BossBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rb.velocity = _currentBoost.BoostSpeed * _currentBoost.Dir;
+        _rb.velocity = _currentVelocity;
+    }
+
+    public static void ModifyVelocity(Vector2 velocityMod)
+    {
+        _currentVelocity += velocityMod;
     }
 }
