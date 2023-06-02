@@ -11,6 +11,7 @@ namespace TecnocampusProjectII
 	public class MainMenuController : MonoBehaviour
 	{
 		[SerializeField] string _firstLevelScene;
+		[SerializeField] string _LVLSELECTOR;
 
 		[SerializeField] GameObject _mainMenuCanva;
 		[SerializeField] GameObject _optionsMenuCanva;
@@ -57,6 +58,11 @@ namespace TecnocampusProjectII
         {
 			Debug.Log("VOLUME");
         }
+
+		public void OnLevelSelectorClicked()
+		{
+			SceneManager.LoadSceneAsync(_LVLSELECTOR);
+		}
 
 		public void OnReturnClicked()
         {
