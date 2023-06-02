@@ -20,6 +20,12 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [Header ("Light Parameters")]
     [SerializeField]
     Light2D _light;
+
+    internal void BeThrown()
+    {
+        throw new NotImplementedException();
+    }
+
     [SerializeField]
     float _maxLightRange = 6;
     [SerializeField]

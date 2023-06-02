@@ -17,7 +17,7 @@ public class BossBehaviour : MonoBehaviour
     float _maxAddedSpeed = 2;
 
     [SerializeField]
-    float _maxSpeedDistance = 40;
+    float _respectDistance = 10;
 
     void Start()
     {
@@ -29,11 +29,11 @@ public class BossBehaviour : MonoBehaviour
         Vector2 dir = _minVelocity.normalized;
         float minVelMagnitude = _minVelocity.magnitude;
 
-        float desiredVelMagnitude = GetDesiredVelocityMagnitude(minVelMagnitude);
+        //float desiredVelMagnitude = GetDesiredVelocityMagnitude(minVelMagnitude);
 
-        if (desiredVelMagnitude < minVelMagnitude) desiredVelMagnitude = minVelMagnitude;
+        //if (desiredVelMagnitude < minVelMagnitude) desiredVelMagnitude = minVelMagnitude;
 
-        _rb.velocity = dir * desiredVelMagnitude;
+        _rb.velocity = dir * minVelMagnitude;
         
     }
 
@@ -45,8 +45,8 @@ public class BossBehaviour : MonoBehaviour
 
         float currentDistToPlayer = Vector2.Distance(transform.position, _player.transform.position);
 
-        speed = Mathf.Lerp(currentMinVel, currentMaxVel, Mathf.Clamp01(currentDistToPlayer / _maxSpeedDistance));
-
+        speed = (currentDistToPlayer > _respectDistance) ? currentMaxVel : currentMinVel;
+        
         return speed;
     }
 

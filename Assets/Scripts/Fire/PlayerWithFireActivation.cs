@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TecnocampusProjectII;
 using UnityEngine;
 
 public abstract class PlayerWithFireActivation : ActivationObject
@@ -12,20 +13,20 @@ public abstract class PlayerWithFireActivation : ActivationObject
 
     private void Start()
     {
-        _thrower = FindObjectOfType<Thrower>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
         //DETECTAR SI EL QUE ENTRA ES PLAYER, TIENE FUEGO
         if (_isActivated) return;
-
-        
-        if (_thrower.transform != collision.transform) return;
+       
+        if (collision.transform != _thrower.transform) return;
         _inTrigger = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
         if (_isActivated) return;
 
         if (_thrower.transform != collision.transform) return;
@@ -36,7 +37,6 @@ public abstract class PlayerWithFireActivation : ActivationObject
     {
         if (_isActivated)
             return;
-
         if (_inTrigger && Input.GetKeyDown(_interactKey))
         {
             if (_thrower.HasFire)
@@ -45,7 +45,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
             }
             else
             {
-                ShowPlayerHeCant();
+                //ShowPlayerHeCant();
             }
         }
         
