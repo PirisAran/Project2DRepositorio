@@ -41,6 +41,9 @@ public class RoomCamManager : MonoBehaviour
 
     public void SetCurrentRoomCam(RoomWithCameraBehaviour room)
     {
+        var mainCamBrain = Camera.main.GetComponent<CinemachineBrain>();
+        mainCamBrain.enabled = true;
+
         foreach (RoomWithCameraBehaviour r in _rooms)
             r.Cam.gameObject.SetActive(false);
 
