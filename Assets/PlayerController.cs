@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace TecnocampusProjectII
 {
 	public class PlayerController : MonoBehaviour, IRestartLevelElement
 	{
+		LevelController currentLvlController;
 		private void Start()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
@@ -11,13 +13,18 @@ namespace TecnocampusProjectII
 				DontDestroyOnLoad(this.gameObject);
 			else
 				Destroy(gameObject);
-			l_GameLogic.GetGameController().GetLevelController().AddRestartLevelElement(this);
 		}
 
         public void RestartLevel()
         {
 			GameLogic l_GameLogic = GameLogic.GetGameLogic();
-			transform.position = l_GameLogic.GetGameController().GetLevelController().GetPlayerSpawnPoint().position;
+			transform.position = currentLvlController.GetPlayerSpawnPoint().position;
         }
-	}
+
+        internal void SubscribeToLvl(LevelController levelController)
+        {
+			levelController.AddRestartLevelElement(this);
+			currentLvlController = levelController;
+		}
+    }
 }

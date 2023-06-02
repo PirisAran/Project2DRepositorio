@@ -12,6 +12,8 @@ namespace TecnocampusProjectII
         Transform _player;
         Collider2D _playerCollider;
 
+        FireController _fire;
+
         Thrower _playerThrower; 
 
         [SerializeField] Transform _umbra;
@@ -23,6 +25,17 @@ namespace TecnocampusProjectII
 
         private void Awake()
         {
+           
+        }
+
+        private void SubscirbePlayer()
+        {
+            _player.GetComponent<PlayerController>().SubscribeToLvl(this);
+        }
+
+        private void SubscirbeFire()
+        {
+            _fire.SubscribeToLvl(this);
         }
 
         private void Start()
@@ -32,6 +45,9 @@ namespace TecnocampusProjectII
             _player.position = _playerSpawnPoint.position;
             _playerThrower = _player.GetComponent<Thrower>();
             _playerCollider = _player.GetComponent<Collider2D>();
+            _fire = _player.GetComponentInChildren<FireController>();
+            SubscirbePlayer();
+            SubscirbeFire();
 
 
             if (_umbra != null)

@@ -34,6 +34,12 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     GameObject _fireParticlesPrefab;
     public float LightRange => _lightRange;
     float _lightRange;
+
+    internal void SubscribeToLvl(LevelController levelController)
+    {
+        levelController.AddRestartLevelElement(this);
+    }
+
     [Space] 
 
     [Header("Light Effect Parameters")]
@@ -91,7 +97,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     private void Start()
     {
         SetDefaultValues();
-        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     public void SetDefaultValues()
@@ -144,7 +149,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
-        RoomCamManager.GetCameraManager().StartShakeCamera();
 
     }
 
@@ -152,11 +156,11 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        RoomCamManager.GetCameraManager().StopShakeCamera();
     }
 
     private void SetAttached(bool v)
     {
+        Debug.Log("attahced");
         _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
         GetComponent<Collider2D>().enabled = !v;

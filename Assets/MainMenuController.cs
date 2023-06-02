@@ -26,11 +26,21 @@ namespace TecnocampusProjectII
 			}
 			l_GameLogic.SetGameStarted(true);
 
+
+
 			DisableAllCanvas();
 			_mainMenuCanva.SetActive(true);
 		}
 
-		// I ENUMERATOR CON ANIMACIONES UJUJU gold
+        private void Update()
+        {
+			if (Input.GetKeyDown(KeyCode.Space))
+            {
+				SceneManager.LoadSceneAsync(_firstLevelScene);
+			}
+        }
+
+        // I ENUMERATOR CON ANIMACIONES UJUJU gold
         public void OnStartClicked()
 		{
 			Debug.Log("START");
