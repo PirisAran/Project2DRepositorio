@@ -23,6 +23,7 @@ public class WaterDrop : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        Init();
     }
 
     public void Init()

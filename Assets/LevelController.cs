@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,7 +27,6 @@ namespace TecnocampusProjectII
 
         private void Awake()
         {
-           
         }
 
         private void SubscirbePlayer()
@@ -85,6 +86,10 @@ namespace TecnocampusProjectII
         public void AddRestartLevelElement(IRestartLevelElement RestartLevelElement)
         {
             m_RestartLevelElements.Add(RestartLevelElement);
+        }
+        public void RemoveRestartLevelElement(IRestartLevelElement RestartLevelElement)
+        {
+            m_RestartLevelElements.Remove(RestartLevelElement);
             RoomCamManager.GetCameraManager().StopShakeCamera();
         }
 

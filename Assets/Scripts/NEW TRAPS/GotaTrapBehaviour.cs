@@ -17,8 +17,7 @@ public class GotaTrapBehaviour : MonoBehaviour
     {
         if (CanSpawn())
         {
-            GameObject waterDrop = _spawner.SpawnOne();
-            waterDrop.gameObject.GetComponent<WaterDrop>().Init();
+            _spawner.SpawnOne();
             _lastTimeSpawned = Time.time;
         }
     }

@@ -8,7 +8,9 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     [Header("Scripts Utilizados")]
     [SerializeField] KillPlayer _killPlayer;
     [SerializeField] DetectPlayer _detectPlayer;
-    
+
+    bool _playerWasHit;
+
     Vector2 _oPosition;
     Rigidbody2D _rb;
 
@@ -25,9 +27,15 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _oPosition = transform.position;
+        Init();
+    }
+
+    private void Init()
+    {
+        _rb.bodyType = RigidbodyType2D.Static;
         _killPlayer.SetCanKill(false);
     }
+
     private void Start()
     {
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
@@ -47,12 +55,16 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         _rb.bodyType = RigidbodyType2D.Dynamic;
         _detectPlayer.enabled = false;
+        _killPlayer.SetCanKill(true);
+        Debug.Log(name + " detected player");
     }
 
     private void ResetValues()
     {
         _rb.bodyType = RigidbodyType2D.Static;
         transform.position = _oPosition;
+        _detectPlayer.enabled = true;
+        _killPlayer.SetCanKill(false);
         gameObject.SetActive(true);
     }
 
