@@ -24,6 +24,8 @@ public class RoomWithCameraBehaviour : MonoBehaviour
     [SerializeField]
     private bool _freeForm = false;
 
+   
+
     private void OnValidate()
     {
         UpdateBoxSize();
@@ -52,6 +54,7 @@ public class RoomWithCameraBehaviour : MonoBehaviour
         _virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         _roomCamManager =  RoomCamManager.GetCameraManager();
         _roomCamManager.AddToRoomList(this);
+      
     }
 
     private void Start()
