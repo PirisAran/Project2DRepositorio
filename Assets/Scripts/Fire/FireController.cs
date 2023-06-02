@@ -166,7 +166,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         GetComponent<Collider2D>().enabled = !v;
     }
 
-    private bool IsAttached()
+    public bool IsAttached()
     {
         return _playerThrower.HasFire;
     }
@@ -239,16 +239,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _explosionTimer += Time.fixedDeltaTime;
     }
     /* ----- HEALTH AND DAMAGE HERE  ------- */
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (IsAttached()) return;
-
-        IDamageFire water = collision.GetComponent<IDamageFire>();
-        if (water != null)
-        {
-            TakeDamage(water.DamageDealt);
-        }
-    }
 
     public void TakeDamage(float damageDealt)
     {

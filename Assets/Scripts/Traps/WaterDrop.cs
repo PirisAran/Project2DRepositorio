@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using TecnocampusProjectII;
 using UnityEngine;
 
-public class WaterDrop : MonoBehaviour, IDamageFire
+public class WaterDrop : MonoBehaviour
 {
-    static Thrower _player;
-    public float DamageDealt => Damage;
-    
-    [SerializeField]
-    float Damage = 2;
+    [Header("Scripts Utilizados")]
+    [SerializeField] DamageFire _damageFire;
+
+    [Space]
     [SerializeField]
     float GravityTweak = 1;
     [SerializeField]
     AnimationClip _splatterClip;
 
-    Rigidbody2D _rb;
-
     [SerializeField] GameObject _particlesPrefab;
+    Rigidbody2D _rb;
     
     private enum States { Falling, Breaking }
 
@@ -27,20 +25,17 @@ public class WaterDrop : MonoBehaviour, IDamageFire
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-    }
-
     public void Init()
     {
         _rb.bodyType = RigidbodyType2D.Dynamic;
         _rb.gravityScale *= GravityTweak;
+        _damageFire.SetCanDamage(true);
     }
 
     private void Update()
     {
-        if (!GetComponent<SpriteRenderer>().isVisible)
-            Destroy(gameObject);
+        //if (!GetComponent<SpriteRenderer>().isVisible)
+        //    Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

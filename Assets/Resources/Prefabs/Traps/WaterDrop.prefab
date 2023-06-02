@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 5943507698100424783}
   - component: {fileID: 5943507698100424771}
   - component: {fileID: 8810637927088318606}
-  m_Layer: 13
+  - component: {fileID: 8162518480769304898}
+  m_Layer: 14
   m_Name: WaterDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0e5474331a43542b6adf7367ba7481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 2
+  _damageFire: {fileID: 8162518480769304898}
   GravityTweak: 1
   _splatterClip: {fileID: 7400000, guid: d16d3e906fdf54e459d6b502b540a0ba, type: 2}
   _particlesPrefab: {fileID: 245638559690109880, guid: 4b7c83616a1cbcc4db1ae9dc4f0128cc, type: 3}
@@ -161,3 +162,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8162518480769304898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5943507698100424776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3aa5bfbfb7204a46b7147fd4db089f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canDamage: 1
+  _damageDealt: 2
