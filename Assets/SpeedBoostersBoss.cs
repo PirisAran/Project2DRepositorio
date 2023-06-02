@@ -2,11 +2,11 @@
 
 public class SpeedBoostersBoss: MonoBehaviour
 {
-    public Vector3 Dir => _dir;
     Vector3 _dir;
 
-    public float BoostSpeed => _boostSpeed;
     [SerializeField] float _boostSpeed;
+
+    Vector2 _velocityValue;
 
     private void OnDrawGizmos()
     {
@@ -15,13 +15,25 @@ public class SpeedBoostersBoss: MonoBehaviour
     private void Awake()
     {
         _dir = transform.right;
+
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        _velocityValue = _boostSpeed * _dir;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<BossBehaviour>())
         {
-            BossBehaviour.SetCurrentBoost(this);
+            BossBehaviour.ModifyVelocity(_velocityValue);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<BossBehaviour>())
+        {
+            BossBehaviour.ModifyVelocity(-_velocityValue);
         }
     }
 }

@@ -13,7 +13,9 @@ public class Geyser : MonoBehaviour, IDamageFire
         active
     }
     public float DamageDealt => _damage;
-    float _damage = 999; 
+    float _damage = 999;
+
+    [SerializeField] Animation _animation;
 
     States _currentState;
 
@@ -29,7 +31,7 @@ public class Geyser : MonoBehaviour, IDamageFire
     ParticleSystem.EmissionModule _particleEmission;
     ParticleSystem.MainModule _mainModule;
 
-    Collider2D _trigerGeyser;
+    //Collider2D _trigerGeyser;
 
 
     private void Awake()
@@ -38,7 +40,7 @@ public class Geyser : MonoBehaviour, IDamageFire
         _particleEmission = _particleSystem.emission;
         _mainModule = _particleSystem.main;
 
-        _trigerGeyser = GetComponentInParent<Collider2D>();
+        //_trigerGeyser = GetComponentInParent<Collider2D>();
     }
     private void Start()
     {
@@ -72,7 +74,7 @@ public class Geyser : MonoBehaviour, IDamageFire
         _currentTime = Time.time - _initTime;
 
         _particleEmission.enabled = false;
-        _trigerGeyser.enabled = false;
+        //_trigerGeyser.enabled = false;
 
         if (_currentTime >= _inactiveTime)
         {
@@ -98,10 +100,15 @@ public class Geyser : MonoBehaviour, IDamageFire
         _currentTime = Time.time - _initTime;
 
         _mainModule.startSpeed = _activeSpeed;
-        _trigerGeyser.enabled = true;
+
+        _animation.Play("HeiserColliderAnimation");
+
+        //_trigerGeyser.enabled = true;
+
       
         if (_currentTime >= _activeTime)
         {
+            _animation.Play("HeiserColliderAnimationFalling");
             _initTime = Time.time;
             ChangeState(States.inactive);
         }
