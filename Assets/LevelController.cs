@@ -89,7 +89,7 @@ namespace TecnocampusProjectII
         IEnumerator ChangeScene(string _nextScene)
         {
             //do transition scene
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.5f);
             SceneManager.LoadScene(_nextScene);
         }
     }
