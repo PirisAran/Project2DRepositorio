@@ -83,7 +83,6 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void Start()
     {
-        Debug.Log("Start");
         Init();
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();

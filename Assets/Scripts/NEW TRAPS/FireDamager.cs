@@ -27,8 +27,6 @@ public class FireDamager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!_canDamage) return;
-        Debug.Log("Collision null?" + collision != null);
-        Debug.Log("Fire null?" + _fire != null);
 
         if (collision.transform == _fire.transform)
         {

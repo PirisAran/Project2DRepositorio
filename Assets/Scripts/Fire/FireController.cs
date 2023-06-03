@@ -164,7 +164,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     private void SetAttached(bool v)
     {
-        Debug.Log("attahced");
         _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
         GetComponent<Collider2D>().enabled = !v;

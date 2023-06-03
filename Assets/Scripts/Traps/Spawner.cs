@@ -13,7 +13,6 @@ public class Spawner: MonoBehaviour
     public GameObject SpawnOne()
     {
         GameObject obj = Instantiate(_prefab, _spawnPoint.position, Quaternion.identity);
-        Debug.Log("Spawned: " + _prefab.name);
         return obj;
     }
 
