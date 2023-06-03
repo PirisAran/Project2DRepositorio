@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TecnocampusProjectII;
 
-public class UmbraFSM : MonoBehaviour, IRestartLevelElement
+public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
 {
-    [SerializeField]
     GameObject _player;
-    [SerializeField]
     FireController _fire;
 
     [Header("FSM Variables")]
@@ -19,6 +17,7 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
     public float TransitionTime => _transitionTime;
     float _timeCurrentState;
     float _speedBeforeTransition;
+    bool _permaKiller = false;
     [Space]
 
     [Header("States Base Speed")]
@@ -52,16 +51,6 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
     private float _lightRange => _fire.LightRange;
     private float _respectRange => _fire.LightRange + _followStateRange;
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(_desiredPosition, 0.5f);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(_player.transform.position, _respectRange);
-        
-    }
-
     //FSM States
     public enum States { Cute, Follow, Killer, Transition}
 
@@ -78,12 +67,23 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         }
     }
 
+
+    private void OnEnable()
+    {
+        FireController.OnFireDestroyed += OnFireDestroyed;
+    }
+
+    private void OnDisable()
+    {
+        FireController.OnFireDestroyed -= OnFireDestroyed;
+    }
     private void Awake()
     {
     }
 
     private void Start()
     {
+        Debug.Log("Start");
         Init();
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
@@ -157,10 +157,6 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         MoveTowardsPosition(_desiredPosition, _cuteBaseSpeed, _cuteMaxSpeed, _acceleration);
     }
 
-    private bool CanExitCuteState()
-    {
-        return CanEnterFollowState() || CanEnterKillerState();
-    }
 
     private void UpdateFollowState()
     {
@@ -172,10 +168,6 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         MoveTowardsPosition(_desiredPosition, _followBaseSpeed, _followMaxSpeed, _acceleration);
     }
 
-    private bool CanExitFollowState()
-    {
-        return CanEnterCuteState() || CanEnterKillerState();
-    }
 
     private void UpdateKillerState()
     {
@@ -186,12 +178,6 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         _desiredPosition = _player.transform.position;
         MoveTowardsPosition(_desiredPosition, _killerBaseSpeed, _killerMaxSpeed, _acceleration);
     }
-
-    private bool CanExitKillerState()
-    {
-        return CanEnterCuteState() || CanEnterFollowState();
-    }
-
     private void UpdateTransitionState()
     {
         if (_timeCurrentState >= _transitionTime)
@@ -212,6 +198,20 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
         _currentSpeed = Mathf.Lerp(_speedBeforeTransition, desiredSpeed, Mathf.Clamp01(_timeCurrentState / timeToDecelerate));
         transform.Translate(Forward * _currentSpeed * Time.fixedDeltaTime);
     }
+    private bool CanExitCuteState()
+    {
+        return CanEnterFollowState() || CanEnterKillerState() || _permaKiller;
+    }
+
+    private bool CanExitFollowState()
+    {
+        return (CanEnterCuteState() || CanEnterKillerState()) || _permaKiller;
+    }
+    private bool CanExitKillerState()
+    {
+        return CanEnterCuteState() || CanEnterFollowState();
+    }
+
 
     private void MoveTowardsPosition(Vector3 desiredPosition, float baseSpeed, float maxSpeed, float acceleration)
     {
@@ -242,19 +242,26 @@ public class UmbraFSM : MonoBehaviour, IRestartLevelElement
 
     private bool CanEnterCuteState()
     {
-        return IsInLightRange();
+        return IsInLightRange() && !_permaKiller;
     }
     private bool CanEnterFollowState()
     {
-        return !IsInLightRange() && IsPlayerSafe();
+        return !IsInLightRange() && IsPlayerSafe() && !_permaKiller;
     }
     private bool CanEnterKillerState()
     {
-        return !IsInLightRange() && !IsPlayerSafe() || _fire.LightRange <= 0;
+        return !IsInLightRange() && !IsPlayerSafe() || _fire.LightRange <= 0 || _permaKiller;
     }
 
     public void RestartLevel()
     {
         transform.position = GameLogic.GetGameLogic().GetGameController().GetLevelController().GetUmbraSpawnPoint().position;
+        _permaKiller = false;
+    }
+
+    private void OnFireDestroyed()
+    {
+        _permaKiller = true;
+        TransitionToState();
     }
 }

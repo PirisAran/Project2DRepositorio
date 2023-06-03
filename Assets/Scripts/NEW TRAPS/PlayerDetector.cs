@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TecnocampusProjectII;
 using UnityEngine;
 
-public class DetectPlayer : MonoBehaviour
+public class PlayerDetector : MonoBehaviour
 {
     PlayerController _player;
 

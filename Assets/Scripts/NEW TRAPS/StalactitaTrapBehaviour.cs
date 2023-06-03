@@ -6,8 +6,9 @@ using TecnocampusProjectII;
 public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [Header("Scripts Utilizados")]
-    [SerializeField] KillPlayer _killPlayer;
-    [SerializeField] DetectPlayer _detectPlayer;
+    [SerializeField] PlayerKiller _playerKiller;
+    [SerializeField] PlayerDetector _playerDetector;
+    [SerializeField] FireDestroyer _fireDestroyer;
 
     bool _playerWasHit;
 
@@ -16,12 +17,12 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnEnable()
     {
-        _detectPlayer.OnPlayerDetected += OnPlayerDetected;
+        _playerDetector.OnPlayerDetected += OnPlayerDetected;
     }
 
     private void OnDisable()
     {
-        _detectPlayer.OnPlayerDetected -= OnPlayerDetected;
+        _playerDetector.OnPlayerDetected -= OnPlayerDetected;
     }
 
     private void Awake()
@@ -33,7 +34,9 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     private void Init()
     {
         _rb.bodyType = RigidbodyType2D.Static;
-        _killPlayer.SetCanKill(false);
+        _playerKiller.SetCanKill(false);
+        _fireDestroyer.SetCanDestroy(false);
+        _oPosition = transform.position;
     }
 
     private void Start()
@@ -54,8 +57,9 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     private void OnPlayerDetected()
     {
         _rb.bodyType = RigidbodyType2D.Dynamic;
-        _detectPlayer.enabled = false;
-        _killPlayer.SetCanKill(true);
+        _playerDetector.enabled = false;
+        _playerKiller.SetCanKill(true);
+        _fireDestroyer.SetCanDestroy(true);
         Debug.Log(name + " detected player");
     }
 
@@ -63,13 +67,15 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         _rb.bodyType = RigidbodyType2D.Static;
         transform.position = _oPosition;
-        _detectPlayer.enabled = true;
-        _killPlayer.SetCanKill(false);
+        _playerDetector.enabled = true;
+        _fireDestroyer.SetCanDestroy(false);
+        _playerKiller.SetCanKill(false);
         gameObject.SetActive(true);
     }
 
     public void RestartLevel()
     {
+        Debug.Log("Stalact rs");
         ResetValues();
     }
 }

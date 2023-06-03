@@ -21,10 +21,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     Light2D _light;
 
-    internal void BeThrown()
-    {
-        throw new NotImplementedException();
-    }
+    public static Action OnFireDestroyed;
 
     [SerializeField]
     float _maxLightRange = 6;
@@ -33,6 +30,13 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     GameObject _fireParticlesPrefab;
     public float LightRange => _lightRange;
+
+    internal void DestroyFire()
+    {
+        gameObject.SetActive(false);
+        OnFireDestroyed?.Invoke();
+    }
+
     float _lightRange;
 
     internal void SubscribeToLvl(LevelController levelController)
@@ -272,6 +276,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        gameObject.SetActive(true);
         HealMaximum();
         BePickedUp();
         AdjustLightEffect();

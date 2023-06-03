@@ -4,7 +4,7 @@ using UnityEngine;
 using TecnocampusProjectII;
 using System;
 
-public class KillPlayer : MonoBehaviour
+public class PlayerKiller : MonoBehaviour
 {
     [SerializeField] bool _canKill;
 
@@ -18,9 +18,11 @@ public class KillPlayer : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!_canKill) return;
+        Debug.Log(collision.name);
 
         if (collision.transform == _player.transform)
         {
+            Debug.Log("KillPlayer trigger");
             OnKillPlayer();
         }
     }
@@ -36,6 +38,7 @@ public class KillPlayer : MonoBehaviour
 
         if (collision.gameObject.transform == _player.transform)
         {
+        Debug.Log("KillPlayer collision");
             OnKillPlayer();
         }
     }

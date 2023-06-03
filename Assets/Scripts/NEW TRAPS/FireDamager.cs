@@ -3,27 +3,33 @@ using System.Collections.Generic;
 using TecnocampusProjectII;
 using UnityEngine;
 
-public class DamageFire : MonoBehaviour
+public class FireDamager : MonoBehaviour
 {
     [SerializeField] bool _canDamage;
     [SerializeField] float _damageDealt;
     public float Damage => _damageDealt;
 
-    FireController _fire;
-    PlayerController _player;
+    static FireController _fire;
+    static PlayerController _player;
 
     private void Start()
     {
-        // Get Fire
-        _player = GameLogic.GetGameLogic().GetGameController().m_Player;
-        _fire = _player.GetComponentInChildren<FireController>();
+        if (_player == null)
+        {
+            _player = GameLogic.GetGameLogic().GetGameController().m_Player;
+        }
+        if (_fire == null)
+        {
+            _fire = _player.GetComponentInChildren<FireController>();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!_canDamage) return;
+        Debug.Log("Collision null?" + collision != null);
+        Debug.Log("Fire null?" + _fire != null);
 
-        Debug.Log(_fire == null);   
         if (collision.transform == _fire.transform)
         {
             if (_fire.IsAttached()) return;
@@ -40,6 +46,7 @@ public class DamageFire : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!_canDamage) return;
+
 
         if (collision.gameObject.transform == _fire.transform)
         {

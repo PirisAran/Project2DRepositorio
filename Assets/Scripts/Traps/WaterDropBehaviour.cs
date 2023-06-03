@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using TecnocampusProjectII;
 using UnityEngine;
 
-public class WaterDrop : MonoBehaviour
+public class WaterDropBehaviour : MonoBehaviour
 {
     [Header("Scripts Utilizados")]
-    [SerializeField] DamageFire _damageFire;
+    [SerializeField] FireDamager _damageFire;
 
     [Space]
     [SerializeField]

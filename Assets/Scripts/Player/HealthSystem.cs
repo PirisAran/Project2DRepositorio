@@ -13,7 +13,7 @@ public class HealthSystem : MonoBehaviour
 
     private IEnumerator KillOnEndFrame()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
         var l_gameLogic = GameLogic.GetGameLogic();
         l_gameLogic.GetGameController().GetLevelController().RestartLevel();
     }
