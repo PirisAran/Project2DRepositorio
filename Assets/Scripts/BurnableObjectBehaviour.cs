@@ -4,26 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using TecnocampusProjectII;
 
-public class BurnableObject : MonoBehaviour, IRestartLevelElement
+public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
 {
-    List<GameObject> _particlesCreated = new List<GameObject>();
+    [Header("Scripts Utilizados")]
+    [SerializeField] Spawner _spawner;
+
+    Queue<GameObject> _particlesCreated = new Queue<GameObject>();
     [SerializeField]
     float _timeToBurn = 3;
 
+    [SerializeField]
     SpriteRenderer _sr;
     Color _previousColor;
     [SerializeField] Color _desiredColor;
 
     Vector2 _hitPos;
+    Quaternion _particlesRot = Quaternion.Euler(-90, 0, 0);
 
-    [SerializeField]
-    GameObject _fireParticlesPrefab;
-
-    IEnumerator _currentBurnRoutine;
     
     private void Awake()
     {
-        _sr = GetComponent<SpriteRenderer>();
         _previousColor = _sr.color;
     }
 
@@ -53,9 +53,9 @@ public class BurnableObject : MonoBehaviour, IRestartLevelElement
 
     void Burn()
     {
-        var obj = Instantiate(_fireParticlesPrefab, _hitPos, Quaternion.identity);
-        _particlesCreated.Add(obj);
-        StartCoroutine(InstantiateMultipleFireParticlesInRandomPos(6));
+        var obj = _spawner.SpawnOne(_hitPos, _particlesRot);
+        _particlesCreated.Enqueue(obj);
+        StartCoroutine(InstantiateMultipleFireParticlesInRandomPos(9));
         StartCoroutine(BurnAndDisable());
     }
 
@@ -68,8 +68,7 @@ public class BurnableObject : MonoBehaviour, IRestartLevelElement
             _sr.color = Color.Lerp(_previousColor, _desiredColor, Mathf.Clamp01((_timeToBurn - timer) / _timeToBurn));
             yield return null;
         }
-
-        EndBurn();
+        StartCoroutine(EndBurn());
     }
 
     IEnumerator InstantiateMultipleFireParticlesInRandomPos(int num)
@@ -77,13 +76,22 @@ public class BurnableObject : MonoBehaviour, IRestartLevelElement
         for (int i = 0; i < num; i++)
         {
             yield return new WaitForSeconds(_timeToBurn/num);
-            var obj  = Instantiate(_fireParticlesPrefab, GetRandomPositionInCollider(), Quaternion.identity);
-            _particlesCreated.Add(obj);
+            var obj  = _spawner.SpawnOne(GetRandomPositionInCollider(), _particlesRot);
+            _particlesCreated.Enqueue(obj);
         }
     }
 
-    private void EndBurn()
+    private IEnumerator EndBurn()
     {
+        var noAlphaColor = new Color(_desiredColor.r, _desiredColor.g, _desiredColor.b, 0);
+        float disapearTimer = _timeToBurn/1.5f;
+        float timer = disapearTimer;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            _sr.color = Color.Lerp(_desiredColor, noAlphaColor, Mathf.Clamp01((_timeToBurn - timer) / disapearTimer));
+            yield return null;
+        }
         gameObject.SetActive(false);
         DestroyAllParticlesCreated();
 
@@ -91,12 +99,10 @@ public class BurnableObject : MonoBehaviour, IRestartLevelElement
 
     private void DestroyAllParticlesCreated()
     {
-        foreach (GameObject particles in _particlesCreated)
+        for (int i = 0; i < _particlesCreated.Count; i++)
         {
-            if (particles != null)
-            {
-                Destroy(particles);
-            }
+            var obj = _particlesCreated.Dequeue();
+            Destroy(obj);
         }
     }
 
@@ -106,6 +112,6 @@ public class BurnableObject : MonoBehaviour, IRestartLevelElement
         gameObject.SetActive(true);
         _sr.color = _previousColor;
         DestroyAllParticlesCreated();
-        _particlesCreated = new List<GameObject>();
+        _particlesCreated = new Queue<GameObject>();
     }
 }

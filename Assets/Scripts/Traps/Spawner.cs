@@ -8,11 +8,9 @@ public class Spawner: MonoBehaviour
     [SerializeField]
     GameObject _prefab;
 
-    [SerializeField]
-    Transform _spawnPoint;
-    public GameObject SpawnOne()
+    public GameObject SpawnOne(Vector2 pos, Quaternion rot)
     {
-        GameObject obj = Instantiate(_prefab, _spawnPoint.position, Quaternion.identity);
+        GameObject obj = Instantiate(_prefab, pos, rot);
         return obj;
     }
 

@@ -8,6 +8,7 @@ public class WaterDropBehaviour : MonoBehaviour
 {
     [Header("Scripts Utilizados")]
     [SerializeField] FireDamager _damageFire;
+    [SerializeField] Spawner _spawner;
 
     [Space]
     [SerializeField]
@@ -15,7 +16,6 @@ public class WaterDropBehaviour : MonoBehaviour
     [SerializeField]
     AnimationClip _splatterClip;
 
-    [SerializeField] GameObject _particlesPrefab;
     Rigidbody2D _rb;
     
     private enum States { Falling, Breaking }
@@ -47,7 +47,7 @@ public class WaterDropBehaviour : MonoBehaviour
 
     private void InstantiateParticles()
     {
-        Instantiate(_particlesPrefab, transform.position, Quaternion.identity);
+        _spawner.SpawnOne(transform.position, Quaternion.identity);
     }
 
     IEnumerator DestroyAtEndFrame()
