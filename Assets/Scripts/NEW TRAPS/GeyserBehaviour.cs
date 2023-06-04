@@ -46,18 +46,16 @@ public class GeyserBehaviour : MonoBehaviour
     void Start()
     {
         ChangeState(States.Idle);
-        SetParticlesSpeed(_idleParticleSpeed);
+        ActivateParticles(false);
     }
 
     // Update is called once per frame
     private IEnumerator DoActiveState()
     {
-        SetParticlesSpeed(_activeParticleSpeed);
         _fireDamager.SetCanDamage(true);
         _animation.Play(_colliderUpAnim.name);
         Debug.Log("up anim");
         yield return new WaitForSeconds(_activeTime - _colliderDownAnim.length);
-        StartCoroutine(SetActiveParticles(false));
         _animation.Play(_colliderDownAnim.name);
         yield return new WaitForSeconds(_colliderDownAnim.length);
         ChangeState(States.Idle);
@@ -66,6 +64,7 @@ public class GeyserBehaviour : MonoBehaviour
     private IEnumerator DoChargingState()
     {
         yield return new WaitForSeconds(_chargingTime);
+        ActivateParticles(true);
         ChangeState(States.Active);
     }
 
@@ -76,7 +75,7 @@ public class GeyserBehaviour : MonoBehaviour
             _firstIdle = false;
             yield return new WaitForSeconds(_delay);
         }
-        SetParticlesSpeed(_idleParticleSpeed);
+        ActivateParticles(false);
         _fireDamager.SetCanDamage(false);
         yield return new WaitForSeconds(_idleTime);
         ChangeState(States.Charging);
@@ -101,7 +100,13 @@ public class GeyserBehaviour : MonoBehaviour
         }
     }
 
-    private IEnumerator SetActiveParticles(bool v)
+
+    private void ActivateParticles(bool v)
+    {
+        _particleEmission.enabled = v;
+    }
+
+    private IEnumerator SetActiveParticlesOverTime(bool v)
     {
         float upAnimTime = _colliderUpAnim.length;
         float downAnimTime = _colliderDownAnim.length;
