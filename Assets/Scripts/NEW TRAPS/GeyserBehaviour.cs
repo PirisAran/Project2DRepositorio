@@ -29,6 +29,8 @@ public class GeyserBehaviour : MonoBehaviour
     private ParticleSystem _particleSystem;
     private ParticleSystem.EmissionModule _particleEmission;
     private ParticleSystem.MainModule _mainModule;
+    private ParticleSystem.VelocityOverLifetimeModule _velocityOverLifeTimeModule;
+    private ParticleSystem.TriggerModule _triggerModule;
 
     private enum States { Idle, Charging, Active}
     private States _currentState;
@@ -39,7 +41,8 @@ public class GeyserBehaviour : MonoBehaviour
         _particleSystem = GetComponent<ParticleSystem>();
         _particleEmission = _particleSystem.emission;
         _mainModule = _particleSystem.main;
-
+        _velocityOverLifeTimeModule = _particleSystem.velocityOverLifetime;
+        _triggerModule = _particleSystem.trigger;
         _activeTime += _colliderDownAnim.length + _colliderUpAnim.length;
     }
 
@@ -55,8 +58,18 @@ public class GeyserBehaviour : MonoBehaviour
         _fireDamager.SetCanDamage(true);
         _animation.Play(_colliderUpAnim.name);
         Debug.Log("up anim");
+
+        //StartCoroutine(SetActiveParticlesOverTime(true));
+        SetParticlesSpeed(1);
+
+
         yield return new WaitForSeconds(_activeTime - _colliderDownAnim.length);
         _animation.Play(_colliderDownAnim.name);
+        Debug.Log("down anim");
+
+        StartCoroutine(SetActiveParticlesOverTime(false));
+        _triggerModule.enabled = true;
+        
         yield return new WaitForSeconds(_colliderDownAnim.length);
         ChangeState(States.Idle);
     }
@@ -65,6 +78,7 @@ public class GeyserBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(_chargingTime);
         ActivateParticles(true);
+        SetParticlesSpeed(0.1f);
         ChangeState(States.Active);
     }
 
@@ -113,19 +127,21 @@ public class GeyserBehaviour : MonoBehaviour
 
         float timer = v ? upAnimTime : downAnimTime;
 
+        timer *= 0.5f;
+
         while (timer > 0)
         {
             timer -= Time.deltaTime;
             if (v)
-                _mainModule.startSpeed = Mathf.Lerp(_idleParticleSpeed, _activeParticleSpeed, Mathf.Clamp01((upAnimTime - timer) / upAnimTime));
+                _velocityOverLifeTimeModule.speedModifier = Mathf.Clamp01((upAnimTime - timer) / upAnimTime);
             else
-                _mainModule.startSpeed = Mathf.Lerp(_activeParticleSpeed, _idleParticleSpeed, Mathf.Clamp01((upAnimTime - timer) / upAnimTime));
+                _velocityOverLifeTimeModule.speedModifier = 1 - Mathf.Clamp01((upAnimTime - timer) / downAnimTime);
             yield return null;
         }
     }
 
     private void SetParticlesSpeed(float speed)
     {
-        _mainModule.startSpeed = speed;
+        _velocityOverLifeTimeModule.speedModifier = speed;
     }
 }
