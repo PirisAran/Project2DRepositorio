@@ -59,8 +59,13 @@ public class WaterSpring : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.name);
         var rb = collision.GetComponent<Rigidbody2D>();
-        if (rb == null) return;
+        if (rb == null)
+        {
+            Debug.Log("null");
+            return;
+        }
 
         var speed = rb.velocity;
         velocity += speed.y / resistance;
