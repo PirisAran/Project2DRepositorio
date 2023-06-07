@@ -24,6 +24,7 @@ public class GeyserBehaviour : MonoBehaviour
     [Space]
     [SerializeField] AnimationClip _colliderUpAnim;
     [SerializeField] AnimationClip _colliderDownAnim;
+    [SerializeField] AnimationClip _colliderChargingAnim;
 
     private Animation _animation;
     private ParticleSystem _particleSystem;
@@ -76,8 +77,10 @@ public class GeyserBehaviour : MonoBehaviour
 
     private IEnumerator DoChargingState()
     {
-        yield return new WaitForSeconds(_chargingTime);
+        SetParticlesSpeed(.5f);
         ActivateParticles(true);
+        _animation.Play(_colliderChargingAnim.name);
+        yield return new WaitForSeconds(_chargingTime);
         SetParticlesSpeed(0.1f);
         ChangeState(States.Active);
     }
