@@ -10,6 +10,9 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
     [SerializeField] PlayerKiller _playerKiller;
     [SerializeField] PlayerDetector _playerDetector;
     [SerializeField] FireDestroyer _fireDestroyer;
+    [SerializeField] SoundPlayer _fallingSound;
+    [SerializeField] SoundPlayer _impactSound;
+
     [Space]
 
     [SerializeField]
@@ -26,7 +29,6 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnEnable()
     {
-        Debug.Log(_playerDetector == null);
         _playerDetector.OnPlayerDetected += OnPlayerDetected;
     }
 
@@ -75,6 +77,7 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerDetector.enabled = false;
         _playerKiller.SetCanKill(true);
         _fireDestroyer.SetCanDestroy(true);
+        _fallingSound.PlaySound();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -98,6 +101,7 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerKiller.SetCanKill(false);
         _fireDestroyer.SetCanDestroy(false);
         _rb.bodyType = RigidbodyType2D.Kinematic;
+        _impactSound.PlaySound();
     }
 
 }
