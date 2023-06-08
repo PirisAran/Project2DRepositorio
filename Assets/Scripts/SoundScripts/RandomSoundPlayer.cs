@@ -5,10 +5,11 @@ public class RandomSoundPlayer : SoundPlayer
 {
     [SerializeField] List<GameObject> _soundsPrefabs = new List<GameObject>();
 
-    public override void PlaySound()
+    public override GameObject PlaySound()
     {
         var sound = GetRandomSound();
         SoundManager.InstantiateSound(sound);
+        return SoundManager.InstantiateSound(sound);
     }
 
     private GameObject GetRandomSound()

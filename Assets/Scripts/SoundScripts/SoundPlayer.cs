@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class SoundPlayer : MonoBehaviour
 {
-    public abstract void PlaySound();
+    public abstract GameObject PlaySound();
 }

@@ -3,9 +3,9 @@
 public class SingleSoundPlayer : SoundPlayer
 {
     [SerializeField] GameObject _sound;
-    public override void PlaySound()
+    public override GameObject PlaySound()
     {
         var sound = _sound;
-        SoundManager.InstantiateSound(sound);
+        return SoundManager.InstantiateSound(sound);
     }
 }
