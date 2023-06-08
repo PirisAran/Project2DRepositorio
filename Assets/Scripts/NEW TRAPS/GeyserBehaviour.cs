@@ -7,6 +7,9 @@ public class GeyserBehaviour : MonoBehaviour
 {
     [Header("Scripts Utilizados")]
     [SerializeField] FireDamager _fireDamager;
+    [SerializeField] SoundPlayer _prepartingSound;
+    [SerializeField] SoundPlayer _startSound;
+    [SerializeField] SoundPlayer _waterRunningSound;
 
     [Header("Valores FSM")]
     [SerializeField] float _idleTime;

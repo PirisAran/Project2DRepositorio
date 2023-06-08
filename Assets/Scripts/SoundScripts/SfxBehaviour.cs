@@ -49,4 +49,16 @@ public class SfxBehaviour : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void DestroyWithFade(float time) 
+    {
+        float timer = time;
+        float oVolume = _audioSource.volume;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(time - timer / time));
+        }
+        Destroy(gameObject);
+    }
 }
