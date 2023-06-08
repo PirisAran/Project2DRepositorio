@@ -17,11 +17,6 @@ public class GeyserBehaviour : MonoBehaviour
     private bool _firstIdle = true;
     
     [Space]
-    [SerializeField] float _idleParticleSpeed = 0;
-    [SerializeField] float _chargingParticleSpeed = 1;
-    [SerializeField] float _activeParticleSpeed = 6;
-
-    [Space]
     [SerializeField] AnimationClip _colliderUpAnim;
     [SerializeField] AnimationClip _colliderDownAnim;
     [SerializeField] AnimationClip _colliderChargingAnim;

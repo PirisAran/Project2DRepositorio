@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4800609211524485425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3304948861479107647}
+  - component: {fileID: 1790738463543504635}
+  m_Layer: 14
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3304948861479107647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800609211524485425}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5943507698100424780}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1790738463543504635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800609211524485425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsPrefabs:
+  - {fileID: 3519789194279611410, guid: 5ae2b7debdb639f4d91a49eb28fea6bc, type: 3}
+  - {fileID: 7624930204750122226, guid: 568b4689f94fbfe49a90bbfdcf838725, type: 3}
+  - {fileID: 2345195685760816049, guid: bfa13ea5ca46b234e9398e9cf1e62343, type: 3}
+  - {fileID: 7765023350406197948, guid: 5eb9fc4207de7a7408c14224929441ef, type: 3}
 --- !u!1 &5943507698100424776
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,7 +83,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.38965124, y: 0.38965124, z: 0.38965124}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3304948861479107647}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -141,9 +191,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageFire: {fileID: 8162518480769304898}
   _spawner: {fileID: 1658324422667314723}
+  _soundPlayer: {fileID: 1790738463543504635}
   GravityTweak: 1
   _splatterClip: {fileID: 7400000, guid: d16d3e906fdf54e459d6b502b540a0ba, type: 2}
-  _particlesPrefab: {fileID: 245638559690109880, guid: 4b7c83616a1cbcc4db1ae9dc4f0128cc, type: 3}
 --- !u!95 &8810637927088318606
 Animator:
   serializedVersion: 4
