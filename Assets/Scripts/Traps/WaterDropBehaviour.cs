@@ -43,6 +43,7 @@ public class WaterDropBehaviour : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         InstantiateParticles();
+        Debug.Log(_soundPlayer == null);
         _soundPlayer.PlaySound();
         StartCoroutine(DestroyAtEndFrame());
     }

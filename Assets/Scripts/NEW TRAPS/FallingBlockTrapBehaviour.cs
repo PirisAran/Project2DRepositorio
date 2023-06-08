@@ -29,7 +29,6 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnEnable()
     {
-        Debug.Log(_playerDetector == null);
         _playerDetector.OnPlayerDetected += OnPlayerDetected;
     }
 

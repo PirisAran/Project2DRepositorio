@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8901060625268356853}
   - component: {fileID: 522474915227914686}
   - component: {fileID: 4259766290571198562}
-  - component: {fileID: -521578138989924158}
   m_Layer: 0
   m_Name: BlockAlmostFallingSoundPrefab
   m_TagString: Untagged
@@ -47,7 +46,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 2a1f55f13bab9834f926af60fbd989d5, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
-  m_Pitch: 3
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -160,16 +159,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b8e394a0d721d4e8debd1383cda917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startTimeFraction: 0.28
---- !u!168 &-521578138989924158
-AudioEchoFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3091470873206389302}
-  m_Enabled: 1
-  m_Delay: 500
-  m_DecayRatio: 0.5
-  m_WetMix: 1
-  m_DryMix: 1
+  _startTimeFraction: 0
+  _startFadeSoundFraction: 0.67
