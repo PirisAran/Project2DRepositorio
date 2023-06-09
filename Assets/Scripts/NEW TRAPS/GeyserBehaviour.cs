@@ -7,12 +7,14 @@ public class GeyserBehaviour : MonoBehaviour
 {
     [Header("Scripts Utilizados")]
     [SerializeField] FireDamager _fireDamager;
+    [SerializeField] SoundPlayer _prepartingSound;
+    [SerializeField] SoundPlayer _startSound;
+    [SerializeField] SoundPlayer _waterRunningSound;
 
     [Header("Valores FSM")]
     [SerializeField] float _idleTime;
     [SerializeField] float _chargingTime;
     [SerializeField] float _activeTime;
-    [SerializeField] float _chargingWarningsNum = 3;
     [SerializeField] float _delay;
     private bool _firstIdle = true;
     
@@ -51,32 +53,34 @@ public class GeyserBehaviour : MonoBehaviour
     // Update is called once per frame
     private IEnumerator DoActiveState()
     {
-        _fireDamager.SetCanDamage(true);
+
         _animation.Play(_colliderUpAnim.name);
         Debug.Log("up anim");
 
-        //StartCoroutine(SetActiveParticlesOverTime(true));
         SetParticlesSpeed(1);
 
-
+        var sound = _waterRunningSound.PlaySound();
         yield return new WaitForSeconds(_activeTime - _colliderDownAnim.length);
         _animation.Play(_colliderDownAnim.name);
         Debug.Log("down anim");
 
         StartCoroutine(SetActiveParticlesOverTime(false));
-        _triggerModule.enabled = true;
-        
+
+        sound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_colliderDownAnim.length);
         yield return new WaitForSeconds(_colliderDownAnim.length);
         ChangeState(States.Idle);
     }
 
     private IEnumerator DoChargingState()
     {
+        var sound = _waterRunningSound.PlaySound();
         SetParticlesSpeed(.5f);
         ActivateParticles(true);
+        _fireDamager.SetCanDamage(true);
         _animation.Play(_colliderChargingAnim.name);
-        yield return new WaitForSeconds(_chargingTime);
-        SetParticlesSpeed(0.1f);
+        yield return new WaitForSeconds(_chargingTime/2);
+        sound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_chargingTime / 2);
+        yield return new WaitForSeconds(_chargingTime/2);
         ChangeState(States.Active);
     }
 

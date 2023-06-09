@@ -29,7 +29,6 @@ public class SfxBehaviour : MonoBehaviour
     {
         StartCoroutine(DoFadeEffect());
         yield return new WaitForSeconds(_audioSource.clip.length + 1);
-        Destroy(gameObject);
     }
 
     private IEnumerator DoFadeEffect()
@@ -43,10 +42,23 @@ public class SfxBehaviour : MonoBehaviour
             timer -= Time.deltaTime;
             _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(timeLeft - timer / timeLeft));
         }
+        Destroy(gameObject);
     }
 
     public void DestroySoundImmediatly()
     {
+        Destroy(gameObject);
+    }
+
+    public void DestroyAfterSecondsWithFade(float time) 
+    {
+        float timer = time;
+        float oVolume = _audioSource.volume;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(time - timer / time));
+        }
         Destroy(gameObject);
     }
 }
