@@ -8,12 +8,13 @@ public class SoundPlayer : MonoBehaviour
     public GameObject PlaySound()
     {
         var sound = GetRandomSound();
-        SoundManager.InstantiateSound(sound);
+        Debug.Log((sound == null) + transform.parent.transform.parent.name);
         return SoundManager.InstantiateSound(sound);
     }
 
     private GameObject GetRandomSound()
     {
-        return _soundsPrefabsList[Random.Range(0, _soundsPrefabsList.Count)];
+        var soundChosen = _soundsPrefabsList[Random.Range(0, _soundsPrefabsList.Count)];
+        return soundChosen;
     }
 }

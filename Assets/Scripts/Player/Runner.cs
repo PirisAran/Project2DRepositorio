@@ -16,6 +16,11 @@ public class Runner : MonoBehaviour
     float NoFireSpeed = 8, FireSpeed = 5;
     float _currentStateSpeed;
 
+    [SerializeField] SoundPlayer _stepsSounds;
+    [SerializeField] float _timeBetweenSteps;
+
+    bool _isRunning;
+
     public float CurrentSpeed { get { return _currentStateSpeed; } set { _currentStateSpeed = value; } }
 
     public Vector2 Forward => new Vector2(_horizontalMov, 0).normalized;
@@ -26,6 +31,7 @@ public class Runner : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _currentStateSpeed = FireSpeed;
         _thrower = GetComponent<Thrower>();
+        StartCoroutine(StepsSound());
     }
 
     private void Update()
@@ -47,11 +53,25 @@ public class Runner : MonoBehaviour
         var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
         _rb.velocity = vel;
         XSpeed = vel.x;
+
+        _isRunning = vel.x != 0 && vel.y == 0;
     }
 
     public void ChangeSpeed()
     {
         _currentStateSpeed = _thrower.HasFire ? FireSpeed : NoFireSpeed;
+    }
+
+    IEnumerator StepsSound()
+    {
+        while (true)
+        {
+            if (_isRunning)
+            {
+                _stepsSounds.PlaySound();
+            }
+            yield return new WaitForSeconds(_timeBetweenSteps);
+        }
     }
 
 }

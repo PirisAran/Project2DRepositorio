@@ -100,7 +100,6 @@ public class GeyserBehaviour : MonoBehaviour
     private void ChangeState(States nextState)
     {
         _currentState = nextState;
-        Debug.Log("changed to " + _currentState);
 
         switch (_currentState)
         {

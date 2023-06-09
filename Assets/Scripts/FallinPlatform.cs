@@ -10,6 +10,7 @@ public class FallinPlatform : MonoBehaviour
     [SerializeField] FireController _fire;
     [SerializeField] Transform _oPosition, _fPosition;
     [SerializeField] Collider2D _detectionCollider;
+    [SerializeField] SoundPlayer _fallingSound;
     Thrower _playerThrower;
     Collider2D _playerCollider;
     Collider2D _fireCollider;
@@ -19,14 +20,22 @@ public class FallinPlatform : MonoBehaviour
     [SerializeField] float _upwardsSpeed;
     [SerializeField] float _playerMassSpeed;
     [SerializeField] float _fireMassSpeed;
-    
+
+    private bool _isMoving = false;
+    private AudioSource _audioSource;
+    float _oVolume;
+
+
     private enum States {Idle, MovingDown, MovingUp}
     private void Awake()
     {
         _currentState = States.Idle;
+
     }
     private void Start()
     {
+        _audioSource = _fallingSound.PlaySound().GetComponent<AudioSource>();
+        _oVolume = _audioSource.volume;
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
         _playerThrower = _player.GetComponent<Thrower>();
         _playerCollider = _player.GetComponentInChildren<BoxCollider2D>();
@@ -39,6 +48,9 @@ public class FallinPlatform : MonoBehaviour
     {
         _currentState = nextState;
         Debug.Log("Entered " + nextState);
+        _isMoving = _currentState != States.Idle;
+        Debug.Log("is moving is " + _isMoving);
+        
     }
 
     private void FixedUpdate()
@@ -57,6 +69,16 @@ public class FallinPlatform : MonoBehaviour
             default:
                 break;
         }
+        UpdateSound();
+    }
+
+    private void UpdateSound()
+    {
+        //if (_isMoving)
+        //{
+        //    _fallingSound.PlaySound();
+        //}
+        _audioSource.volume = _isMoving ? _oVolume : 0;
     }
 
     private void UpdateIdleState()
@@ -69,6 +91,8 @@ public class FallinPlatform : MonoBehaviour
 
     private void UpdateMovingDownState()
     {
+        _isMoving = transform.position != _fPosition.position;
+
         if (!PlayerOnPlatform() && !FireOnPlatform() && transform.position != _oPosition.position)
         {
             ChangeState(States.MovingUp);
@@ -130,13 +154,15 @@ public class FallinPlatform : MonoBehaviour
         {
             ChangeState(States.MovingDown);
         }
-        else if (transform.position == _fPosition.position)
+        else if (transform.position == _oPosition.position)
         {
             ChangeState(States.Idle);
         }
 
         MovePlatform(_upwardsSpeed, _oPosition.position);
     }
+
+
 
 
 }
