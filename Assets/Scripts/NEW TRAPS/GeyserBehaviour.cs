@@ -17,15 +17,11 @@ public class GeyserBehaviour : MonoBehaviour
     private bool _firstIdle = true;
     
     [Space]
-    [SerializeField] float _idleParticleSpeed = 0;
-    [SerializeField] float _chargingParticleSpeed = 1;
-    [SerializeField] float _activeParticleSpeed = 6;
-
-    [Space]
     [SerializeField] AnimationClip _colliderUpAnim;
     [SerializeField] AnimationClip _colliderDownAnim;
+    [SerializeField] AnimationClip _colliderChargingAnim;
 
-    private Animation _animation;
+    [SerializeField] Animation _animation;
     private ParticleSystem _particleSystem;
     private ParticleSystem.EmissionModule _particleEmission;
     private ParticleSystem.MainModule _mainModule;
@@ -37,7 +33,6 @@ public class GeyserBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _animation = GetComponent<Animation>();
         _particleSystem = GetComponent<ParticleSystem>();
         _particleEmission = _particleSystem.emission;
         _mainModule = _particleSystem.main;
@@ -48,6 +43,7 @@ public class GeyserBehaviour : MonoBehaviour
 
     void Start()
     {
+        _mainModule.gravityModifier = transform.parent.localScale.y;
         ChangeState(States.Idle);
         ActivateParticles(false);
     }
@@ -76,8 +72,10 @@ public class GeyserBehaviour : MonoBehaviour
 
     private IEnumerator DoChargingState()
     {
-        yield return new WaitForSeconds(_chargingTime);
+        SetParticlesSpeed(.5f);
         ActivateParticles(true);
+        _animation.Play(_colliderChargingAnim.name);
+        yield return new WaitForSeconds(_chargingTime);
         SetParticlesSpeed(0.1f);
         ChangeState(States.Active);
     }
