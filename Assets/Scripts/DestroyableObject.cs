@@ -5,25 +5,23 @@ using TecnocampusProjectII;
 
 public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 {
+    [SerializeField] GameObject _objectToDestroy;
     public void RestartLevel()
     {
-        gameObject.SetActive(true);
+        _objectToDestroy.SetActive(true);
     }
-
+    private void Awake()
+    {
+        if (_objectToDestroy == null) _objectToDestroy = gameObject;
+    }
     // Start is called before the first frame update
     void Start()
     {
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void StartDestroyObject()
     {
-        gameObject.SetActive(false);
+        _objectToDestroy.SetActive(false);
     }
 }
