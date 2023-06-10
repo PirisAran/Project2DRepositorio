@@ -66,7 +66,7 @@ public class GeyserBehaviour : MonoBehaviour
 
         StartCoroutine(SetActiveParticlesOverTime(false));
 
-        sound.GetComponent<SfxBehaviour>().DestroyWithFade(_colliderDownAnim.length);
+        sound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_colliderDownAnim.length);
         yield return new WaitForSeconds(_colliderDownAnim.length);
         ChangeState(States.Idle);
     }
@@ -79,7 +79,7 @@ public class GeyserBehaviour : MonoBehaviour
         _fireDamager.SetCanDamage(true);
         _animation.Play(_colliderChargingAnim.name);
         yield return new WaitForSeconds(_chargingTime/2);
-        sound.GetComponent<SfxBehaviour>().DestroyWithFade(_chargingTime / 2);
+        sound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_chargingTime / 2);
         yield return new WaitForSeconds(_chargingTime/2);
         ChangeState(States.Active);
     }
