@@ -59,14 +59,15 @@ public class GeyserBehaviour : MonoBehaviour
 
         SetParticlesSpeed(1);
 
-        var sound = _waterRunningSound.PlaySound();
+        var startSound = _startSound.PlaySound();
+        var runningSound = _waterRunningSound.PlaySound();
         yield return new WaitForSeconds(_activeTime - _colliderDownAnim.length);
         _animation.Play(_colliderDownAnim.name);
         Debug.Log("down anim");
 
         StartCoroutine(SetActiveParticlesOverTime(false));
 
-        sound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_colliderDownAnim.length);
+        runningSound.GetComponent<SfxBehaviour>().DestroyAfterSecondsWithFade(_colliderDownAnim.length);
         yield return new WaitForSeconds(_colliderDownAnim.length);
         ChangeState(States.Idle);
     }

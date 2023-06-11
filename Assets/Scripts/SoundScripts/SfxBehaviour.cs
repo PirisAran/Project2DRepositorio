@@ -16,32 +16,35 @@ public class SfxBehaviour : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.time = _audioSource.clip.length * _startTimeFraction;
-        _fadeStartTime = _audioSource.clip.length * _startFadeSoundFraction;
-        
+        _audioSource.Play();
+        var clipLenght = _audioSource.clip.length;
+        _audioSource.time = clipLenght ;
+        _fadeStartTime = (_audioSource.clip.length - _audioSource.time) * _startFadeSoundFraction;
+
         if (!_audioSource.loop)
         {
-            StartCoroutine(DestroyAfterSoundPlays());
+            DestroyAfterSoundPlays();
         }
     }
-
-    private IEnumerator DestroyAfterSoundPlays()
+    private void DestroyAfterSoundPlays()
     {
-        StartCoroutine(DoFadeEffect());
-        yield return new WaitForSeconds(_audioSource.clip.length + 1);
+        StartCoroutine(DoFadeEffect(_fadeStartTime, _audioSource.clip.length - _audioSource.time));
     }
 
-    private IEnumerator DoFadeEffect()
+    private IEnumerator DoFadeEffect(float fadeStartTime, float fadeDuration)
     {
-        yield return new WaitForSeconds(_fadeStartTime);
-        float timeLeft = _audioSource.clip.length - _fadeStartTime;
-        float timer = timeLeft;
+        yield return new WaitForSeconds(fadeStartTime);
+        Debug.Log(_audioSource.time);
         float oVolume = _audioSource.volume;
-        while (timer > 0)
+        float timeElapsed = 0;
+        while (timeElapsed < fadeDuration)
         {
-            timer -= Time.deltaTime;
-            _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(timeLeft - timer / timeLeft));
+            timeElapsed += Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(timeElapsed / fadeDuration));
+            Debug.Log(_audioSource.volume);
+            yield return null;
         }
+        _audioSource.volume = 0;
         Destroy(gameObject);
     }
 
@@ -52,13 +55,7 @@ public class SfxBehaviour : MonoBehaviour
 
     public void DestroyAfterSecondsWithFade(float time) 
     {
-        float timer = time;
-        float oVolume = _audioSource.volume;
-        while (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(time - timer / time));
-        }
-        Destroy(gameObject);
+        StartCoroutine(DoFadeEffect(0, time));
     }
+
 }
