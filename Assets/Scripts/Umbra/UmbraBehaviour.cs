@@ -36,6 +36,12 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     [SerializeField]float _currentSpeed;
     [SerializeField]float _acceleration;
 
+    [Header("Umbra Sounds")]
+    [SerializeField] SoundPlayer _huntingNoFire;
+    [SerializeField] SoundPlayer _breath;
+    [SerializeField] SoundPlayer _gettingOutLight;
+
+
     Vector3 _desiredPosition;
 
     public Action OnEnterCuteState;
@@ -50,6 +56,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     private Vector3 _fireDirection => (_fire.transform.position - transform.position).normalized;
     private float _lightRange => _fire.LightRange;
     private float _respectRange => _fire.LightRange + _followStateRange;
+
 
     //FSM States
     public enum States { Cute, Follow, Killer, Transition}
@@ -87,6 +94,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        _breath.PlaySound();
     }
     private void Init()
     {
@@ -122,12 +130,14 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         switch (state)
         {
             case States.Cute:
+                _gettingOutLight.PlaySound();
                 OnEnterCuteState?.Invoke();
                 break;
             case States.Follow:
                 OnEnterFollowState?.Invoke();
                 break;
             case States.Killer:
+                _huntingNoFire.PlaySound();
                 OnEnterKillerState?.Invoke();
                 break;
             case States.Transition:
@@ -186,8 +196,9 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
             else if (CanEnterFollowState())
                 _nextState = States.Follow;
             else
+            {
                 _nextState = States.Killer;
-
+            }
             _currentState = _nextState;
             OnEnterState(_currentState);
             return;

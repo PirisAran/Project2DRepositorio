@@ -8,7 +8,6 @@ public class SoundPlayer : MonoBehaviour
     public GameObject PlaySound()
     {
         var sound = GetRandomSound();
-        SoundManager.InstantiateSound(sound);
         return SoundManager.InstantiateSound(sound);
     }
 

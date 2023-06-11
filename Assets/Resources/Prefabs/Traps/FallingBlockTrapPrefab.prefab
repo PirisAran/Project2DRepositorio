@@ -102,8 +102,8 @@ MonoBehaviour:
   _playerKiller: {fileID: 223119481182040409}
   _playerDetector: {fileID: 3825511940731086572}
   _fireDestroyer: {fileID: 223119481182040410}
-  _fallingSound: {fileID: 310506994694656923}
-  _impactSound: {fileID: 3722065336781282750}
+  _fallingSound: {fileID: 3110749}
+  _impactSound: {fileID: 500749230}
   _landingSurface: {fileID: 3266572931386277692}
   _canReset: 1
 --- !u!114 &3960678278250641443
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf5d455d8c138b498e7ec3b85f2d890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectToDestroy: {fileID: 0}
 --- !u!114 &223119481182040409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,7 +607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3315510146336290551}
-  - component: {fileID: 3722065336781282750}
+  - component: {fileID: 500749230}
   m_Layer: 24
   m_Name: ImpactSFX
   m_TagString: Untagged
@@ -629,7 +630,7 @@ Transform:
   m_Father: {fileID: 5482354883497454822}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3722065336781282750
+--- !u!114 &500749230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -638,10 +639,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5706812287615017134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7ad27c95e4abfb4abc9b98360d25e69, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sound: {fileID: 4905728728880091945, guid: f4f9a1687762d074f9290e0d8700f1d1, type: 3}
+  _soundsPrefabsList:
+  - {fileID: 4905728728880091945, guid: 298c2435c2eca5d44931d88c2b96cfb6, type: 3}
 --- !u!1 &8068835662834462413
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +653,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 146756899690537672}
-  - component: {fileID: 310506994694656923}
+  - component: {fileID: 3110749}
   m_Layer: 24
   m_Name: AlmostFallingSFX
   m_TagString: Untagged
@@ -674,7 +676,7 @@ Transform:
   m_Father: {fileID: 5482354883497454822}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &310506994694656923
+--- !u!114 &3110749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -683,7 +685,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8068835662834462413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7ad27c95e4abfb4abc9b98360d25e69, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sound: {fileID: 3091470873206389302, guid: 3e1814cdc9ff1e94185ef749d705febf, type: 3}
+  _soundsPrefabsList:
+  - {fileID: 3091470873206389302, guid: 86e9add995b45f0498e0cddc20ccf547, type: 3}
