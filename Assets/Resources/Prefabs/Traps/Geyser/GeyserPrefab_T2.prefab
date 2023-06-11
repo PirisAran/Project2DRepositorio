@@ -84,6 +84,131 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3542650772559863244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3542650772559863243}
+  m_Layer: 0
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3542650772559863243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3542650772559863244}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.830001, y: -0.19999981, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3542650773696958487}
+  - {fileID: 3542650773768884766}
+  m_Father: {fileID: 6612838544342940126}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3542650773696958488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3542650773696958487}
+  - component: {fileID: 3542650773696958486}
+  m_Layer: 0
+  m_Name: StartSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3542650773696958487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3542650773696958488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3542650772559863243}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3542650773696958486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3542650773696958488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsPrefabsList:
+  - {fileID: 6845119657668758672, guid: 733c0ec672daa3142b4ef9398c0272c5, type: 3}
+--- !u!1 &3542650773768884767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3542650773768884766}
+  - component: {fileID: 3542650773768884765}
+  m_Layer: 0
+  m_Name: WaterRunningSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3542650773768884766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3542650773768884767}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3542650772559863243}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3542650773768884765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3542650773768884767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsPrefabsList:
+  - {fileID: 6845119657668758672, guid: a4838b518d1566740b09d62783635642, type: 3}
 --- !u!1 &6612838543839483005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4848,14 +4973,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireDamager: {fileID: 6612838544052420434}
+  _startSound: {fileID: 3542650773696958486}
+  _waterRunningSound: {fileID: 3542650773768884765}
   _idleTime: 1
   _chargingTime: 2
   _activeTime: 4
-  _chargingWarningsNum: 3
   _delay: 0
-  _idleParticleSpeed: 0
-  _chargingParticleSpeed: 1
-  _activeParticleSpeed: 12
   _colliderUpAnim: {fileID: 7400000, guid: 7bca320605e0afd439e14ad6d96744c9, type: 2}
   _colliderDownAnim: {fileID: 7400000, guid: 8c1ff91893a7cf74e967575cf30871f9, type: 2}
   _colliderChargingAnim: {fileID: 7400000, guid: d81f60d5a3041ba4ba80cb2f57f8c2c3, type: 2}
@@ -5075,6 +5198,7 @@ Transform:
   - {fileID: 6612838544052420437}
   - {fileID: 6612838543839483004}
   - {fileID: 6612838545708367657}
+  - {fileID: 3542650772559863243}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
