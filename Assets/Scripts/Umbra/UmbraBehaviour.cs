@@ -130,7 +130,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         switch (state)
         {
             case States.Cute:
-                //_gettingOutLight.PlaySound();
+                _gettingOutLight.PlaySound();
                 OnEnterCuteState?.Invoke();
                 break;
             case States.Follow:

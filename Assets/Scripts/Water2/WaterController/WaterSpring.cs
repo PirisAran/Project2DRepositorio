@@ -20,6 +20,7 @@ public class WaterSpring : MonoBehaviour
     private List<WaterSpring> springs = new();
     private float resistance = 40f;
 
+
     private void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
@@ -64,6 +65,8 @@ public class WaterSpring : MonoBehaviour
         {
             return;
         }
+
+        
 
         var speed = rb.velocity;
         velocity += speed.y / resistance;
