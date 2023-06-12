@@ -6,13 +6,15 @@ using TecnocampusProjectII;
 public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] GameObject _objectToDestroy;
+    bool _activeOnAwake;
     public void RestartLevel()
     {
-        _objectToDestroy.SetActive(true);
+        _objectToDestroy.SetActive(_activeOnAwake);
     }
     private void Awake()
     {
         if (_objectToDestroy == null) _objectToDestroy = gameObject;
+        _activeOnAwake = _objectToDestroy.active;
     }
     // Start is called before the first frame update
     void Start()
