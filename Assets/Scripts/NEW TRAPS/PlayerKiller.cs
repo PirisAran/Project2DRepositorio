@@ -18,7 +18,6 @@ public class PlayerKiller : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!_canKill) return;
-        Debug.Log(collision.name);
 
         if (collision.transform == _player.transform)
         {
