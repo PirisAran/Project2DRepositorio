@@ -41,7 +41,7 @@ public class SfxBehaviour : MonoBehaviour
         {
             timeElapsed += Time.deltaTime;
             _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(timeElapsed / fadeDuration));
-            Debug.Log(_audioSource.volume);
+            //Debug.Log(_audioSource.volume);
             yield return null;
         }
         _audioSource.volume = 0;
