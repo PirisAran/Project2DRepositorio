@@ -34,14 +34,12 @@ public class SfxBehaviour : MonoBehaviour
     private IEnumerator DoFadeEffect(float fadeStartTime, float fadeDuration)
     {
         yield return new WaitForSeconds(fadeStartTime);
-        Debug.Log(_audioSource.time);
         float oVolume = _audioSource.volume;
         float timeElapsed = 0;
         while (timeElapsed < fadeDuration)
         {
             timeElapsed += Time.deltaTime;
             _audioSource.volume = Mathf.Lerp(oVolume, 0.0f, Mathf.Clamp01(timeElapsed / fadeDuration));
-            Debug.Log(_audioSource.volume);
             yield return null;
         }
         _audioSource.volume = 0;
