@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 988167856}
-  - component: {fileID: 988167857}
+  - component: {fileID: 8043077835045652}
   m_Layer: 7
   m_Name: ColliderBox
   m_TagString: Untagged
@@ -158,8 +158,8 @@ Transform:
   m_Father: {fileID: 8507576292615918547}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &988167857
-BoxCollider2D:
+--- !u!60 &8043077835045652
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -167,11 +167,11 @@ BoxCollider2D:
   m_GameObject: {fileID: 988167855}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: ad1c266b04bc94e438d6a5aee1921163, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.41593826, y: -0.27251136}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -181,9 +181,15 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3.897228, y: 5.618354}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.50773424, y: 2.5739768}
+      - {x: -1.5603385, y: 2.5430493}
+      - {x: -1.4924438, y: -3.0177855}
+      - {x: -1.029179, y: -3.0461664}
+      - {x: 1.5931327, y: -3.063297}
+      - {x: 2.2325306, y: -3.0095954}
+      - {x: 2.2265248, y: 2.568437}
 --- !u!1 &1025724684
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,8 +640,8 @@ MonoBehaviour:
   - {fileID: 4911988087421095993}
   - {fileID: 515601797302003062}
   m_Bounds:
-    m_Center: {x: 0.9649743, y: 0.16737318, z: 0}
-    m_Extent: {x: 1.8269322, y: 2.3487275, z: 0}
+    m_Center: {x: 0.96497446, y: 0.1673863, z: 0}
+    m_Extent: {x: 1.8269309, y: 2.3487296, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -775,8 +781,8 @@ MonoBehaviour:
   - {fileID: 4689299196140390898}
   - {fileID: 2761779625470930141}
   m_Bounds:
-    m_Center: {x: -0.00027918816, y: 0.0000011920929, z: 0}
-    m_Extent: {x: 2.1797204, y: 2.83, z: 0}
+    m_Center: {x: -0.00028014183, y: 0.000007867813, z: 0}
+    m_Extent: {x: 2.1797204, y: 2.8300009, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -882,8 +888,8 @@ MonoBehaviour:
   - {fileID: 4911988087421095993}
   - {fileID: 8254841256609410029}
   m_Bounds:
-    m_Center: {x: 0.009997964, y: 0.012681723, z: 0}
-    m_Extent: {x: 1.5200002, y: 2.0973206, z: 0}
+    m_Center: {x: 0.009997964, y: 0.012687683, z: 0}
+    m_Extent: {x: 1.5200005, y: 2.0973206, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1131,8 +1137,8 @@ MonoBehaviour:
   - {fileID: 6986089209418670781}
   - {fileID: 2745414184759089684}
   m_Bounds:
-    m_Center: {x: -0.08257294, y: -0.2311151, z: 0}
-    m_Extent: {x: 3.9625754, y: 3.4211168, z: 0}
+    m_Center: {x: -0.08257151, y: -0.23110819, z: 0}
+    m_Extent: {x: 3.962575, y: 3.4211156, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1455,8 +1461,8 @@ MonoBehaviour:
   - {fileID: 2055810518291173807}
   - {fileID: 2745414184759089684}
   m_Bounds:
-    m_Center: {x: 0.011040807, y: 0, z: 0}
-    m_Extent: {x: 1.7389611, y: 2.5100012, z: 0}
+    m_Center: {x: 0.01104188, y: 0.000009298325, z: 0}
+    m_Extent: {x: 1.7389603, y: 2.5099993, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -2362,7 +2368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _whatIsCollision:
     serializedVersion: 2
-    m_Bits: 50364480
+    m_Bits: 50630720
   _groundCheckerOrigin: {fileID: 7007369690511097396}
   _detectionRadius: 0.15
 --- !u!1 &7007369690511097397
@@ -7685,8 +7691,8 @@ MonoBehaviour:
   - {fileID: 4911988087421095993}
   - {fileID: 7654858341123140226}
   m_Bounds:
-    m_Center: {x: 0, y: 0.011811554, z: 0}
-    m_Extent: {x: 1.8400006, y: 0.89819056, z: 0}
+    m_Center: {x: -0.0000019073486, y: 0.011820078, z: 0}
+    m_Extent: {x: 1.8400005, y: 0.8981929, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
