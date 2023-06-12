@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1492215049223592659
+--- !u!1 &2564753612641943328
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5185707250163881428}
-  - component: {fileID: 7235154875936375066}
-  - component: {fileID: 4469386034968785981}
-  m_Layer: 0
-<<<<<<<< HEAD:Assets/Resources/SoundEffects - copia/Prefabs/Fire/FireExtinguishedSoundPrefab.prefab
-  m_Name: FireExtinguishedSoundPrefab
-========
-  m_Name: ExtinguishedSoundPrefab
->>>>>>>> Main2.0:Assets/Resources/SoundEffects - copia/Prefabs/Fire/ExtinguishedSoundPrefab.prefab
+  - component: {fileID: 4376133001887430320}
+  - component: {fileID: 7885359580719976251}
+  - component: {fileID: -4716860484368872050}
+  m_Layer: 8
+  m_Name: Extinguished100%SoundPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5185707250163881428
+--- !u!4 &4376133001887430320
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492215049223592659}
+  m_GameObject: {fileID: 2564753612641943328}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.37269, y: 1.1372135, z: -6.0923877}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &7235154875936375066
+--- !u!82 &7885359580719976251
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492215049223592659}
+  m_GameObject: {fileID: 2564753612641943328}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -55,12 +51,12 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 77
+  Priority: 128
   DopplerLevel: 1
-  MinDistance: 4.38
-  MaxDistance: 15.26
+  MinDistance: 1
+  MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -68,23 +64,23 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.28702492
+      time: 0
       value: 1
-      inSlope: -0.042317577
-      outSlope: -0.042317577
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0.73653316
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.064827025
-      outSlope: -0.064827025
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.7051613
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -93,7 +89,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -108,7 +104,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -133,15 +129,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4469386034968785981
+--- !u!114 &-4716860484368872050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492215049223592659}
+  m_GameObject: {fileID: 2564753612641943328}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05b8e394a0d721d4e8debd1383cda917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startTimeFraction: 0
+  _startFadeSoundFraction: 1
