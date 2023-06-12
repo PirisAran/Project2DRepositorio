@@ -18,7 +18,7 @@ public class SfxBehaviour : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _audioSource.Play();
         var clipLenght = _audioSource.clip.length;
-        _audioSource.time = clipLenght ;
+        _audioSource.time = clipLenght;
         _fadeStartTime = (_audioSource.clip.length - _audioSource.time) * _startFadeSoundFraction;
 
         if (!_audioSource.loop)
