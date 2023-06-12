@@ -31,12 +31,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     GameObject _fireParticlesPrefab;
     public float LightRange => _lightRange;
 
-    [Header("Fire's Sounds")]
-    [SerializeField] SoundPlayer _burningSound;
-    [SerializeField] SoundPlayer _decreaseSound;
-    [SerializeField] SoundPlayer _extinguished100Sound;
-    private AudioSource _burningAudioSource;
-
     internal void DestroyFire()
     {
         gameObject.SetActive(false);
@@ -103,13 +97,10 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
         _particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
-        ;
     }
     private void Start()
     {
         SetDefaultValues();
-        _burningSound.PlaySound();
-        _burningAudioSource = GetComponent<AudioSource>();
     }
 
     public void SetDefaultValues()
@@ -255,12 +246,10 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     public void TakeDamage(float damageDealt)
     {
         Debug.Log("FireDamage");
-        _decreaseSound.PlaySound();
         _currentFireHealth -= damageDealt;
         Debug.Log("health: " + _currentFireHealth);
         if (_currentFireHealth < 0)
         {
-            _extinguished100Sound.PlaySound();
             _currentFireHealth = 0;
             _fireParticlesPrefab.SetActive(false);
         }
