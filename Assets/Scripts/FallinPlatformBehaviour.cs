@@ -37,7 +37,7 @@ public class FallinPlatformBehaviour : MonoBehaviour
         _oVolume = _audioSource.volume;
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
         _playerThrower = _player.GetComponent<Thrower>();
-        _playerCollider = _player.GetComponentInChildren<BoxCollider2D>();
+        _playerCollider = _player.GetComponentInChildren<PolygonCollider2D>();
 
         _fire = _player.GetComponentInChildren<FireController>();
         _fireCollider = _fire.GetComponent<Collider2D>();
@@ -54,6 +54,7 @@ public class FallinPlatformBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(PlayerOnPlatform());
         switch (_currentState)
         {
             case States.MovingDown:

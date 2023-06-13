@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
-public class GeyserBehaviour : MonoBehaviour
+public class GeyserBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [Header("Scripts Utilizados")]
     [SerializeField] FireDamager _fireDamager;
@@ -144,5 +145,12 @@ public class GeyserBehaviour : MonoBehaviour
     private void SetParticlesSpeed(float speed)
     {
         _velocityOverLifeTimeModule.speedModifier = speed;
+    }
+
+    public void RestartLevel()
+    {
+        _firstIdle = true;
+        StopAllCoroutines();
+        ChangeState(States.Idle);
     }
 }
