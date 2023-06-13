@@ -4,7 +4,7 @@ using UnityEngine;
 using TecnocampusProjectII;
 using System;
 
-public class FallinPlatform : MonoBehaviour
+public class FallinPlatformBehaviour : MonoBehaviour
 {
     [SerializeField] Transform _player;
     [SerializeField] FireController _fire;
@@ -24,7 +24,6 @@ public class FallinPlatform : MonoBehaviour
     private bool _isMoving = false;
     private AudioSource _audioSource;
     float _oVolume;
-
 
     private enum States {Idle, MovingDown, MovingUp}
     private void Awake()

@@ -44,7 +44,6 @@ public class WaterDropBehaviour : MonoBehaviour
     {
         Debug.Log(other.name);
         InstantiateParticles();
-        Debug.Log(_soundPlayer == null);
         _soundPlayer.PlaySound();
         StartCoroutine(DestroyAtEndFrame());
     }
