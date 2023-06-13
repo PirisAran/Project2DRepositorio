@@ -7,11 +7,13 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] Color _particleColor;
     [SerializeField] GameObject _particlesPrefab;
+    [SerializeField] Vector2 _particlesPosition;
     GameObject _particlesCreated;
 
     [SerializeField] GameObject _objectToDestroy;
     bool _activeOnAwake;
     [SerializeField] private float _timeToDestroy = 0.5f;
+    float _chanceToSpawnParticles = 0.3f;
 
     public void RestartLevel()
     {
@@ -23,7 +25,12 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
     {
         if (_objectToDestroy == null) _objectToDestroy = gameObject;
         _activeOnAwake = _objectToDestroy.active;
+
+        var collider2D = GetComponentInChildren<Collider2D>();
+
+        if (collider2D != null) _particlesPosition = collider2D.transform.position;
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,12 +46,22 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
     {
         yield return new WaitForSeconds(time);
         _objectToDestroy.SetActive(false);
-        InstantiateParticles();
+        RandomInstantiateParticles();
     }
 
     private void InstantiateParticles()
     {
-        _particlesCreated = Instantiate(_particlesPrefab, transform.position, Quaternion.identity);
+        _particlesCreated = Instantiate(_particlesPrefab, _particlesPosition, Quaternion.identity);
         //particles.
+    }
+
+    private void RandomInstantiateParticles()
+    {
+        float randomValue = Random.value;
+
+        if (randomValue <= _chanceToSpawnParticles)
+        {
+            InstantiateParticles();
+        }
     }
 }
