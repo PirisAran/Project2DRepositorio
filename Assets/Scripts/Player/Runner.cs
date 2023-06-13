@@ -68,7 +68,12 @@ public class Runner : MonoBehaviour
         {
             if (_isRunning)
             {
+                _timeBetweenSteps = 0.4f;
                 _stepsSounds.PlaySound();
+                if (_currentStateSpeed == NoFireSpeed)
+                {
+                    _timeBetweenSteps = 0.27f;
+                }
             }
             yield return new WaitForSeconds(_timeBetweenSteps);
         }

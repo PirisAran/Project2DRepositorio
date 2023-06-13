@@ -26,6 +26,10 @@ public class WaterShapeController : MonoBehaviour
     // How much to spread to the other springs
     public float spread = 0.006f;
 
+    [Header("Water Sounds")]
+    [SerializeField] SoundPlayer _lowSound;
+    [SerializeField] SoundPlayer _hardSound;
+
     void Start() { 
        
     }
@@ -152,6 +156,23 @@ public class WaterShapeController : MonoBehaviour
     private void Splash(int index, float speed) { 
         if (index >= 0 && index < springs.Count) {
             springs[index].velocity += speed;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _lowSound.PlaySound();
+        var rb = collision.GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            return;
+        }
+
+        Debug.Log(rb.velocity);
+
+        if (rb.velocity.y > 6.5)
+        {
+            _hardSound.PlaySound();
         }
     }
 }
