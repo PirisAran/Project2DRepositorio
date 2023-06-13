@@ -17,6 +17,8 @@ public class CheckPoint : PlayerWithFireActivation
 
     public static Action OnCheckPointActivated;
 
+    [SerializeField] SoundPlayer _checkPointSound;
+
     private void Awake()
     {
         _light.color = _innactiveLightColor;
@@ -35,6 +37,7 @@ public class CheckPoint : PlayerWithFireActivation
         GameLogic l_GameLogic = GameLogic.GetGameLogic();
         l_GameLogic.GetGameController().GetLevelController().SetSpawnPoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         Debug.Log("checkpoint activated");
+        _checkPointSound.PlaySound();
     }
 
     IEnumerator DoAnimationTimeLater(float time)
