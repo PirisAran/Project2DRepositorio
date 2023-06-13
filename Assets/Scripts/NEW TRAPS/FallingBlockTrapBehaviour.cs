@@ -25,7 +25,10 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
     Collider2D _collider;
     Rigidbody2D _rb;
     Vector2 _oPosition;
-    Vector2 _previousSpeed;
+
+    [SerializeField] GameObject _landingParticlePrefab;
+    ParticleSystem _particleSystem;
+    [SerializeField] Transform _landingTransform;
 
     private void OnEnable()
     {
@@ -52,6 +55,7 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         _rb = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
+        _particleSystem = _landingParticlePrefab.GetComponent<ParticleSystem>();
         Init();
     }
 
@@ -84,13 +88,14 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         if (collision.collider == _landingSurface)
         {
+            //_hitPos = collision.contacts[0].point;
             OnLanded();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision == _landingSurface)
+        if (collider == _landingSurface)
         {
             OnLanded();
         }
@@ -102,6 +107,16 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _fireDestroyer.SetCanDestroy(false);
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _impactSound.PlaySound();
+        InstantiateParticles();
+    }
+
+    private void InstantiateParticles()
+    {
+        GameObject particleObj = Instantiate(_landingParticlePrefab, _landingTransform.position, _landingParticlePrefab.transform.rotation);
+
+        ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
+
+        instantiateParticleSystem.Play();
     }
 
 }
