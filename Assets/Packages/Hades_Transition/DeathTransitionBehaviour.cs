@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathTransition : MonoBehaviour {
-
+public class DeathTransitionBehaviour : MonoBehaviour 
+{
     [SerializeField] private Material material;
 
     private float maskAmount = 0f;
-    private float targetValue = 1f;
+    private static float targetValue = 1f;
     [SerializeField]
     float MaskAmountMultiplier=6f;
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.T)) {
+    private void Update() 
+    {
+        if (Input.GetKeyDown(KeyCode.T))
             targetValue = -.1f;
-        }
-        if (Input.GetKeyDown(KeyCode.Y)) {
+        if (Input.GetKeyDown(KeyCode.Y))
             targetValue = 1f;
-        }
 
         float maskAmountChange = targetValue > maskAmount ? +.1f : -.1f;
         maskAmount += maskAmountChange * Time.deltaTime * MaskAmountMultiplier;
@@ -25,5 +24,13 @@ public class DeathTransition : MonoBehaviour {
         material.SetFloat("_MaskAmount", maskAmount);
     }
 
+    public void DoDeathTransition()
+    {
+        targetValue = -0.1f;
+    }
+    public void UndoDeathTransition()
+    {
+        targetValue = 1f;
+    }
 
 }

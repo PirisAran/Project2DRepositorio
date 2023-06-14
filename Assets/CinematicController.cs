@@ -24,11 +24,13 @@ public class CinematicController : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_videoPlayer == null) return;
         _videoPlayer.loopPointReached += LoadNextScene;
     }
 
     private void OnDisable()
     {
+        if (_videoPlayer == null) return;
         _videoPlayer.loopPointReached -= LoadNextScene;
     }
 
