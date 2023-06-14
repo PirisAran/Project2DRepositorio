@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1522700450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1522700451}
+  m_Layer: 23
+  m_Name: ImpactPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1522700451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522700450}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3266572931386277694}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &223119481182040400
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +137,8 @@ MonoBehaviour:
   _impactSound: {fileID: 500749230}
   _landingSurface: {fileID: 3266572931386277692}
   _canReset: 1
+  _landingParticlePrefab: {fileID: 5527767641905954512, guid: 29878b7ec00cb1142a57f51b87659384, type: 3}
+  _landingTransform: {fileID: 3266572931386277694}
 --- !u!114 &3960678278250641443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particleColor: {r: 0, g: 0, b: 0, a: 0}
   _particlesPrefab: {fileID: 3635268062821174076, guid: cb988cb9a0028084ab8742e752409977, type: 3}
+  _particlesPosition: {x: 0, y: 0}
   _objectToDestroy: {fileID: 0}
   _timeToDestroy: 0.5
 --- !u!114 &223119481182040409
@@ -395,7 +429,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -11.89, z: 0}
   m_LocalScale: {x: 2.2625, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1522700451}
   m_Father: {fileID: 3336497971519952538}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -491,6 +526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particleColor: {r: 0, g: 0, b: 0, a: 0}
   _particlesPrefab: {fileID: 0}
+  _particlesPosition: {x: 0, y: 0}
   _objectToDestroy: {fileID: 0}
   _timeToDestroy: 0.5
 --- !u!1 &3336497971519952529
