@@ -106,6 +106,8 @@ MonoBehaviour:
   _impactSound: {fileID: 500749230}
   _landingSurface: {fileID: 3266572931386277692}
   _canReset: 1
+  _landingParticlePrefab: {fileID: 0}
+  _landingTransform: {fileID: 0}
 --- !u!114 &3960678278250641443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particleColor: {r: 0, g: 0, b: 0, a: 0}
   _particlesPrefab: {fileID: 3635268062821174076, guid: cb988cb9a0028084ab8742e752409977, type: 3}
+  _particlesPosition: {x: 0, y: 0}
   _objectToDestroy: {fileID: 0}
   _timeToDestroy: 0.5
 --- !u!114 &223119481182040409
@@ -253,7 +256,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1666159361
-  m_SortingLayer: -2
+  m_SortingLayer: -7
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ec3807c29109eee40acfebf9f934ea18, type: 3}
   m_Color: {r: 0.3137255, g: 0.38039216, b: 0.32941177, a: 1}
@@ -278,6 +281,7 @@ GameObject:
   - component: {fileID: 3266572931386277667}
   - component: {fileID: 3266572931386277692}
   - component: {fileID: 9041675418423399446}
+  - component: {fileID: 4476403854175428806}
   m_Layer: 23
   m_Name: LandingSurface
   m_TagString: Untagged
@@ -392,8 +396,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particleColor: {r: 0, g: 0, b: 0, a: 0}
   _particlesPrefab: {fileID: 0}
+  _particlesPosition: {x: 0, y: 0}
   _objectToDestroy: {fileID: 0}
   _timeToDestroy: 0.5
+--- !u!114 &4476403854175428806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266572931386277695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3073945681b32b045981e1ae2540a86d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activated: 1
 --- !u!1 &3336497971519952529
 GameObject:
   m_ObjectHideFlags: 0
