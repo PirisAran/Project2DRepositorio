@@ -212,6 +212,7 @@ Transform:
   m_Children:
   - {fileID: 2033753112217600609}
   - {fileID: 7736300432381365352}
+  - {fileID: 184896516972857623}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -251,6 +252,8 @@ MonoBehaviour:
   _playerKiller: {fileID: 6288071022454283045}
   _playerDetector: {fileID: 3313114622455726701}
   _fireDestroyer: {fileID: 2605356670357052411}
+  _particleStalactitaPrefab: {fileID: 452134198795002175, guid: 6b91e94cc1c4d0b48944a2d0f43a963a, type: 3}
+  _particleSpawnPosition: {fileID: 184896516972857623}
 --- !u!60 &2033753112760518678
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -305,3 +308,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canKill: 0
+--- !u!1 &6478274819284848541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 184896516972857623}
+  m_Layer: 16
+  m_Name: ParticleSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &184896516972857623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6478274819284848541}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.24, y: -0.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3585951192675502714}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
