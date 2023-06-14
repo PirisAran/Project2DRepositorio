@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using TecnocampusProjectII;
 
 public class SoundPlayer : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class SoundPlayer : MonoBehaviour
     public GameObject PlaySound()
     {
         var sound = GetRandomSound();
-        return SoundManager.InstantiateSound(sound);
+        return SoundManager.InstantiateSound(sound, transform.position);
     }
 
     private GameObject GetRandomSound()

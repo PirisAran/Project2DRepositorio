@@ -54,7 +54,6 @@ public class FallinPlatformBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(PlayerOnPlatform());
         switch (_currentState)
         {
             case States.MovingDown:

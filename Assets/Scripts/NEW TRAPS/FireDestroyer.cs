@@ -9,7 +9,7 @@ public class FireDestroyer : MonoBehaviour
     [SerializeField] bool _canDestroy;
 
     FireController _fire;
-    // Start is called before the first frame update
+
     void Start()
     {
         _fire = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponentInChildren<FireController>();    
@@ -46,4 +46,5 @@ public class FireDestroyer : MonoBehaviour
     {
         _canDestroy = v;
     }
+
 }

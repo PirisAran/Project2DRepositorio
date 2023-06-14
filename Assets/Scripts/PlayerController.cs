@@ -6,6 +6,8 @@ namespace TecnocampusProjectII
 	public class PlayerController : MonoBehaviour, IRestartLevelElement
 	{
 		LevelController currentLvlController;
+		[SerializeField] GameObject _ignisParts;
+		Rigidbody2D _rb;
 		private void Start()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
@@ -19,7 +21,8 @@ namespace TecnocampusProjectII
         {
 			GameLogic l_GameLogic = GameLogic.GetGameLogic();
 			transform.position = currentLvlController.GetPlayerSpawnPoint().position;
-        }
+			_ignisParts.SetActive(true);
+		}
 
         internal void SubscribeToLvl(LevelController levelController)
         {
