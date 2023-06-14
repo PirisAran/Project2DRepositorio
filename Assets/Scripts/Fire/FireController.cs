@@ -21,10 +21,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     Light2D _light;
 
-    internal void BeThrown()
-    {
-        throw new NotImplementedException();
-    }
+    public static Action OnFireDestroyed;
 
     [SerializeField]
     float _maxLightRange = 6;
@@ -33,7 +30,26 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     GameObject _fireParticlesPrefab;
     public float LightRange => _lightRange;
+
+    [Header("Fire's Sounds")]
+    [SerializeField] SoundPlayer _burningSound;
+    [SerializeField] SoundPlayer _decreaseSound;
+    [SerializeField] SoundPlayer _extinguished100Sound;
+    private AudioSource _burningAudioSource;
+
+    internal void DestroyFire()
+    {
+        gameObject.SetActive(false);
+        OnFireDestroyed?.Invoke();
+    }
+
     float _lightRange;
+
+    internal void SubscribeToLvl(LevelController levelController)
+    {
+        levelController.AddRestartLevelElement(this);
+    }
+
     [Space] 
 
     [Header("Light Effect Parameters")]
@@ -87,11 +103,13 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
         _particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
+        ;
     }
     private void Start()
     {
         SetDefaultValues();
-        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        _burningSound.PlaySound();
+        _burningAudioSource = GetComponent<AudioSource>();
     }
 
     public void SetDefaultValues()
@@ -144,7 +162,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         SetAttached(false);
         _rb.velocity = dir * currentThrowSpeed;
         Show();
-        RoomCamManager.GetCameraManager().StartShakeCamera();
 
     }
 
@@ -152,7 +169,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
-        RoomCamManager.GetCameraManager().StopShakeCamera();
     }
 
     private void SetAttached(bool v)
@@ -162,7 +178,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         GetComponent<Collider2D>().enabled = !v;
     }
 
-    private bool IsAttached()
+    public bool IsAttached()
     {
         return _playerThrower.HasFire;
     }
@@ -235,24 +251,16 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _explosionTimer += Time.fixedDeltaTime;
     }
     /* ----- HEALTH AND DAMAGE HERE  ------- */
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (IsAttached()) return;
-
-        IDamageFire water = collision.GetComponent<IDamageFire>();
-        if (water != null)
-        {
-            TakeDamage(water.DamageDealt);
-        }
-    }
 
     public void TakeDamage(float damageDealt)
     {
         Debug.Log("FireDamage");
+        _decreaseSound.PlaySound();
         _currentFireHealth -= damageDealt;
         Debug.Log("health: " + _currentFireHealth);
         if (_currentFireHealth < 0)
         {
+            _extinguished100Sound.PlaySound();
             _currentFireHealth = 0;
             _fireParticlesPrefab.SetActive(false);
         }
@@ -278,6 +286,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        gameObject.SetActive(true);
         HealMaximum();
         BePickedUp();
         AdjustLightEffect();

@@ -10,6 +10,9 @@ public class Jumper : MonoBehaviour
     Rigidbody2D _rb;
     Thrower _thrower;
 
+    [SerializeField] SoundPlayer _jumpingSound;
+    [SerializeField] SoundPlayer _landingSound;
+
     //Input Jumping
     [SerializeField] KeyCode JumpKey = KeyCode.Space;
 
@@ -100,6 +103,7 @@ public class Jumper : MonoBehaviour
     }
     private void JumpStarted()
     {
+        _jumpingSound.PlaySound();
         if (!_hasFire)
         {
             DoMultipleJump();
@@ -176,6 +180,7 @@ public class Jumper : MonoBehaviour
     }
     private void OnLanding()
     {
+        _landingSound.PlaySound();
         _jumping = false;
         ResetJumps();
         _firstAddedForce = true;

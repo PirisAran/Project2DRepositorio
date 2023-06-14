@@ -22,13 +22,13 @@ public class UmbraAnimator : MonoBehaviour
     [SerializeField]
     GameObject _transformationParticles;
 
-    UmbraFSM _umbraFSM;
+    UmbraBehaviour _umbraFSM;
 
     IEnumerator _currentTransformation;
 
     private void Awake()
     {
-        _umbraFSM = GetComponent<UmbraFSM>();
+        _umbraFSM = GetComponent<UmbraBehaviour>();
         _transformationParticles.SetActive(false);
         _allBones.Add(_cuteBones);
         _allBones.Add(_followBones);
@@ -56,7 +56,7 @@ public class UmbraAnimator : MonoBehaviour
         if (_currentAnim == null) return;
         _currentAnim.SetBool("moving", _umbraFSM.Speed > 1.5f);
 
-        if (_umbraFSM.CurrentState == UmbraFSM.States.Transition) return;
+        if (_umbraFSM.CurrentState == UmbraBehaviour.States.Transition) return;
         var scale = _currentAnim.transform.localScale;
         _currentAnim.transform.localScale = new Vector2(Mathf.Abs(scale.x) * Mathf.Sign(_umbraFSM.Forward.x), scale.y);
     }   
@@ -100,7 +100,7 @@ public class UmbraAnimator : MonoBehaviour
     private IEnumerator DoTransformationAnimation()
     {
         _transformationParticles.SetActive(true);
-        yield return new WaitForSeconds(_umbraFSM.TransitionTime + 0.25f);
+        yield return new WaitForSeconds(_umbraFSM.TransitionTime);
         _transformationParticles.SetActive(false);
         _currentTransformation = null;
     }
