@@ -100,7 +100,7 @@ public class UmbraAnimator : MonoBehaviour
     private IEnumerator DoTransformationAnimation()
     {
         _transformationParticles.SetActive(true);
-        yield return new WaitForSeconds(_umbraFSM.TransitionTime + 1f);
+        yield return new WaitForSeconds(_umbraFSM.TransitionTime);
         _transformationParticles.SetActive(false);
         _currentTransformation = null;
     }
