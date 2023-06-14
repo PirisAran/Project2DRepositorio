@@ -81,7 +81,14 @@ namespace TecnocampusProjectII
         public void RestartLevel()
         {
             foreach (IRestartLevelElement l_RestartLevelElement in m_RestartLevelElements)
-                l_RestartLevelElement.RestartLevel();
+            {
+                if (l_RestartLevelElement == null)
+                {
+                    m_RestartLevelElements.Remove(l_RestartLevelElement);
+                }
+                else
+                    l_RestartLevelElement.RestartLevel();
+            }
         }
         public void AddRestartLevelElement(IRestartLevelElement RestartLevelElement)
         {
@@ -112,6 +119,11 @@ namespace TecnocampusProjectII
             //do transition scene
             yield return new WaitForSeconds(0.5f);
             SceneManager.LoadScene(_nextScene);
+        }
+
+        public void LoadNextScene()
+        {
+            SceneManager.LoadScene(m_NextLevel);
         }
     }
 }

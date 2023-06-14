@@ -11,13 +11,15 @@ public class SoundManager : MonoBehaviour
         _soundManager = this;
     }
 
-    public static GameObject InstantiateSound(GameObject sound)
+    public static GameObject InstantiateSound(GameObject sound, Vector3 position)
     {
-        return _soundManager._InstantiateSound(sound);
+        return _soundManager._InstantiateSound(sound, position);
     }
 
-    private GameObject _InstantiateSound(GameObject sound)
+    private GameObject _InstantiateSound(GameObject sound, Vector3 position)
     {
-        return Instantiate(sound, transform);
+        var s = Instantiate(sound, position, Quaternion.identity);
+        s.transform.parent = transform;
+        return s;
     }
 }
