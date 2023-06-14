@@ -18,7 +18,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     [SerializeField] GameObject _particleStalactitaPrefab;
     [SerializeField] Transform _particleSpawnPosition;
 
-    ParticleSystem _particleSystem;
+    [SerializeField] GameObject _particleStalactitaStartPrefab;
+    [SerializeField] Transform _particleSpawnStartPosition;
+
+    ParticleSystem _particleSystem1;
+    ParticleSystem _particleSystem2;
 
     private void OnEnable()
     {
@@ -32,7 +36,8 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void Awake()
     {
-        _particleSystem = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
+        _particleSystem1 = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
+        _particleSystem2 = _particleStalactitaStartPrefab.GetComponentInChildren<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
         Init();
     }
@@ -52,7 +57,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        InstantiateParticles();
+        InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
     }
 
@@ -63,6 +68,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnPlayerDetected()
     {
+        InstantiateParticles(_particleStalactitaStartPrefab, _particleSpawnPosition);
         _rb.bodyType = RigidbodyType2D.Dynamic;
         _playerDetector.enabled = false;
         _playerKiller.SetCanKill(true);
@@ -86,11 +92,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         ResetValues();
     }
 
-    private void InstantiateParticles()
+    private void InstantiateParticles(GameObject _particlePrefab, Transform _particletransform)
     {
-        GameObject particleObj = Instantiate(_particleStalactitaPrefab, _particleSpawnPosition.position, _particleStalactitaPrefab.transform.rotation);
+        GameObject particleObj = Instantiate(_particlePrefab, _particletransform.position, _particlePrefab.transform.rotation);
 
-        ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
+        ParticleSystem instantiateParticleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
 
         instantiateParticleSystem.Play();
     }
