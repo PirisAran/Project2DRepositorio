@@ -15,6 +15,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     Vector2 _oPosition;
     Rigidbody2D _rb;
 
+    [SerializeField] GameObject _particleStalactitaPrefab;
+    [SerializeField] Transform _particleSpawnPosition;
+
+    ParticleSystem _particleSystem;
+
     private void OnEnable()
     {
         _playerDetector.OnPlayerDetected += OnPlayerDetected;
@@ -27,6 +32,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void Awake()
     {
+        _particleSystem = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
         Init();
     }
@@ -46,6 +52,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        InstantiateParticles();
         gameObject.SetActive(false);
     }
 
@@ -77,5 +84,14 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         Debug.Log("Stalact rs");
         ResetValues();
+    }
+
+    private void InstantiateParticles()
+    {
+        GameObject particleObj = Instantiate(_particleStalactitaPrefab, _particleSpawnPosition.position, _particleStalactitaPrefab.transform.rotation);
+
+        ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
+
+        instantiateParticleSystem.Play();
     }
 }

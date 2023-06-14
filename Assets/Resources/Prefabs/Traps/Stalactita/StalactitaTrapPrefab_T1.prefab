@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1126140678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1126140679}
+  m_Layer: 16
+  m_Name: ParticleSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1126140679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126140678}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.21, y: -0.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 35674102687618721}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &35674102687618727
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +66,7 @@ Transform:
   m_Children:
   - {fileID: 4821241193773903441}
   - {fileID: 2460369543500167565}
+  - {fileID: 1126140679}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,6 +106,8 @@ MonoBehaviour:
   _playerKiller: {fileID: 7282857045448918212}
   _playerDetector: {fileID: 4821241193773903454}
   _fireDestroyer: {fileID: 3253925965183103405}
+  _particleStalactitaPrefab: {fileID: 452134198795002175, guid: 6b91e94cc1c4d0b48944a2d0f43a963a, type: 3}
+  _particleSpawnPosition: {fileID: 1126140679}
 --- !u!60 &6143322204795911671
 PolygonCollider2D:
   m_ObjectHideFlags: 0
