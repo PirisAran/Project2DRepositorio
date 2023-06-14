@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5527767641905954515}
   - component: {fileID: 5527767641905954514}
   - component: {fileID: 5527767641905954513}
+  - component: {fileID: 202938231959123303}
   m_Layer: 0
   m_Name: ParticulasImpactoSueloFallingBlockPrefab
   m_TagString: Untagged
@@ -48,7 +49,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -3715,7 +3716,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     type: 1
     collisionMode: 1
@@ -4915,3 +4916,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &202938231959123303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527767641905954512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 890ac4ce15e064c4086450c5b141b9e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeTime: 1.84

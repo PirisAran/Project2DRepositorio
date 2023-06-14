@@ -18,12 +18,19 @@ public class CheckPoint : PlayerWithFireActivation
     public static Action OnCheckPointActivated;
 
     [SerializeField] SoundPlayer _checkPointSound;
+    [SerializeField] GameObject _checkPointParticlePrefab;
+    ParticleSystem _particleSystem;
+    Transform _player;
 
     private void Awake()
     {
         _light.color = _innactiveLightColor;
+        _particleSystem = _checkPointParticlePrefab.GetComponent<ParticleSystem>();
     }
-
+    private void Start()
+    {
+        _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+    }
     protected override void DoAnimation()
     {
         _anim.SetBool("startActivation", true);
@@ -38,6 +45,8 @@ public class CheckPoint : PlayerWithFireActivation
         l_GameLogic.GetGameController().GetLevelController().SetSpawnPoint(_playerSpawnPoint.position, _umbraSpawnPoint.position);
         Debug.Log("checkpoint activated");
         _checkPointSound.PlaySound();
+
+        InstantiateParticles();
     }
 
     IEnumerator DoAnimationTimeLater(float time)
@@ -47,4 +56,12 @@ public class CheckPoint : PlayerWithFireActivation
         _anim.SetBool("activated", true);
     }
 
+    private void InstantiateParticles()
+    {
+        GameObject particleObj = Instantiate(_checkPointParticlePrefab, _player.position, _checkPointParticlePrefab.transform.rotation);
+
+        ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
+
+        instantiateParticleSystem.Play();
+    }
 }
