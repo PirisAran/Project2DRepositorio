@@ -6,21 +6,24 @@ public class UmbraMini : MonoBehaviour, IRestartLevelElement
 {
     PlayerController _player;
     float _speed;
-    Vector2 _oPosition;
+    Vector2 _oLocalPosition;
+    Transform _parent;
     private void Awake()
     {
-        _oPosition = transform.position;
-        gameObject.SetActive(false);
+        _oLocalPosition = transform.localPosition;
+        _parent = transform.parent;
     }
     private void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player;
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        gameObject.SetActive(false);
     }
 
     public void Activate(float speed)
     {
         gameObject.SetActive(true);
+        transform.parent = null;
         _speed = speed;
     }
 
@@ -40,7 +43,9 @@ public class UmbraMini : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        Debug.Log("RS MINUMBRA");
         gameObject.SetActive(false);
-        transform.position = _oPosition;
+        transform.parent = _parent;
+        transform.localPosition = _oLocalPosition;
     }
 }

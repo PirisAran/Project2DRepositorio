@@ -6,6 +6,7 @@ using UnityEngine;
 public class GroupOfUmbrasBehaviour : MonoBehaviour
 {
     [SerializeField] List<UmbraMini> _umbraMiniList = new List<UmbraMini>();
+    [SerializeField] SoundPlayer _huntingSound;
 
     [SerializeField] float _umbrasSpeed;
     PlayerController _player;
@@ -30,6 +31,7 @@ public class GroupOfUmbrasBehaviour : MonoBehaviour
 
     private void ActivateUmbras()
     {
+        _huntingSound.PlaySound();  
         foreach (var umbra in _umbraMiniList)
         {
             umbra.Activate(_umbrasSpeed);
