@@ -13,7 +13,6 @@ namespace TecnocampusProjectII
 		[SerializeField] string _firstLevelScene;
 
 		[SerializeField] GameObject _mainMenuCanva;
-		[SerializeField] GameObject _optionsMenuCanva;
 
 		void Start()
 		{
@@ -31,7 +30,16 @@ namespace TecnocampusProjectII
 			Debug.Log("START");
 			SceneManager.LoadSceneAsync(_firstLevelScene);
 		}
-			
+
+        private void FixedUpdate()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+				SceneManager.LoadSceneAsync("MenuGold");
+				Debug.Log("reload");
+			}
+		}
+
         public void OnExitClicked()
 		{
 			Application.Quit();

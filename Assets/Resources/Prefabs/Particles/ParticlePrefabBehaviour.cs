@@ -21,6 +21,8 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        if (gameObject == null)
+            return;
         Destroy(gameObject);
     }
 }

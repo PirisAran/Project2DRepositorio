@@ -9,6 +9,8 @@ public class CinematicController : MonoBehaviour
 {
     [SerializeField] string _nextScene;
     [SerializeField] VideoPlayer _videoPlayer;
+    [SerializeField] private KeyCode _skipKey = KeyCode.Space;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,14 +24,23 @@ public class CinematicController : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_videoPlayer == null) return;
         _videoPlayer.loopPointReached += LoadNextScene;
     }
 
     private void OnDisable()
     {
+        if (_videoPlayer == null) return;
         _videoPlayer.loopPointReached -= LoadNextScene;
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(_skipKey))
+        {
+            SceneManager.LoadScene(_nextScene);
+        }
+    }
 
     public void LoadNextScene(VideoPlayer vp)
     {
