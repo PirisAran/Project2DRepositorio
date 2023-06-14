@@ -6,16 +6,18 @@ using System;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] GameObject _killParticles;
+    [SerializeField] GameObject _deathParticles;
     ParticleSystem _particleSystem;
     Transform _player;
+
+    [SerializeField] SoundPlayer _deathSound;
 
     [SerializeField] GameObject _ignisParts;
 
     private void Awake()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
-        _particleSystem = _killParticles.GetComponent<ParticleSystem>();
+        _particleSystem = _deathParticles.GetComponent<ParticleSystem>();
     }
     public void KillPlayer()
     {
@@ -25,6 +27,7 @@ public class HealthSystem : MonoBehaviour
 
     private IEnumerator KillOnEndFrame()
     {
+        _deathSound.PlaySound();
         InstantiateParticles();
         _ignisParts.SetActive(false);
         yield return new WaitForSeconds(0.7f);
@@ -36,7 +39,7 @@ public class HealthSystem : MonoBehaviour
 
     private void InstantiateParticles()
     {
-        GameObject particleObj = Instantiate(_killParticles, _player.position, _killParticles.transform.rotation);
+        GameObject particleObj = Instantiate(_deathParticles, _player.position, _deathParticles.transform.rotation);
 
         ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
 
