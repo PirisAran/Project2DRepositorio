@@ -40,6 +40,9 @@ public class Thrower : MonoBehaviour
     float _throwStartTime;
     public bool IsChargingThrow => _isChargingThrow;
     bool _isChargingThrow = false;
+    [SerializeField] SoundPlayer _heartBeatSound;
+    AudioSource _audioSource;
+    float originalVolume; 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -59,21 +62,32 @@ public class Thrower : MonoBehaviour
         _runner = GetComponent<Runner>();
     }
 
+    private void Start()
+    {
+        GameObject _heartSound = _heartBeatSound.PlaySound();
+        _audioSource = _heartSound.GetComponent<AudioSource>();
+        originalVolume = _audioSource.volume;
+    }
+
     // Update is called once per frame
     void Update()
     {
         ThrowInput();
         PickUpInput();
         UpdateThrow();
+        HeartBeatSound();
     }
+
 
     private void UpdateThrow() // Se llama cada update
     {
         _lr.positionCount = 0;
-        if (_isChargingThrow)
+        if (_isChargingThrow || true)
         {
             //DIBUJA LA LINIA DEL LANZAMIENTO CON EL COMPONENTE LINE RENDERER (_lr)
-            List<Vector3> l_Positions = GetParabolicPositions(_fire.transform.position, (Vector2.Angle(Vector2.right, GetMouseDir())) * Mathf.Deg2Rad,
+            Vector2 l_MouseDirection = GetMouseDir();
+            float l_Angle = Mathf.Atan2(l_MouseDirection.y, l_MouseDirection.x);
+            List<Vector3> l_Positions = GetParabolicPositions(_fire.transform.position, l_Angle,
                 GetCurrentThrowSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);
             int currentParabolicShootPoints = GetUnblockedParabolicShootPointsNumber(l_Positions);
             _lr.positionCount = currentParabolicShootPoints;
@@ -162,6 +176,11 @@ public class Thrower : MonoBehaviour
         _fire.transform.parent = v? transform: null;
         _hasFire = v;
         _runner.ChangeSpeed();
+    }
+
+    private void HeartBeatSound()
+    {
+         _audioSource.volume = _hasFire? 0 : originalVolume; 
     }
 
     private Vector2 GetMouseDir()
