@@ -55,7 +55,6 @@ public class GeyserBehaviour : MonoBehaviour, IRestartLevelElement
     {
 
         _animation.Play(_colliderUpAnim.name);
-        Debug.Log("up anim");
 
         SetParticlesSpeed(1);
 
@@ -63,7 +62,6 @@ public class GeyserBehaviour : MonoBehaviour, IRestartLevelElement
         var runningSound = _waterRunningSound.PlaySound();
         yield return new WaitForSeconds(_activeTime - _colliderDownAnim.length);
         _animation.Play(_colliderDownAnim.name);
-        Debug.Log("down anim");
 
         StartCoroutine(SetActiveParticlesOverTime(false));
 
