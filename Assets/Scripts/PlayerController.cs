@@ -8,7 +8,11 @@ namespace TecnocampusProjectII
 		LevelController currentLvlController;
 		[SerializeField] GameObject _ignisParts;
 		Rigidbody2D _rb;
-		private void Start()
+        private void Awake()
+        {
+			_rb = GetComponent<Rigidbody2D>();
+		}
+        private void Start()
 		{
 			GameLogic l_GameLogic=GameLogic.GetGameLogic();
 			if(l_GameLogic.GetGameController().m_Player==this)
@@ -22,9 +26,10 @@ namespace TecnocampusProjectII
 			GameLogic l_GameLogic = GameLogic.GetGameLogic();
 			transform.position = currentLvlController.GetPlayerSpawnPoint().position;
 			_ignisParts.SetActive(true);
+			_rb.bodyType = RigidbodyType2D.Dynamic;
 		}
 
-        internal void SubscribeToLvl(LevelController levelController)
+		internal void SubscribeToLvl(LevelController levelController)
         {
 			levelController.AddRestartLevelElement(this);
 			currentLvlController = levelController;
