@@ -14,19 +14,22 @@ public class HealthSystem : MonoBehaviour
 
     [SerializeField] GameObject _ignisParts;
 
+    Rigidbody2D _rb;
+
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
         _particleSystem = _deathParticles.GetComponent<ParticleSystem>();
     }
     public void KillPlayer()
     {
         StartCoroutine(KillOnEndFrame());
-        
     }
 
     private IEnumerator KillOnEndFrame()
     {
+        _rb.bodyType = RigidbodyType2D.Static;
         _deathSound.PlaySound();
         InstantiateParticles();
         _ignisParts.SetActive(false);
