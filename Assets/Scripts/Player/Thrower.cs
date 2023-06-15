@@ -82,7 +82,7 @@ public class Thrower : MonoBehaviour
     private void UpdateThrow() // Se llama cada update
     {
         _lr.positionCount = 0;
-        if (_isChargingThrow || true)
+        if (_isChargingThrow)
         {
             //DIBUJA LA LINIA DEL LANZAMIENTO CON EL COMPONENTE LINE RENDERER (_lr)
             Vector2 l_MouseDirection = GetMouseDir();

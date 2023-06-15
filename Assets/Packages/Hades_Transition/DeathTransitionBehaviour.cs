@@ -7,7 +7,7 @@ public class DeathTransitionBehaviour : MonoBehaviour
     [SerializeField] private Material material;
 
     private float maskAmount = 0f;
-    private static float targetValue = 1f;
+    private static float targetValue = -0.1f;
     [SerializeField]
     float MaskAmountMultiplier=6f;
     private void Update() 
@@ -17,6 +17,7 @@ public class DeathTransitionBehaviour : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Y))
             targetValue = 1f;
 
+
         float maskAmountChange = targetValue > maskAmount ? +.1f : -.1f;
         maskAmount += maskAmountChange * Time.deltaTime * MaskAmountMultiplier;
         maskAmount = Mathf.Clamp01(maskAmount);
@@ -24,13 +25,12 @@ public class DeathTransitionBehaviour : MonoBehaviour
         material.SetFloat("_MaskAmount", maskAmount);
     }
 
-    public void DoDeathTransition()
-    {
-        targetValue = -0.1f;
-    }
-    public void UndoDeathTransition()
+    public static void DoDeathTransition()
     {
         targetValue = 1f;
     }
-
+    public static void UndoDeathTransition()
+    {
+        targetValue = -0.1f;
+    }
 }

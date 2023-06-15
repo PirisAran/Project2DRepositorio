@@ -5,6 +5,7 @@ using TecnocampusProjectII;
 public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] float _lifeTime;
+    bool _destroyed = false;
     
     // Start is called before the first frame update
     void Start()
@@ -16,13 +17,13 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     IEnumerator DestroyAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
+        _destroyed = true;
         Destroy(gameObject);
     }
 
     public void RestartLevel()
     {
-        if (gameObject == null)
-            return;
+        if (!_destroyed)
         Destroy(gameObject);
     }
 }

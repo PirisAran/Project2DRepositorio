@@ -18,6 +18,7 @@ public class CinematicController : MonoBehaviour
         if (l_GameLogic.GetGameController() != null)
         {
             GameObject.Destroy(l_GameLogic.GetGameController().m_Player.gameObject);
+            GameObject.Destroy(CursorController.GetCursorController().gameObject);
             GameLogic.GetGameLogic().SetGameController(null);
         }
     }
