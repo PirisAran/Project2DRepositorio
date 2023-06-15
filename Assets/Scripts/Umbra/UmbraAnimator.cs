@@ -19,8 +19,10 @@ public class UmbraAnimator : MonoBehaviour
 
     List<Animator> _allBones = new List<Animator>();
 
-    [SerializeField]
-    GameObject _transformationParticles;
+    //[SerializeField] Transform _transformationParticlesPrefabTransform;
+    [SerializeField] GameObject _transformationParticlesPrefab;
+    ParticleSystem _particleSystem;
+    ParticleSystem.EmissionModule _particleSystemEmission;
 
     UmbraBehaviour _umbraFSM;
 
@@ -29,7 +31,14 @@ public class UmbraAnimator : MonoBehaviour
     private void Awake()
     {
         _umbraFSM = GetComponent<UmbraBehaviour>();
-        _transformationParticles.SetActive(false);
+
+        //GameObject _particlesUmbra = Instantiate(_transformationParticlesPrefab, _transformationParticlesPrefabTransform.position, _transformationParticlesPrefab.transform.rotation);
+        //_particleSystem = _particlesUmbra.GetComponent<ParticleSystem>();
+        //_particleSystemEmission = _particleSystem.emission;
+        _particleSystem = _transformationParticlesPrefab.GetComponent<ParticleSystem>();
+        _particleSystemEmission = _particleSystem.emission;
+        _particleSystemEmission.enabled = false;
+
         _allBones.Add(_cuteBones);
         _allBones.Add(_followBones);
         _allBones.Add(_killerBones);
@@ -51,6 +60,7 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnEnterTransitionState -= OnTransitionState;
     }
 
+   
     private void FixedUpdate()
     {
         if (_currentAnim == null) return;
@@ -99,9 +109,10 @@ public class UmbraAnimator : MonoBehaviour
 
     private IEnumerator DoTransformationAnimation()
     {
-        _transformationParticles.SetActive(true);
+        Debug.Log("particles UmbraCoroutine");
+        _particleSystem.Emit(15);
         yield return new WaitForSeconds(_umbraFSM.TransitionTime);
-        _transformationParticles.SetActive(false);
         _currentTransformation = null;
+        Debug.Log("NOOOOO particles Umbraa");
     }
 }
