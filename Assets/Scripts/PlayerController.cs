@@ -15,6 +15,8 @@ namespace TecnocampusProjectII
 				DontDestroyOnLoad(this.gameObject);
 			else
 				Destroy(gameObject);
+
+			CursorController.InitCursor();
 		}
 
         public void RestartLevel()
