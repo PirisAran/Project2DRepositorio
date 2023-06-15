@@ -58,6 +58,10 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     private float _respectRange => _fire.LightRange + _followStateRange;
 
 
+    private AudioSource _breathAS;
+    private float _oVolumeBreath;
+
+
     //FSM States
     public enum States { Cute, Follow, Killer, Transition}
 
@@ -94,6 +98,8 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        _breathAS = _breath.PlaySound().GetComponent<AudioSource>();
+        _oVolumeBreath = _breathAS.volume;
     }
     private void Init()
     {
@@ -278,14 +284,45 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
 
     IEnumerator RandomBreathSound()
     {
+
+        float minSoundingTime = 4;
+        float maxSoundingTime = 6;
+
+        float minNotSoundingTime = 2;
+        float maxNotSoundingTime = 4;
+
+        float fadeTime = 2f;
+        float timer = 0;
+
+
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(2,4));
-            var _sound = _breath.PlaySound();
-            //_sound.GetComponent<AudioSource>().volume = 0.04f;
-            _breath.PlaySound();
-            yield return new WaitForSeconds(UnityEngine.Random.Range(1, 3));
-            _sound.GetComponent<AudioSource>().Stop();
+            //VERSION VOLUMEN BAJA DE GOLPE
+            //_breathAS.volume = _oVolumeBreath;
+            //yield return new WaitForSeconds(UnityEngine.Random.Range(minSoundingTime, maxSoundingTime));
+            //_breathAS.volume = 0;
+            //yield return new WaitForSeconds(UnityEngine.Random.Range(minNotSoundingTime, maxNotSoundingTime));
+
+            timer = fadeTime;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                _breathAS.volume = Mathf.Lerp(0, _oVolumeBreath, Mathf.Clamp01((fadeTime - timer) / fadeTime));
+                yield return null;
+            }
+            _breathAS.volume = _oVolumeBreath;
+
+            yield return new WaitForSeconds(UnityEngine.Random.Range(minSoundingTime, maxSoundingTime));
+            timer = fadeTime;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                _breathAS.volume = Mathf.Lerp(_oVolumeBreath, 0, Mathf.Clamp01((fadeTime - timer) / fadeTime));
+                yield return null;
+            }
+            _breathAS.volume = 0;
+
+            yield return new WaitForSeconds(UnityEngine.Random.Range(minNotSoundingTime, maxNotSoundingTime));
         }
     }
 }
