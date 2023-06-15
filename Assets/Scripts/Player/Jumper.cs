@@ -103,7 +103,6 @@ public class Jumper : MonoBehaviour
     }
     private void JumpStarted()
     {
-        _jumpingSound.PlaySound();
         if (!_hasFire)
         {
             DoMultipleJump();
@@ -149,6 +148,7 @@ public class Jumper : MonoBehaviour
         _pressingJumpKey = true;
         _jumpStartTime = Time.time;
         AddJumpForce(height);
+        _jumpingSound.PlaySound();
     }
     // SOLO SE HACE ESTO CUANDO NO TIENE EL FUEGO
     private void TryAddExtraJumpForce()
