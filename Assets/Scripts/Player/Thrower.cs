@@ -78,13 +78,16 @@ public class Thrower : MonoBehaviour
         HeartBeatSound();
     }
 
+
     private void UpdateThrow() // Se llama cada update
     {
         _lr.positionCount = 0;
         if (_isChargingThrow)
         {
             //DIBUJA LA LINIA DEL LANZAMIENTO CON EL COMPONENTE LINE RENDERER (_lr)
-            List<Vector3> l_Positions = GetParabolicPositions(_fire.transform.position, (Vector2.Angle(Vector2.right, GetMouseDir())) * Mathf.Deg2Rad,
+            Vector2 l_MouseDirection = GetMouseDir();
+            float l_Angle = Mathf.Atan2(l_MouseDirection.y, l_MouseDirection.x);
+            List<Vector3> l_Positions = GetParabolicPositions(_fire.transform.position, l_Angle,
                 GetCurrentThrowSpeed(), ParabolicShootMaxPoints, ParabolicShootTime);
             int currentParabolicShootPoints = GetUnblockedParabolicShootPointsNumber(l_Positions);
             _lr.positionCount = currentParabolicShootPoints;

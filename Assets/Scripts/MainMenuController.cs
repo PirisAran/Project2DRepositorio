@@ -11,10 +11,8 @@ namespace TecnocampusProjectII
 	public class MainMenuController : MonoBehaviour
 	{
 		[SerializeField] string _firstLevelScene;
-		[SerializeField] string _LVLSELECTOR;
 
 		[SerializeField] GameObject _mainMenuCanva;
-		[SerializeField] GameObject _optionsMenuCanva;
 
 		void Start()
 		{
@@ -26,55 +24,20 @@ namespace TecnocampusProjectII
 				GameLogic.GetGameLogic().SetGameController(null);
 			}
 			l_GameLogic.SetGameStarted(true);
-
-
-
-			DisableAllCanvas();
-			_mainMenuCanva.SetActive(true);
 		}
-
-        private void Update()
-        {
-			if (Input.GetKeyDown(KeyCode.Space))
-            {
-				SceneManager.LoadSceneAsync(_firstLevelScene);
-			}
-        }
-
-        // I ENUMERATOR CON ANIMACIONES UJUJU gold
         public void OnStartClicked()
 		{
 			Debug.Log("START");
 			SceneManager.LoadSceneAsync(_firstLevelScene);
 		}
-		public void OnOptionsClicked()
-		{
-			Debug.Log("OPTIONS");
-			DisableAllCanvas();
-			_optionsMenuCanva.SetActive(true);
-		}
 
-		public void OnVolumeClicked()
+        private void FixedUpdate()
         {
-			Debug.Log("VOLUME");
-        }
-
-		public void OnLevelSelectorClicked()
-		{
-			SceneManager.LoadSceneAsync(_LVLSELECTOR);
-		}
-
-		public void OnReturnClicked()
-        {
-			DisableAllCanvas();
-			_mainMenuCanva.SetActive(true);
-			Debug.Log("RETURN");
-		}
-
-		private void DisableAllCanvas()
-        {
-			_optionsMenuCanva.SetActive(false);
-			_mainMenuCanva.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+				SceneManager.LoadSceneAsync("MenuGold");
+				Debug.Log("reload");
+			}
 		}
 
         public void OnExitClicked()
