@@ -94,7 +94,6 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.gameObject;
         _fire = _player.GetComponentInChildren<FireController>();
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
-        _breath.PlaySound();
     }
     private void Init()
     {
@@ -134,6 +133,8 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
                 OnEnterCuteState?.Invoke();
                 break;
             case States.Follow:
+                Debug.Log("follow");
+                StartCoroutine(RandomBreathSound());
                 OnEnterFollowState?.Invoke();
                 break;
             case States.Killer:
@@ -273,5 +274,18 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     {
         _permaKiller = true;
         TransitionToState();
+    }
+
+    IEnumerator RandomBreathSound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(2,4));
+            var _sound = _breath.PlaySound();
+            //_sound.GetComponent<AudioSource>().volume = 0.04f;
+            _breath.PlaySound();
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1, 3));
+            _sound.GetComponent<AudioSource>().Stop();
+        }
     }
 }

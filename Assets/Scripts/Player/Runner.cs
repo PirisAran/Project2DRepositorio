@@ -18,6 +18,9 @@ public class Runner : MonoBehaviour
 
     [SerializeField] SoundPlayer _stepsSounds;
     [SerializeField] float _timeBetweenSteps;
+    [SerializeField] GameObject _particleStepsPrefab;
+    ParticleSystem _particleSystem;
+    ParticleSystem.EmissionModule _particleSystemEmission;
 
     bool _isRunning;
 
@@ -28,6 +31,8 @@ public class Runner : MonoBehaviour
 
     private void Awake()
     {
+        _particleSystem = _particleStepsPrefab.GetComponent<ParticleSystem>();
+        _particleSystemEmission = _particleSystem.emission;
         _rb = GetComponent<Rigidbody2D>();
         _currentStateSpeed = FireSpeed;
         _thrower = GetComponent<Thrower>();
@@ -38,6 +43,7 @@ public class Runner : MonoBehaviour
     {
         MoveInput();
         UpdateMove();
+        UpdateParticleSteps();
     }
 
     private void MoveInput()
@@ -79,6 +85,10 @@ public class Runner : MonoBehaviour
         }
     }
 
+    private void UpdateParticleSteps()
+    {
+        _particleSystemEmission.enabled = _rb.velocity.y == 0;
+    }
 }
    
     
