@@ -31,6 +31,84 @@ Transform:
   m_Father: {fileID: 3585951192675502714}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1286955375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1286955376}
+  - component: {fileID: 1286955377}
+  m_Layer: 16
+  m_Name: FallingSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1286955376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286955375}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1463415167}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1286955377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286955375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsPrefabsList:
+  - {fileID: 3091470873206389302, guid: 86e9add995b45f0498e0cddc20ccf547, type: 3}
+--- !u!1 &1463415166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1463415167}
+  m_Layer: 16
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1463415167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463415166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1286955376}
+  m_Father: {fileID: 3585951192675502714}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2033753112217600614
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +273,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -77702447
-  m_SortingLayer: -5
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: -1872460907, guid: 35cc53dabdfde30458269dba6bcf411a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -245,6 +323,7 @@ Transform:
   - {fileID: 7736300432381365352}
   - {fileID: 184896516972857623}
   - {fileID: 1099584356}
+  - {fileID: 1463415167}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -288,6 +367,7 @@ MonoBehaviour:
   _particleSpawnPosition: {fileID: 184896516972857623}
   _particleStalactitaStartPrefab: {fileID: 452134198795002175, guid: ec906eec7fb9b2740a87f84c7c24dbb4, type: 3}
   _particleSpawnStartPosition: {fileID: 1099584356}
+  _fallingSound: {fileID: 1286955377}
 --- !u!60 &2033753112760518678
 PolygonCollider2D:
   m_ObjectHideFlags: 0

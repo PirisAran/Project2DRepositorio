@@ -99,6 +99,7 @@ Transform:
   - {fileID: 2460369543500167565}
   - {fileID: 1126140679}
   - {fileID: 1261679191}
+  - {fileID: 6965228744086641322}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -142,6 +143,7 @@ MonoBehaviour:
   _particleSpawnPosition: {fileID: 1126140679}
   _particleStalactitaStartPrefab: {fileID: 452134198795002175, guid: ec906eec7fb9b2740a87f84c7c24dbb4, type: 3}
   _particleSpawnStartPosition: {fileID: 1261679191}
+  _fallingSound: {fileID: 2585686197003706117}
 --- !u!60 &6143322204795911671
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -197,6 +199,84 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canDestroy: 0
+--- !u!1 &1031417481835115989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6965228744086641322}
+  m_Layer: 16
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6965228744086641322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031417481835115989}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.891424, y: -0.04070321, z: 0}
+  m_LocalScale: {x: 1, y: 0.66980004, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7312696468939290174}
+  m_Father: {fileID: 35674102687618721}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2478825264357605813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7312696468939290174}
+  - component: {fileID: 2585686197003706117}
+  m_Layer: 16
+  m_Name: FallingSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7312696468939290174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478825264357605813}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6965228744086641322}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2585686197003706117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478825264357605813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a768447124f5f7498ed0c72a07af9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsPrefabsList:
+  - {fileID: 3091470873206389302, guid: 86e9add995b45f0498e0cddc20ccf547, type: 3}
 --- !u!1 &4821241193773903453
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +441,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -77702447
-  m_SortingLayer: -5
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: 1459338155, guid: 35cc53dabdfde30458269dba6bcf411a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
