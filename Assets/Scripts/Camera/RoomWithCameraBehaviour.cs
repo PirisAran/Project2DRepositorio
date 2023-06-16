@@ -53,7 +53,7 @@ public class RoomWithCameraBehaviour : MonoBehaviour
     {
         _virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         _roomCamManager =  RoomCamManager.GetCameraManager();
-        _roomCamManager.AddToRoomList(this);
+        _roomCamManager.AddToCamList(_virtualCamera);
       
     }
 
@@ -80,7 +80,7 @@ public class RoomWithCameraBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _playerInTrigger = true;
-            _roomCamManager.SetCurrentRoomCam(this);
+            _roomCamManager.SetCurrentRoomCam(_virtualCamera);
         }
 
     }

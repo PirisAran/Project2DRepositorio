@@ -8,11 +8,11 @@ public class RoomCamManager : MonoBehaviour
 {
     static RoomCamManager _instance;
 
-    [SerializeField] float _shakeIntensity = 1, _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
+    [SerializeField] float _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
 
-    List<RoomWithCameraBehaviour> _rooms = new List<RoomWithCameraBehaviour>();
+    List<Cinemachine.CinemachineVirtualCamera> _cams = new List<Cinemachine.CinemachineVirtualCamera>();
 
-    CinemachineVirtualCamera _currentRoomCam;
+    Cinemachine.CinemachineVirtualCamera _currentRoomCam;
 
     IEnumerator _currentCoroutine;
 
@@ -34,56 +34,57 @@ public class RoomCamManager : MonoBehaviour
         return cameraManager.AddComponent<RoomCamManager>();
     }
 
-    public void AddToRoomList(RoomWithCameraBehaviour camera)
+    public void AddToCamList(Cinemachine.CinemachineVirtualCamera camera)
     {
-        _rooms.Add(camera);
+        _cams.Add(camera);
     }
 
-    public void SetCurrentRoomCam(RoomWithCameraBehaviour room)
+    public void SetCurrentRoomCam(Cinemachine.CinemachineVirtualCamera camera)
     {
         var mainCamBrain = Camera.main.GetComponent<CinemachineBrain>();
         mainCamBrain.enabled = true;
 
-        if (_rooms != null)
+        if (_cams != null)
         {
-            foreach (RoomWithCameraBehaviour r in _rooms)
-                r.Cam.gameObject.SetActive(false);
+            foreach (Cinemachine.CinemachineVirtualCamera cam in _cams)
+                cam.gameObject.SetActive(false);
         }
 
-        _currentRoomCam = room.Cam;
+        _currentRoomCam = camera;
         _currentRoomCam.gameObject.SetActive(true);
         _currentCBMCP = _currentRoomCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
 
-    public void StartShakeCamera()
+    public void StartShakeCamera(float intensity, float duration)
     {
         if (_currentCoroutine != null) return;
 
-        _currentCoroutine = ShakeCamera();
+        _currentCoroutine = ShakeCamera(intensity, duration);
         StartCoroutine(_currentCoroutine);   
     }
 
-    public void ShakeOnce()
+    public void ShakeOnce(float intensity, float duration)
     {
-        StartCoroutine(DoOneShake());
+        StartCoroutine(DoOneShake(intensity, duration));
     }
 
-    IEnumerator ShakeCamera()
+    IEnumerator ShakeCamera(float intensity, float duration)
     {
         while (true)
         {
             yield return new WaitForSeconds(_shakeDeltaTime);
-            StartCoroutine(DoOneShake());
+            StartCoroutine(DoOneShake(intensity, duration));
         }
     }
 
-    IEnumerator DoOneShake()
+    IEnumerator DoOneShake(float intensity, float duration)
     {
         if (_currentCBMCP != null)
         {
-            _currentCBMCP.m_AmplitudeGain = _shakeIntensity;
-            float timer = _shakeDuration;
+            Debug.Log("one shake");
+            _currentCBMCP.m_AmplitudeGain = intensity;
+            float timer = duration;
             while (timer > 0)
             {
                 timer -= Time.fixedDeltaTime;
@@ -102,8 +103,5 @@ public class RoomCamManager : MonoBehaviour
         
         StopCoroutine(_currentCoroutine);
         _currentCoroutine = null;
-    }
-    private void Update()
-    {
     }
 }

@@ -13,6 +13,9 @@ public class CameraTargetFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()    
     {
+        RoomCamManager roomCamManager = RoomCamManager.GetCameraManager();
+        roomCamManager.AddToCamList(_virtualCamera);
+        roomCamManager.SetCurrentRoomCam(_virtualCamera);
         _player = GameLogic.GetGameLogic().GetGameController().m_Player;
         _virtualCamera.Follow = _player.transform;
         _virtualCamera.LookAt = _player.transform;
