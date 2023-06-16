@@ -17,6 +17,7 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
+        StopAllCoroutines();
         _objectToDestroy.SetActive(_activeOnAwake);
         Destroy(_particlesCreated);
         _particlesCreated = null;

@@ -38,10 +38,10 @@ public class HealthSystem : MonoBehaviour
         _doingCoroutine = true;
         _rb.bodyType = RigidbodyType2D.Static;
         _deathSound.PlaySound();
-        //DoParticleEffect();
+        DoParticleEffect();
         _ignisParts.SetActive(false);
         DeathTransitionBehaviour.DoDeathTransition();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         var l_gameLogic = GameLogic.GetGameLogic();
         l_gameLogic.GetGameController().GetLevelController().RestartLevel();
         DeathTransitionBehaviour.UndoDeathTransition();

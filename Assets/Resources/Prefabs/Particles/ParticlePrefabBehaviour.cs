@@ -7,8 +7,11 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     [SerializeField] float _lifeTime;
     bool _destroyed = false;
 
+    static float coroutinescount = 0;
+    static float restartcount = 0;
+
     LevelController _lvlController;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,16 +24,11 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     {
         yield return new WaitForSeconds(time);
         _destroyed = true;
-        Destroy(gameObject);
+        Debug.Log(gameObject.name);
+        gameObject.SetActive(false);
     }
 
     public void RestartLevel()
     {
-        if (!_destroyed)
-        {
-            Destroy(gameObject);
-            StopAllCoroutines();
-        }
-
     }
 }
