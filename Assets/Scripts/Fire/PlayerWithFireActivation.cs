@@ -11,20 +11,13 @@ public abstract class PlayerWithFireActivation : ActivationObject
     protected bool _inTrigger = false;
     Thrower _thrower;
 
-    [SerializeField] Animator _eIconAnim;
-
-    private enum IconStates { Show, Hide, PressedGood, PressedBad}
-    IconStates _currentState;
     private void Start()
     {
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_thrower == null)
-        {
-            _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
-        }
+        _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
         //DETECTAR SI EL QUE ENTRA ES PLAYER, TIENE FUEGO
         if (_isActivated) return;
        
@@ -33,10 +26,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_thrower == null)
-        {
-            _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
-        }
+        _thrower = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponent<Thrower>();
         if (_isActivated) return;
 
         if (_thrower.transform != collision.transform) return;
@@ -46,18 +36,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
     private void Update()
     {
         if (_isActivated)
-        {
-            if (_eIconAnim != null)
-            {
-                if (_currentState != IconStates.Hide)
-                {
-                    ChangeAnimIcon(IconStates.Hide);
-                    _eIconAnim.SetBool("activated", true);
-                }
-            }
             return;
-        }
-        UpdateEIconAnimation();
         if (_inTrigger && Input.GetKeyDown(_interactKey))
         {
             if (_thrower.HasFire)
@@ -66,38 +45,15 @@ public abstract class PlayerWithFireActivation : ActivationObject
             }
             else
             {
-                if (_eIconAnim != null)
-                {
-                    ChangeAnimIcon(IconStates.PressedBad);
-                }
+                //ShowPlayerHeCant();
             }
         }
         
     }
-    
 
-    private void UpdateEIconAnimation()
+    protected virtual void ShowPlayerHeCant()
     {
-        if (_eIconAnim == null)
-            return;
-        IconStates state = IconStates.Hide;
-        
-        if (_inTrigger)
-        {
-            state = IconStates.Show;
-        }
 
-        ChangeAnimIcon(state);
-    }
-
-    private void ChangeAnimIcon(IconStates state)
-    {
-        if (_currentState == state)
-        {
-            return;
-        }
-        _eIconAnim.SetInteger("state", (int)state);
-        _currentState = state;
     }
 
     protected override void Activate()
@@ -105,5 +61,4 @@ public abstract class PlayerWithFireActivation : ActivationObject
         DoAnimation();
         _isActivated = true;
     }
-
 }
