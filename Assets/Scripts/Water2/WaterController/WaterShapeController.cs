@@ -52,10 +52,7 @@ public class WaterShapeController : MonoBehaviour
     }
     IEnumerator Destroy(GameObject go) {
         yield return null;
-        if (!(PrefabUtility.GetPrefabType(go) != PrefabType.None))
-        {
             DestroyImmediate(go);
-        }
     }
     private void SetWaves() { 
         Spline waterSpline = spriteShapeController.spline;
