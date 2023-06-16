@@ -42,9 +42,7 @@ public class Thrower : MonoBehaviour
     bool _isChargingThrow = false;
     [SerializeField] SoundPlayer _heartBeatSound;
     AudioSource _audioSource;
-    float originalVolume;
-
-    [SerializeField] SoundPlayer _fireThrowerSound;
+    float originalVolume; 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -143,7 +141,6 @@ public class Thrower : MonoBehaviour
 
     private void ThrowFire(Vector2 dir, float speed)
     {
-        _fireThrowerSound.PlaySound();
         //se llama el metodo de FireController para lanzar el fuego, dandole dir y speed.
         _fire.BeThrown(dir, speed);
         //ya no tiene fuego y no esta cargando
