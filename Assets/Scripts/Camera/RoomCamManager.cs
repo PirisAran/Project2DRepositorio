@@ -103,7 +103,4 @@ public class RoomCamManager : MonoBehaviour
         StopCoroutine(_currentCoroutine);
         _currentCoroutine = null;
     }
-    private void Update()
-    {
-    }
 }
