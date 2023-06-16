@@ -6,7 +6,6 @@ using UnityEngine;
 public class BigFireActivator : PlayerWithFireActivation
 {
     PlayerController _player;
-    Thrower _thrower;
     LevelController _currentLevelController;
 
     

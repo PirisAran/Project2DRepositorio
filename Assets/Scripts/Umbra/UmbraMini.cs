@@ -43,7 +43,6 @@ public class UmbraMini : MonoBehaviour, IRestartLevelElement
 
     public void RestartLevel()
     {
-        Debug.Log("RS MINUMBRA");
         gameObject.SetActive(false);
         transform.parent = _parent;
         transform.localPosition = _oLocalPosition;

@@ -21,7 +21,6 @@ public class PlayerKiller : MonoBehaviour
 
         if (collision.transform == _player.transform)
         {
-            Debug.Log("KillPlayer trigger");
             OnKillPlayer();
         }
     }

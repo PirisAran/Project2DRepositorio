@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -34,7 +35,11 @@ public class WaterShapeController : MonoBehaviour
        
     }
     void OnValidate() {
-        // Clean waterpoints 
+
+        if (!gameObject.active)
+        {
+            return;
+        }
         StartCoroutine(CreateWaves());
     }
     IEnumerator CreateWaves() {
@@ -47,7 +52,10 @@ public class WaterShapeController : MonoBehaviour
     }
     IEnumerator Destroy(GameObject go) {
         yield return null;
-        DestroyImmediate(go);
+        if (!(PrefabUtility.GetPrefabType(go) != PrefabType.None))
+        {
+            DestroyImmediate(go);
+        }
     }
     private void SetWaves() { 
         Spline waterSpline = spriteShapeController.spline;

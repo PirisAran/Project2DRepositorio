@@ -6,11 +6,14 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] float _lifeTime;
     bool _destroyed = false;
+
+    LevelController _lvlController;
     
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        _lvlController = GameLogic.GetGameLogic().GetGameController().GetLevelController();
+        _lvlController.AddRestartLevelElement(this);
         StartCoroutine(DestroyAfterTime(_lifeTime));
     }
 
@@ -24,6 +27,10 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     public void RestartLevel()
     {
         if (!_destroyed)
-        Destroy(gameObject);
+        {
+            Destroy(gameObject);
+            StopAllCoroutines();
+        }
+
     }
 }
