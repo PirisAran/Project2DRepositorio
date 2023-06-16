@@ -8,16 +8,17 @@ public class BossBehaviour : MonoBehaviour
 {
     [SerializeField] Rigidbody2D _rb;
     [SerializeField] Transform _player;
-    [SerializeField] float _xSpeedMax = 10, _ySpeedMax = 200;
 
     [SerializeField]
     static Vector2 _minVelocity;
 
     [SerializeField]
-    float _maxAddedSpeed = 2;
+    float _maxAddedSpeed = 3;
 
     [SerializeField]
-    float _respectDistance = 10;
+    float _respectDistance = 4;
+
+    [SerializeField] float _maxDistance;
 
     void Start()
     {
@@ -27,27 +28,27 @@ public class BossBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 dir = _minVelocity.normalized;
-        float minVelMagnitude = _minVelocity.magnitude;
+        float velMagnitude = _minVelocity.magnitude + GetAddedSpeed();
 
-        //float desiredVelMagnitude = GetDesiredVelocityMagnitude(minVelMagnitude);
-
-        //if (desiredVelMagnitude < minVelMagnitude) desiredVelMagnitude = minVelMagnitude;
-
-        _rb.velocity = dir * minVelMagnitude;
+        _rb.velocity = dir * velMagnitude;
         
     }
 
-    private float GetDesiredVelocityMagnitude(float currentMinVel)
+    private float GetAddedSpeed()
     {
-        float speed = 0;
+        float distanceBossToPlayer = Vector2.Distance(transform.position, _player.transform.position);
 
-        float currentMaxVel = currentMinVel + _maxAddedSpeed;
+        if (distanceBossToPlayer < _respectDistance)
+        {
+            return 0;
+        }
 
-        float currentDistToPlayer = Vector2.Distance(transform.position, _player.transform.position);
+        float maxDistanceInterval = _maxDistance - _respectDistance;
+        float currentDistanceInterval = distanceBossToPlayer - _respectDistance;
 
-        speed = (currentDistToPlayer > _respectDistance) ? currentMaxVel : currentMinVel;
-        
-        return speed;
+        float addedSpeed = Mathf.Lerp(0, _maxAddedSpeed, Mathf.Clamp01(currentDistanceInterval / maxDistanceInterval));
+
+        return addedSpeed;
     }
 
     public static void ModifyVelocity(Vector2 velocityMod)

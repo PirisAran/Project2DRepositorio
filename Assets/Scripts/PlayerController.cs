@@ -8,6 +8,7 @@ namespace TecnocampusProjectII
 		LevelController currentLvlController;
 		[SerializeField] GameObject _ignisParts;
 		Rigidbody2D _rb;
+
         private void Awake()
         {
 			_rb = GetComponent<Rigidbody2D>();

@@ -10,9 +10,9 @@ public class RoomCamManager : MonoBehaviour
 
     [SerializeField] float _shakeIntensity = 1, _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
 
-    List<RoomWithCameraBehaviour> _rooms = new List<RoomWithCameraBehaviour>();
+    List<Cinemachine.CinemachineVirtualCamera> _cams = new List<Cinemachine.CinemachineVirtualCamera>();
 
-    CinemachineVirtualCamera _currentRoomCam;
+    Cinemachine.CinemachineVirtualCamera _currentRoomCam;
 
     IEnumerator _currentCoroutine;
 
@@ -34,23 +34,23 @@ public class RoomCamManager : MonoBehaviour
         return cameraManager.AddComponent<RoomCamManager>();
     }
 
-    public void AddToRoomList(RoomWithCameraBehaviour camera)
+    public void AddToCamList(Cinemachine.CinemachineVirtualCamera camera)
     {
-        _rooms.Add(camera);
+        _cams.Add(camera);
     }
 
-    public void SetCurrentRoomCam(RoomWithCameraBehaviour room)
+    public void SetCurrentCam(Cinemachine.CinemachineVirtualCamera camera)
     {
         var mainCamBrain = Camera.main.GetComponent<CinemachineBrain>();
         mainCamBrain.enabled = true;
 
-        if (_rooms != null)
+        if (_cams != null)
         {
-            foreach (RoomWithCameraBehaviour r in _rooms)
-                r.Cam.gameObject.SetActive(false);
+            foreach (Cinemachine.CinemachineVirtualCamera cam in _cams)
+                cam.gameObject.SetActive(false);
         }
 
-        _currentRoomCam = room.Cam;
+        _currentRoomCam = camera;
         _currentRoomCam.gameObject.SetActive(true);
         _currentCBMCP = _currentRoomCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }

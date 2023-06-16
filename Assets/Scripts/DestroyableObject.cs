@@ -51,7 +51,7 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 
     private void InstantiateParticles()
     {
-        _particlesCreated = Instantiate(_particlesPrefab, _particlesPosition, Quaternion.identity);
+        _particlesCreated = Instantiate(_particlesPrefab, _particlesPosition, Quaternion.identity, null);
         SetParticleColor(_particleColor, _particlesCreated);
     }
 
@@ -73,6 +73,5 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 
     private void RandomShakeCamera()
     {
-
     }
 }

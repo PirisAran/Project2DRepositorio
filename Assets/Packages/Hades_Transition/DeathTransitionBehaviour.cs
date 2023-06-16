@@ -9,13 +9,13 @@ public class DeathTransitionBehaviour : MonoBehaviour
     private float maskAmount = 0f;
     private static float targetValue = -0.1f;
     [SerializeField]
-    float MaskAmountMultiplier=6f;
+    float MaskAmountMultiplier=12f;
     private void Update() 
     {
         if (Input.GetKeyDown(KeyCode.T))
-            targetValue = -.1f;
+            DoDeathTransition();
         if (Input.GetKeyDown(KeyCode.Y))
-            targetValue = 1f;
+            UndoDeathTransition();
 
 
         float maskAmountChange = targetValue > maskAmount ? +.1f : -.1f;
@@ -28,9 +28,12 @@ public class DeathTransitionBehaviour : MonoBehaviour
     public static void DoDeathTransition()
     {
         targetValue = 1f;
+        Debug.Log("DoingDeathTransition");
     }
     public static void UndoDeathTransition()
     {
         targetValue = -0.1f;
+        Debug.Log("UndoingDeathTransition");
+
     }
 }

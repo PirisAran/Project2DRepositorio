@@ -16,6 +16,8 @@ public class HealthSystem : MonoBehaviour
 
     Rigidbody2D _rb;
 
+    bool _doingCoroutine = false;
+    
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -24,28 +26,31 @@ public class HealthSystem : MonoBehaviour
     }
     public void KillPlayer()
     {
+        if (_doingCoroutine)
+        {
+            return;
+        }
         StartCoroutine(KillOnEndFrame());
     }
 
     private IEnumerator KillOnEndFrame()
     {
+        _doingCoroutine = true;
         _rb.bodyType = RigidbodyType2D.Static;
         _deathSound.PlaySound();
-        InstantiateParticles();
+        //DoParticleEffect();
         _ignisParts.SetActive(false);
-        yield return new WaitForSeconds(0.7f);
-
-        yield return null;
+        DeathTransitionBehaviour.DoDeathTransition();
+        yield return new WaitForSeconds(0.5f);
         var l_gameLogic = GameLogic.GetGameLogic();
         l_gameLogic.GetGameController().GetLevelController().RestartLevel();
+        DeathTransitionBehaviour.UndoDeathTransition();
+        yield return null;
+        _doingCoroutine = false;
     }
 
-    private void InstantiateParticles()
+    private void DoParticleEffect()
     {
-        GameObject particleObj = Instantiate(_deathParticles, _player.position, _deathParticles.transform.rotation);
-
-        ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
-
-        instantiateParticleSystem.Play();
+        _particleSystem.Emit(40);
     }
 }
