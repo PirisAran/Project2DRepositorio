@@ -11,7 +11,10 @@ public abstract class PlayerWithFireActivation : ActivationObject
     protected bool _inTrigger = false;
     Thrower _thrower;
 
+
     [SerializeField] Animator _eIconAnim;
+
+    [SerializeField] SoundPlayer _errorSound;
 
     private enum IconStates { Show, Hide, PressedGood, PressedBad}
     IconStates _currentState;
@@ -69,6 +72,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
                 if (_eIconAnim != null)
                 {
                     ChangeAnimIcon(IconStates.PressedBad);
+                    _errorSound.PlaySound();
                 }
             }
         }
