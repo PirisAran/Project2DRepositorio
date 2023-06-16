@@ -46,5 +46,6 @@ public class UmbraMini : MonoBehaviour, IRestartLevelElement
         gameObject.SetActive(false);
         transform.parent = _parent;
         transform.localPosition = _oLocalPosition;
+        _parent.GetComponent<GroupOfUmbrasBehaviour>()._activated = false;
     }
 }
