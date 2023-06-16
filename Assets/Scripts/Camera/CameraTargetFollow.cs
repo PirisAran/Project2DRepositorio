@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CameraTargetFollow : MonoBehaviour
 {
-    [SerializeField] Cinemachine.CinemachineVirtualCamera _virtualCamera;
+    [SerializeField] CinemachineVirtualCamera _virtualCamera;
 
     PlayerController _player;
 
@@ -16,10 +16,6 @@ public class CameraTargetFollow : MonoBehaviour
         _player = GameLogic.GetGameLogic().GetGameController().m_Player;
         _virtualCamera.Follow = _player.transform;
         _virtualCamera.LookAt = _player.transform;
-        RoomCamManager camManager = RoomCamManager.GetCameraManager();
-        camManager.AddToCamList(_virtualCamera);
-        camManager.SetCurrentCam(_virtualCamera);
-
     }
 
     // Update is called once per frame

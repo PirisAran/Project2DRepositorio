@@ -24,6 +24,8 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     ParticleSystem _particleSystem1;
     ParticleSystem _particleSystem2;
 
+    [SerializeField] SoundPlayer _fallingSound; 
+
     private void OnEnable()
     {
         _playerDetector.OnPlayerDetected += OnPlayerDetected;
@@ -68,6 +70,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnPlayerDetected()
     {
+        _fallingSound.PlaySound();
         InstantiateParticles(_particleStalactitaStartPrefab, _particleSpawnPosition);
         _rb.bodyType = RigidbodyType2D.Dynamic;
         _playerDetector.enabled = false;

@@ -11,6 +11,8 @@ public class Door : MonoBehaviour, IRestartLevelElement
     [SerializeField] Transform _openPosition;
     [SerializeField] Animator _anim;
     [SerializeField] AnimationClip _activateDoorClip;
+    [SerializeField] SoundPlayer _verifiedSound;
+    [SerializeField] SoundPlayer _doorUpSound;
     bool _isOpening = false;
     Vector2 _oPosition;
 
@@ -52,8 +54,11 @@ public class Door : MonoBehaviour, IRestartLevelElement
     private IEnumerator StartOpenDoor()
     {
         Debug.Log("Door opening start");
+        _verifiedSound.PlaySound();
         _anim.SetBool("activated", true);
-        yield return new WaitForSeconds(_activateDoorClip.length);
+        yield return new WaitForSeconds(0.8f);
+        _doorUpSound.PlaySound();
+        yield return new WaitForSeconds(_activateDoorClip.length - 0.6f);
         _isOpening = true;
         _anim.SetBool("activated", true);
     }
