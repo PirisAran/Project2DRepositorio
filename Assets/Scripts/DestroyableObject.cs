@@ -14,6 +14,7 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
     bool _activeOnAwake;
     [SerializeField] private float _timeToDestroy = 0.5f;
     float _chanceToSpawnParticles = 0.3f;
+    float _chanceToShakeCamera = 0.3f;
 
     public void RestartLevel()
     {
@@ -48,6 +49,7 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
         yield return new WaitForSeconds(time);
         _objectToDestroy.SetActive(false);
         RandomInstantiateParticles();
+        RandomShakeCamera();
     }
 
     private void InstantiateParticles()
@@ -74,5 +76,10 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
 
     private void RandomShakeCamera()
     {
+        float randomValue = Random.value;
+        if (randomValue <= _chanceToShakeCamera)
+        {
+            RoomCamManager.GetCameraManager().ShakeOnce(1, 1);
+        }
     }
 }
