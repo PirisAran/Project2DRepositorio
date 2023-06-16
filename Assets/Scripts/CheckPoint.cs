@@ -58,7 +58,7 @@ public class CheckPoint : PlayerWithFireActivation
 
     private void InstantiateParticles()
     {
-        GameObject particleObj = Instantiate(_checkPointParticlePrefab, _player.position, _checkPointParticlePrefab.transform.rotation);
+        GameObject particleObj = Instantiate(_checkPointParticlePrefab, transform.position, _checkPointParticlePrefab.transform.rotation);
 
         ParticleSystem instantiateParticleSystem = particleObj.GetComponent<ParticleSystem>();
 
