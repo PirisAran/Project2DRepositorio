@@ -676,7 +676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 772631276292639917, guid: 1e664b804ff7abe4196d2b3b555524fb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.3284748
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 772631276292639917, guid: 1e664b804ff7abe4196d2b3b555524fb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 1236866454}
   - component: {fileID: 1236866457}
   - component: {fileID: 1236866456}
-  - component: {fileID: 1236866455}
+  - component: {fileID: 1236866458}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -919,28 +919,6 @@ Transform:
   m_Father: {fileID: 2002372172}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1236866455
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236866453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
 --- !u!114 &1236866456
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -954,8 +932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
-  m_LookaheadTime: 0
-  m_LookaheadSmoothing: 0
+  m_LookaheadTime: 0.21
+  m_LookaheadSmoothing: 7.5
   m_LookaheadIgnoreY: 0
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
@@ -980,6 +958,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1236866458
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236866453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_XDamping: 1
+  m_YDamping: 1
+  m_ZDamping: 1
+  m_AngularDampingMode: 0
+  m_PitchDamping: 0
+  m_YawDamping: 20
+  m_RollDamping: 0
+  m_AngularDamping: 0
 --- !u!1001 &1290652202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1182,7 +1182,7 @@ MonoBehaviour:
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
   m_Priority: 10
-  m_StandbyUpdate: 2
+  m_StandbyUpdate: 1
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
@@ -1400,7 +1400,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1664337413
-  m_SortingLayer: -1
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0.22543812, g: 0.990566, b: 0.15325731, a: 1}
@@ -1484,7 +1484,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1664337413
-  m_SortingLayer: -1
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.47482994, b: 0, a: 1}
@@ -1504,26 +1504,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 988167855, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
-      propertyPath: m_Layer
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 3145288624909134674, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 270.74265
-      objectReference: {fileID: 0}
-    - target: {fileID: 3145288624909134674, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 270.74265
-      objectReference: {fileID: 0}
-    - target: {fileID: 3145288624909134674, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 270.74265
-      objectReference: {fileID: 0}
-    - target: {fileID: 3610440255753687617, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
-      propertyPath: MaskAmountMultiplier
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 7007369689811645618, guid: 69237a6b1b6bdc747b62a3f40713a737, type: 3}
       propertyPath: m_RootOrder
       value: 5
