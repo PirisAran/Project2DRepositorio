@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TecnocampusProjectII;
 
-public class Door : MonoBehaviour, IRestartLevelElement
+public class DoorBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] ActivationObject _activatorObject;
     [SerializeField] float _openSpeed;
@@ -67,6 +67,7 @@ public class Door : MonoBehaviour, IRestartLevelElement
     private IEnumerator StartOpenDoor()
     {
         Debug.Log("Door opening start");
+        RoomCamManager.GetCameraManager().ShakeOnce(1f, 4);
         _verifiedSound.PlaySound();
         _anim.SetBool("activated", true);
         yield return new WaitForSeconds(0.8f);
