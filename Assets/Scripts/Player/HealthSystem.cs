@@ -8,7 +8,8 @@ public class HealthSystem : MonoBehaviour
 {
     [SerializeField] GameObject _deathParticles;
     ParticleSystem _particleSystem;
-    Transform _player;
+
+    FireController _fire;
 
     [SerializeField] SoundPlayer _deathSound;
 
@@ -21,7 +22,7 @@ public class HealthSystem : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+        _fire = GameLogic.GetGameLogic().GetGameController().m_Player.GetComponentInChildren<FireController>();
         _particleSystem = _deathParticles.GetComponent<ParticleSystem>();
     }
     public void KillPlayer()
@@ -36,6 +37,7 @@ public class HealthSystem : MonoBehaviour
     private IEnumerator KillOnEndFrame()
     {
         _doingCoroutine = true;
+        _fire.BeThrown(Vector2.right, 0);
         _rb.bodyType = RigidbodyType2D.Static;
         _deathSound.PlaySound();
         DoParticleEffect();
