@@ -5,16 +5,10 @@ using UnityEngine;
 
 public class BigFireActivator : PlayerWithFireActivation
 {
-    PlayerController _player;
     LevelController _currentLevelController;
 
-    
-
-    // Start is called before the first frame update
     void Start()
     {
-        _player = GameLogic.GetGameLogic().GetGameController().m_Player;
-        _thrower = _player.GetComponent<Thrower>();
         _currentLevelController = GameLogic.GetGameLogic().GetGameController().GetLevelController();
     }
 
