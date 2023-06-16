@@ -36,7 +36,6 @@ public class PlayerKiller : MonoBehaviour
 
         if (collision.gameObject.transform == _player.transform)
         {
-        Debug.Log("KillPlayer collision");
             OnKillPlayer();
         }
     }
