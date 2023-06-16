@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Jumper : MonoBehaviour
 {
+    public Action OnSecondJump;
+
     //Components
     PlayerGroundChecker _collCheck;
     Rigidbody2D _rb;
@@ -126,6 +128,7 @@ public class Jumper : MonoBehaviour
         {
             if (_multipleJumpsLeft == 1)
             {
+                OnSecondJump?.Invoke();
                 if (_rb.velocity.y < 0.0f)
                 {
                     DoJump(_lowJumpHeight);

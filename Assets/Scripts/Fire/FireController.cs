@@ -135,6 +135,8 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         var maxSize = Mathf.Lerp(_minParticleSize, _maxParticleSize, healthFraction);
         var mainModule = _particleSystem.main;
         mainModule.startSize = new ParticleSystem.MinMaxCurve(maxSize);
+
+        mainModule.simulationSpace = IsAttached() ? ParticleSystemSimulationSpace.Local : ParticleSystemSimulationSpace.World;
     }
 
     // Update is called once per frame

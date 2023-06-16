@@ -56,33 +56,33 @@ public class RoomCamManager : MonoBehaviour
     }
 
 
-    public void StartShakeCamera()
+    public void StartShakeCamera(float intensity)
     {
         if (_currentCoroutine != null) return;
 
-        _currentCoroutine = ShakeCamera();
+        _currentCoroutine = ShakeCamera(intensity);
         StartCoroutine(_currentCoroutine);   
     }
 
-    public void ShakeOnce()
+    public void ShakeOnce(float intensity)
     {
-        StartCoroutine(DoOneShake());
+        StartCoroutine(DoOneShake(intensity));
     }
 
-    IEnumerator ShakeCamera()
+    IEnumerator ShakeCamera(float intensity)
     {
         while (true)
         {
             yield return new WaitForSeconds(_shakeDeltaTime);
-            StartCoroutine(DoOneShake());
+            StartCoroutine(DoOneShake(intensity));
         }
     }
 
-    IEnumerator DoOneShake()
+    IEnumerator DoOneShake(float intensity)
     {
         if (_currentCBMCP != null)
         {
-            _currentCBMCP.m_AmplitudeGain = _shakeIntensity;
+            _currentCBMCP.m_AmplitudeGain = intensity;
             float timer = _shakeDuration;
             while (timer > 0)
             {
@@ -102,8 +102,5 @@ public class RoomCamManager : MonoBehaviour
         
         StopCoroutine(_currentCoroutine);
         _currentCoroutine = null;
-    }
-    private void Update()
-    {
     }
 }

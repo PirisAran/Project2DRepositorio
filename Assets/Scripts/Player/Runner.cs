@@ -18,6 +18,7 @@ public class Runner : MonoBehaviour
 
     [SerializeField] SoundPlayer _stepsSounds;
     [SerializeField] float _timeBetweenSteps;
+
     [SerializeField] GameObject _particleStepsPrefab;
     ParticleSystem _particleSystem;
     ParticleSystem.EmissionModule _particleSystemEmission;
