@@ -4,17 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CinemachineVirtualCamera : MonoBehaviour
+public class RoomWithCameraBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private Cinemachine.CinemachineVirtualCamera _virtualCamera;
+    private CinemachineVirtualCamera _virtualCamera;
     [SerializeField]
     BoxCollider2D _boxCollider;
     
     [Range (0f, 1f)]
     [SerializeField]
     float _colliderFractionSize = 0.8f;
-    public Cinemachine.CinemachineVirtualCamera Cam => _virtualCamera;
+    public CinemachineVirtualCamera Cam => _virtualCamera;
     private bool _playerInTrigger = false;
     public bool PlayerInTrigger => _playerInTrigger;
     RoomCamManager _roomCamManager;
@@ -51,10 +51,10 @@ public class CinemachineVirtualCamera : MonoBehaviour
 
     private void Awake()
     {
-        _virtualCamera = GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>();
+        _virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         _roomCamManager =  RoomCamManager.GetCameraManager();
-        _roomCamManager.AddToCamList(_virtualCamera);
-        
+        _roomCamManager.AddToRoomList(this);
+      
     }
 
     private void Start()
@@ -80,7 +80,7 @@ public class CinemachineVirtualCamera : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _playerInTrigger = true;
-            _roomCamManager.SetCurrentCam(_virtualCamera);
+            _roomCamManager.SetCurrentRoomCam(this);
         }
 
     }
