@@ -11,6 +11,7 @@ public class GroupOfUmbrasBehaviour : MonoBehaviour
     [SerializeField] float _umbrasSpeed;
     PlayerController _player;
     FireController _fire;
+    public bool _activated = false;
 
     private void OnEnable()
     {
@@ -31,6 +32,11 @@ public class GroupOfUmbrasBehaviour : MonoBehaviour
 
     private void ActivateUmbras()
     {
+        if (_activated)
+        {
+            return;
+        }
+        _activated = true;
         _huntingSound.PlaySound();  
         foreach (var umbra in _umbraMiniList)
         {
