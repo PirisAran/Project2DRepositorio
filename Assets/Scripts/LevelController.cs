@@ -10,11 +10,12 @@ namespace TecnocampusProjectII
 {
     public class LevelController : MonoBehaviour
     {
-        [SerializeField] Collider2D _childCollider;
         Transform _player;
         Collider2D _playerCollider;
 
         FireController _fire;
+
+        FinishLevelColliderBehaviour _collider;
 
         Thrower _playerThrower; 
 
@@ -73,9 +74,7 @@ namespace TecnocampusProjectII
 
         private bool ConditionNextLevel()
         {
-            bool _passCondition;
-            _passCondition = _childCollider.IsTouching(_playerCollider) && _playerThrower.HasFire;
-            return _passCondition;
+            return _collider.CanFinishLevel;
         }
 
         public void RestartLevel()

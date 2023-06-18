@@ -107,7 +107,7 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _fireDestroyer.SetCanDestroy(false);
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _impactSound.PlaySound();
-        RoomCamManager.GetCameraManager().ShakeOnce(1f, 1);
+        RoomCamManager.GetCameraManager().ShakeOnce(1f, 0.5f);
         InstantiateParticles();
     }
 
