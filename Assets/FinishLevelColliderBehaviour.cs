@@ -16,6 +16,15 @@ public class FinishLevelColliderBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.transform == _fire.transform)
+        {
+            _fireInsideCollider = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        
     }
 
     // Start is called before the first frame update
@@ -36,10 +45,10 @@ public class FinishLevelColliderBehaviour : MonoBehaviour
         CanFinishLevel = PlayerIsInsideCollider() && FireIsInsideCollider();
     }
 
-    //private bool PlayerIsInsideCollider()
-    //{
-
-    //}
+    private bool PlayerIsInsideCollider()
+    {
+        return _playerInsideCollider;
+    }
 
     private bool FireIsInsideCollider()
     {
