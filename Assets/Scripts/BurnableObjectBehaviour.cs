@@ -20,8 +20,9 @@ public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
 
     Vector2 _hitPos;
     Quaternion _particlesRot = Quaternion.Euler(-90, 0, 0);
+    private PlayerController _player;
+    private FireController _fire;
 
-    
     private void Awake()
     {
         _previousColor = _sr.color;
@@ -30,13 +31,31 @@ public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
     private void Start()
     {
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        _player = GameLogic.GetGameLogic().GetGameController().m_Player;
+        _fire = _player.GetComponentInChildren<FireController>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _hitPos = collision.contacts[0].point;
-        if (collision.gameObject.GetComponent<FireController>())
+        if (CanGetBurned(collision))
             Burn();
+    }
+
+    private bool CanGetBurned(Collision2D collision)
+    {
+        bool canGetBurned = false;
+
+        if (collision.transform == _fire.transform)
+        {
+            canGetBurned = true;
+        }
+        else if (collision.transform == _player.transform && _fire.IsAttached())
+        {
+            canGetBurned = true;
+        }
+
+        return canGetBurned;
     }
 
     private Vector2 GetRandomPositionInCollider()

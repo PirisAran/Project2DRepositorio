@@ -15,6 +15,7 @@ namespace TecnocampusProjectII
 
         FireController _fire;
 
+        [SerializeField]
         FinishLevelColliderBehaviour _collider;
 
         Thrower _playerThrower; 

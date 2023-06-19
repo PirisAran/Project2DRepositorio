@@ -73,6 +73,8 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     float _pickUpRadius = 1;
     public bool OnPickUpRange => _playerThrower.PickUpCollider.IsTouching(_pickUpCollider);
+
+    public Action OnFirePickedUp;
     
     //Health Parameters---------------------
     [SerializeField]
@@ -171,6 +173,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         SetAttached(true);
         transform.localPosition = Vector2.zero;
+        OnFirePickedUp?.Invoke();
     }
 
     private void SetAttached(bool v)

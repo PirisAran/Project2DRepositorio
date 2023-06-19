@@ -18,7 +18,7 @@ public class HealthSystem : MonoBehaviour
     Rigidbody2D _rb;
 
     bool _doingCoroutine = false;
-    
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,18 +37,46 @@ public class HealthSystem : MonoBehaviour
     private IEnumerator KillOnEndFrame()
     {
         _doingCoroutine = true;
+
+        //hago q la cam no tenga blend
+        var cam = Camera.main;
+        var brainCam = cam.GetComponent<Cinemachine.CinemachineBrain>();
+        brainCam.m_DefaultBlend.m_Style = Cinemachine.CinemachineBlendDefinition.Style.Cut;
+
+        //fire cae, desaparece ignis
         _fire.BeThrown(Vector2.right, 0);
         _rb.bodyType = RigidbodyType2D.Static;
+        _ignisParts.SetActive(false);
+
+        //effects
         _deathSound.PlaySound();
         DoParticleEffect();
-        _ignisParts.SetActive(false);
+
+        //transition in
         DeathTransitionBehaviour.DoDeathTransition();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
+
+        //black screen on
+        var blackScreen = cam.GetComponent<BlackScreen>();
+        blackScreen.SetActiveBlackScreen(true);
+
+        //reset
         var l_gameLogic = GameLogic.GetGameLogic();
         l_gameLogic.GetGameController().GetLevelController().RestartLevel();
+
+        yield return new WaitForSeconds(0.1f);
+
+        //blakcscreen off
+        blackScreen.SetActiveBlackScreen(false);
+
+        //transition off
         DeathTransitionBehaviour.UndoDeathTransition();
-        yield return null;
+
+
+        yield return new WaitForSeconds(1);
+        brainCam.m_DefaultBlend.m_Style = Cinemachine.CinemachineBlendDefinition.Style.EaseInOut;
         _doingCoroutine = false;
+
     }
 
     private void DoParticleEffect()

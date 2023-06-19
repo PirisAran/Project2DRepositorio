@@ -24,7 +24,6 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     {
         yield return new WaitForSeconds(time);
         _destroyed = true;
-        Debug.Log(gameObject.name);
         Destroy(gameObject);
     }
 

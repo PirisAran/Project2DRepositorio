@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b92c1a0811d4b43a69fbd188da8dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _childCollider: {fileID: 2226042853113262631}
+  _collider: {fileID: 7717132277771295626}
   _umbra: {fileID: 0}
-  m_NextLevel: Boss
+  m_NextLevel: BossCinematicScene
   _playerSpawnPoint: {fileID: 2226042852461697001}
   _umbraSpawnPoint: {fileID: 2226042852887219758}
 --- !u!1 &2226042852461697000
@@ -77,7 +77,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2226042852461697000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 302.78, y: 43.89, z: 0}
+  m_LocalPosition: {x: 70.35, y: -4.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -123,7 +123,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1664337413
-  m_SortingLayer: -3
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0.22543812, g: 0.990566, b: 0.15325731, a: 1}
@@ -161,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2226042852887219757}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 45.799995, y: 4.588667, z: 0}
+  m_LocalPosition: {x: 50.9, y: 4.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -207,7 +207,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1664337413
-  m_SortingLayer: -3
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.47482994, b: 0, a: 1}
@@ -230,7 +230,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2226042853113262624}
   - component: {fileID: 2226042853113262631}
-  m_Layer: 10
+  - component: {fileID: 7717132277771295626}
+  m_Layer: 30
   m_Name: ChangeSceneCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,8 +246,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2226042853113262630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 347, y: 45.95, z: 0.7087806}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 336.34, y: 45.44, z: 0.7087806}
+  m_LocalScale: {x: 0.99912065, y: 0.99912065, z: 0.99912065}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2226042851989860358}
@@ -278,3 +279,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.167969, y: 9.226715}
   m_EdgeRadius: 0
+--- !u!114 &7717132277771295626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2226042853113262630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9293461b73845964588bc32ef274b7ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
