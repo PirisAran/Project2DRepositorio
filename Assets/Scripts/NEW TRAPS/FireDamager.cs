@@ -9,8 +9,25 @@ public class FireDamager : MonoBehaviour
     [SerializeField] float _damageDealt;
     public float Damage => _damageDealt;
 
+    bool _playerInTrigger;
+
     static FireController _fire;
     static PlayerController _player;
+
+
+    private void OnEnable()
+    {
+        if (_fire==null)
+        {
+            return;
+        }
+        _fire.OnFirePickedUp += OnFirePickedUp;
+    }
+
+    private void OnDisable()
+    {
+        _fire.OnFirePickedUp -= OnFirePickedUp;
+    }
 
     private void Start()
     {
@@ -22,11 +39,13 @@ public class FireDamager : MonoBehaviour
         {
             _fire = _player.GetComponentInChildren<FireController>();
         }
+        _fire.OnFirePickedUp += OnFirePickedUp;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!_canDamage) return;
+
 
         if (collision.transform == _fire.transform)
         {
@@ -34,11 +53,28 @@ public class FireDamager : MonoBehaviour
         }
         else if (collision.transform == _player.transform)
         {
+            _playerInTrigger = true;
             if (!_fire.IsAttached()) return;
         }
         else return;
 
         OnDamageFire();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.transform == _player.transform)
+        {
+            _playerInTrigger = false;
+        }
+    }
+
+    private void OnFirePickedUp()
+    {
+        if (_playerInTrigger)
+        {
+            OnDamageFire();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

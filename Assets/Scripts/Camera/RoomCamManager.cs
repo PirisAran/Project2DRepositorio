@@ -10,6 +10,8 @@ public class RoomCamManager : MonoBehaviour
 
     [SerializeField] float _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
 
+    Camera _mainCamera;
+
     List<Cinemachine.CinemachineVirtualCamera> _cams = new List<Cinemachine.CinemachineVirtualCamera>();
 
     Cinemachine.CinemachineVirtualCamera _currentRoomCam;
@@ -17,6 +19,11 @@ public class RoomCamManager : MonoBehaviour
     IEnumerator _currentCoroutine;
 
     CinemachineBasicMultiChannelPerlin _currentCBMCP;
+
+    private void Start()
+    {
+        _mainCamera = Camera.main;
+    }
 
     public static RoomCamManager GetCameraManager()
     {
@@ -41,7 +48,7 @@ public class RoomCamManager : MonoBehaviour
 
     public void SetCurrentRoomCam(Cinemachine.CinemachineVirtualCamera camera)
     {
-        var mainCamBrain = Camera.main.GetComponent<CinemachineBrain>();
+        var mainCamBrain = _mainCamera.GetComponent<CinemachineBrain>();
         mainCamBrain.enabled = true;
 
         if (_cams != null)
