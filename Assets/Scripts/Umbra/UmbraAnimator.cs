@@ -50,6 +50,7 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnEnterFollowState += OnFollowState;
         _umbraFSM.OnEnterKillerState += OnKillerState;
         _umbraFSM.OnEnterTransitionState += OnTransitionState;
+        _umbraFSM.OnPlayerKilled += OnKillPlayer;
     }
 
     private void OnDisable()
@@ -58,9 +59,10 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnEnterFollowState -= OnFollowState;
         _umbraFSM.OnEnterKillerState -= OnKillerState;
         _umbraFSM.OnEnterTransitionState -= OnTransitionState;
+        _umbraFSM.OnPlayerKilled -= OnKillPlayer;
     }
 
-   
+
     private void FixedUpdate()
     {
         if (_currentAnim == null) return;
@@ -86,6 +88,12 @@ public class UmbraAnimator : MonoBehaviour
     void OnTransitionState()
     {
         StartTransformationEffect();
+    }
+
+    void OnKillPlayer()
+    {
+        SetCurrentAnimator(_killerBones);
+        _killerBones.SetBool("attack", true);
     }
 
     private void StartTransformationEffect()

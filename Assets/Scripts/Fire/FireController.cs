@@ -61,6 +61,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     float _explosionTimer;
     bool _isExploding = false;
 
+    [SerializeField]
     ParticleSystem _particleSystem;
     [SerializeField] float _minParticleSize = 0.3f, _maxParticleSize = 1.2f;
     [SerializeField] int _minParticleRate = 10, _maxParticleRate = 40;
@@ -104,8 +105,8 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     {
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
-        _particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
-        ;
+        //_particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
+   
     }
     private void Start()
     {
