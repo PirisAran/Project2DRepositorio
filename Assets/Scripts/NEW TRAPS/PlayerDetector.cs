@@ -10,8 +10,15 @@ public class PlayerDetector : MonoBehaviour
 
     public Action OnPlayerDetected;
 
+    [SerializeField]
+    bool _canDetect = true;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_canDetect)
+        {
+            return;
+        }
         if (collision.transform == _player.transform)
         {
             OnPlayerDetected?.Invoke();
@@ -24,4 +31,9 @@ public class PlayerDetector : MonoBehaviour
         _player = GameLogic.GetGameLogic().GetGameController().m_Player;
     }
 
+
+    public void SetCanDetect(bool v)
+    {
+        _canDetect = v;
+    }
 }

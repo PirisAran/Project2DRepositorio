@@ -48,7 +48,9 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     public Action OnEnterFollowState;
     public Action OnEnterKillerState;
     public Action OnEnterTransitionState;
-    public Action OnPlayerKilled;
+    public Action OnPlayerStartKill;
+    public Action OnPlayerFinishKill;
+
 
     public Vector3 Forward => (_desiredPosition - transform.position).normalized;
     public States CurrentState => _currentState;
@@ -62,22 +64,34 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     private AudioSource _breathAS;
     private float _oVolumeBreath;
 
-
+    private bool _playerDead = false;
     //FSM States
     public enum States { Cute, Follow, Killer, Transition}
 
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
+        if (_playerDead)
+        {
+            return;
+        }
+
         if (_currentState == States.Cute || _currentState == States.Transition) return;
 
         HealthSystem healthSystem = collision.GetComponent<HealthSystem>();
         if (healthSystem != null)
         {
-            Debug.Log("umbra kills player");
-            healthSystem.KillPlayer();
-            OnPlayerKilled?.Invoke();
+            StartCoroutine(KillPlayerCoroutine(healthSystem));
         }
+    }
+
+    private IEnumerator KillPlayerCoroutine(HealthSystem hs)
+    {
+        _playerDead = true;
+        Debug.Log("umbra kills player");
+        OnPlayerStartKill?.Invoke();
+        yield return new WaitForSeconds(0.25f);
+        OnPlayerFinishKill?.Invoke();
+        hs.KillPlayer();
     }
 
 
@@ -276,6 +290,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     {
         transform.position = GameLogic.GetGameLogic().GetGameController().GetLevelController().GetUmbraSpawnPoint().position;
         _permaKiller = false;
+        _playerDead = false;
     }
 
     private void OnFireDestroyed()

@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraTargetFollow : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera _virtualCamera;
-
+    
     PlayerController _player;
 
     // Start is called before the first frame update

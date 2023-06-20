@@ -49,6 +49,7 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
         transform.GetChild(0).gameObject.SetActive(true);
         _fireDestroyer.SetCanDestroy(false);
         _playerKiller.SetCanKill(false);
+        _playerDetector.SetCanDetect(true);
     }
 
     private void Awake()
@@ -78,9 +79,9 @@ public class FallingBlockTrapBehaviour : MonoBehaviour, IRestartLevelElement
     private void OnPlayerDetected()
     {
         _rb.bodyType = RigidbodyType2D.Dynamic;
-        _playerDetector.enabled = false;
         _playerKiller.SetCanKill(true);
         _fireDestroyer.SetCanDestroy(true);
+        _playerDetector.SetCanDetect(false);
         _fallingSound.PlaySound();
     }
 
