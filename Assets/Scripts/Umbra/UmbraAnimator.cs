@@ -92,7 +92,7 @@ public class UmbraAnimator : MonoBehaviour
 
     void OnKillPlayer()
     {
-        SetCurrentAnimator(_killerBones);
+        SetCurrentAnimator(_killerBones);   
         _killerBones.SetBool("attack", true);
     }
 
