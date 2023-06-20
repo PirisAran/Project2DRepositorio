@@ -75,7 +75,11 @@ namespace TecnocampusProjectII
 
         private bool ConditionNextLevel()
         {
-            return _collider.CanFinishLevel;
+            if (_collider != null)
+            {
+                return _collider.CanFinishLevel;
+            }
+            return false;
         }
 
         public void RestartLevel()

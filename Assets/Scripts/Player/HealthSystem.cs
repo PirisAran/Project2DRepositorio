@@ -53,7 +53,7 @@ public class HealthSystem : MonoBehaviour
         DoParticleEffect();
 
         //transition in
-        DeathTransitionBehaviour.DoDeathTransition();
+        DeathTransitionBehaviour.DoDeathTransition(4);
         yield return new WaitForSeconds(2.5f);
 
         //black screen on
@@ -70,7 +70,7 @@ public class HealthSystem : MonoBehaviour
         blackScreen.SetActiveBlackScreen(false);
 
         //transition off
-        DeathTransitionBehaviour.UndoDeathTransition();
+        DeathTransitionBehaviour.UndoDeathTransition(12);
 
 
         yield return new WaitForSeconds(1);

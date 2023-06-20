@@ -48,6 +48,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     public Action OnEnterFollowState;
     public Action OnEnterKillerState;
     public Action OnEnterTransitionState;
+    public Action OnPlayerKilled;
 
     public Vector3 Forward => (_desiredPosition - transform.position).normalized;
     public States CurrentState => _currentState;
@@ -75,6 +76,7 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         {
             Debug.Log("umbra kills player");
             healthSystem.KillPlayer();
+            OnPlayerKilled?.Invoke();
         }
     }
 
