@@ -48,6 +48,10 @@ public class RoomCamManager : MonoBehaviour
 
     public void SetCurrentRoomCam(Cinemachine.CinemachineVirtualCamera camera)
     {
+        if (_mainCamera == null)
+        {
+            _mainCamera = Camera.main;
+        }
         var mainCamBrain = _mainCamera.GetComponent<CinemachineBrain>();
         mainCamBrain.enabled = true;
 
