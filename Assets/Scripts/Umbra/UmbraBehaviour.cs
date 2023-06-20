@@ -48,7 +48,9 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
     public Action OnEnterFollowState;
     public Action OnEnterKillerState;
     public Action OnEnterTransitionState;
-    public Action OnPlayerKilled;
+    public Action OnPlayerStartKill;
+    public Action OnPlayerFinishKill;
+
 
     public Vector3 Forward => (_desiredPosition - transform.position).normalized;
     public States CurrentState => _currentState;
@@ -74,10 +76,17 @@ public class UmbraBehaviour : MonoBehaviour, IRestartLevelElement
         HealthSystem healthSystem = collision.GetComponent<HealthSystem>();
         if (healthSystem != null)
         {
-            Debug.Log("umbra kills player");
-            healthSystem.KillPlayer();
-            OnPlayerKilled?.Invoke();
+            StartCoroutine(KillPlayerCoroutine(healthSystem));
         }
+    }
+
+    private IEnumerator KillPlayerCoroutine(HealthSystem hs)
+    {
+        Debug.Log("umbra kills player");
+        OnPlayerStartKill?.Invoke();
+        yield return new WaitForSeconds(0.25f);
+        OnPlayerFinishKill?.Invoke();
+        hs.KillPlayer();
     }
 
 

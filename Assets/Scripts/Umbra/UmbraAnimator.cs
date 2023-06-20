@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using TecnocampusProjectII;
 
-public class UmbraAnimator : MonoBehaviour
+public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
 {
     //[SerializeField]
     //Sprite _cuteSprite;
@@ -28,6 +29,8 @@ public class UmbraAnimator : MonoBehaviour
 
     IEnumerator _currentTransformation;
 
+    bool _playerDead = false;
+
     private void Awake()
     {
         _umbraFSM = GetComponent<UmbraBehaviour>();
@@ -44,13 +47,19 @@ public class UmbraAnimator : MonoBehaviour
         _allBones.Add(_killerBones);
     }
 
+    private void Start()
+    {
+        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+    }
+
     private void OnEnable()
     {
         _umbraFSM.OnEnterCuteState += OnCuteState;
         _umbraFSM.OnEnterFollowState += OnFollowState;
         _umbraFSM.OnEnterKillerState += OnKillerState;
         _umbraFSM.OnEnterTransitionState += OnTransitionState;
-        _umbraFSM.OnPlayerKilled += OnKillPlayer;
+        _umbraFSM.OnPlayerStartKill += OnKillPlayer;
+        _umbraFSM.OnPlayerFinishKill += OnPlayerFinishKill;
     }
 
     private void OnDisable()
@@ -59,7 +68,8 @@ public class UmbraAnimator : MonoBehaviour
         _umbraFSM.OnEnterFollowState -= OnFollowState;
         _umbraFSM.OnEnterKillerState -= OnKillerState;
         _umbraFSM.OnEnterTransitionState -= OnTransitionState;
-        _umbraFSM.OnPlayerKilled -= OnKillPlayer;
+        _umbraFSM.OnPlayerStartKill -= OnKillPlayer;
+        _umbraFSM.OnPlayerFinishKill -= OnPlayerFinishKill;
     }
 
 
@@ -92,6 +102,7 @@ public class UmbraAnimator : MonoBehaviour
 
     void OnKillPlayer()
     {
+        _playerDead = true;
         SetCurrentAnimator(_killerBones);   
         _killerBones.SetBool("attack", true);
     }
@@ -122,5 +133,15 @@ public class UmbraAnimator : MonoBehaviour
         yield return new WaitForSeconds(_umbraFSM.TransitionTime);
         _currentTransformation = null;
         Debug.Log("NOOOOO particles Umbraa");
+    }
+
+    private void OnPlayerFinishKill()
+    {
+        _killerBones.SetBool("attack", false);
+    }
+
+    public void RestartLevel()
+    {
+        _playerDead = false;
     }
 }
