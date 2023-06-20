@@ -16,7 +16,7 @@ public class BlackScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        _blackScreenCamera.transform.position = transform.position;
     }
 
     public void SetActiveBlackScreen(bool v)
