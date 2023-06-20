@@ -128,11 +128,9 @@ public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
 
     private IEnumerator DoTransformationAnimation()
     {
-        Debug.Log("particles UmbraCoroutine");
         _particleSystem.Emit(15);
         yield return new WaitForSeconds(_umbraFSM.TransitionTime);
         _currentTransformation = null;
-        Debug.Log("NOOOOO particles Umbraa");
     }
 
     private void OnPlayerFinishKill()

@@ -173,7 +173,6 @@ public class WaterShapeController : MonoBehaviour
             return;
         }
 
-        Debug.Log(rb.velocity);
 
         if (rb.velocity.y > 6.5)
         {

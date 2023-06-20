@@ -48,8 +48,6 @@ public class FallinPlatformBehaviour : MonoBehaviour
         _currentState = nextState;
         Debug.Log("Entered " + nextState);
         _isMoving = _currentState != States.Idle;
-        Debug.Log("is moving is " + _isMoving);
-        
     }
 
     private void FixedUpdate()
@@ -69,15 +67,13 @@ public class FallinPlatformBehaviour : MonoBehaviour
                 break;
         }
         UpdateSound();
+        Debug.Log("Is Moving = " + _isMoving);
     }
 
     private void UpdateSound()
     {
-        //if (_isMoving)
-        //{
-        //    _fallingSound.PlaySound();
-        //}
         _audioSource.volume = _isMoving ? _oVolume : 0;
+        Debug.Log(_audioSource.volume + "VOLUME");
     }
 
     private void UpdateIdleState()
@@ -156,6 +152,7 @@ public class FallinPlatformBehaviour : MonoBehaviour
         else if (transform.position == _oPosition.position)
         {
             ChangeState(States.Idle);
+            _isMoving = false;
         }
 
         MovePlatform(_upwardsSpeed, _oPosition.position);
