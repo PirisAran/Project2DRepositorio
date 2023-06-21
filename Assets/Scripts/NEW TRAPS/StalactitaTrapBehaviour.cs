@@ -30,8 +30,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     private Animator _animator;
     private bool _isPlayingAnimation = false;
 
-    private bool _triggerExitRoof = false;
+    PolygonCollider2D _collider2D;
 
+    public bool _triggerExitRoof = false;
+    [SerializeField]
+    LayerMask _whatIsGround;
     private void OnEnable()
     {
         _playerDetector.OnPlayerDetected += OnPlayerDetected;
@@ -47,6 +50,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _particleSystem1 = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
         _particleSystem2 = _particleStalactitaStartPrefab.GetComponentInChildren<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
+        _collider2D = GetComponent<PolygonCollider2D>();
         Init();
     }
 
@@ -56,7 +60,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerKiller.SetCanKill(false);
         _fireDestroyer.SetCanDestroy(false);
         _oPosition = transform.position;
-        GetComponent<Collider2D>().isTrigger = true;
+        _collider2D.isTrigger = true;
 
     }
 
@@ -64,17 +68,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     {
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
         StartCoroutine(StalactitaAnimation());
-    }
-
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!_triggerExitRoof)
-        {
-            return;
-        }
-        InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
-        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -86,10 +79,21 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!_triggerExitRoof)
+        {
+            return;
+        }
+        InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("OTEX2D");
         _triggerExitRoof = true;
-        GetComponent<Collider2D>().isTrigger = false;
+        _collider2D.isTrigger = false;
     }
 
     private void OnPlayerDetected()
@@ -101,31 +105,34 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _fallingSound.PlaySound();
         InstantiateParticles(_particleStalactitaStartPrefab, _particleSpawnPosition);
         _rb.bodyType = RigidbodyType2D.Dynamic;
-        _playerDetector.enabled = false;
+        _playerDetector.SetCanDetect(false);
         _playerKiller.SetCanKill(true);
         _fireDestroyer.SetCanDestroy(true);
         Debug.Log(name + " detected player");
     }
 
+    private void Update()
+    {
+    }
     private void ResetValues()
     {
         _animator.enabled = true;
-        StartCoroutine(StalactitaAnimation());
 
         _rb.bodyType = RigidbodyType2D.Static;
         transform.position = _oPosition;
-        _playerDetector.enabled = true;
         _fireDestroyer.SetCanDestroy(false);
         _playerKiller.SetCanKill(false);
         gameObject.SetActive(true);
         _triggerExitRoof = false;
-        GetComponent<Collider2D>().isTrigger = true;
+        _playerDetector.SetCanDetect(true);
+        _collider2D.isTrigger = _collider2D.IsTouchingLayers(_whatIsGround);
     }
 
     public void RestartLevel()
     {
         Debug.Log("Stalact rs");
         ResetValues();
+        StartCoroutine(StalactitaAnimation());
     }
 
     private void InstantiateParticles(GameObject _particlePrefab, Transform _particletransform)
