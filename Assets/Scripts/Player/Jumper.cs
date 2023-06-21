@@ -64,8 +64,11 @@ public class Jumper : MonoBehaviour
     void Update()
     {
         UpdateCoyoteTime();
-        JumpInput();
-        UpdateJump();
+        if (!PauseMenu._isPaused)
+        {
+            JumpInput();
+            UpdateJump();
+        }
     }
 
     private void UpdateCoyoteTime()

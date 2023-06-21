@@ -119,10 +119,15 @@ public class Thrower : MonoBehaviour
         {
             CancelThrow();
         }
-        if (Input.GetKeyDown(ThrowKey))
-            ThrowFireStart();
-        if (Input.GetKeyUp(ThrowKey))
-            ThrowFireFinish();
+
+        if (!PauseMenu._isPaused)
+        {
+            if (Input.GetKeyDown(ThrowKey))
+                ThrowFireStart();
+            if (Input.GetKeyUp(ThrowKey))
+                ThrowFireFinish();
+        }
+       
     }
 
     private void ThrowFireStart()
