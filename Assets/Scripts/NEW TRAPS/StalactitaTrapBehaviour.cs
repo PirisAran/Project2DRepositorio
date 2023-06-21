@@ -32,7 +32,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     PolygonCollider2D _collider2D;
 
-    public bool _triggerExitRoof = false;
     [SerializeField]
     LayerMask _whatIsGround;
     private void OnEnable()
@@ -60,7 +59,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerKiller.SetCanKill(false);
         _fireDestroyer.SetCanDestroy(false);
         _oPosition = transform.position;
-        _collider2D.isTrigger = true;
 
     }
 
@@ -72,30 +70,14 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_triggerExitRoof)
-        {
-            return;
-        }
         InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!_triggerExitRoof)
-        {
-            return;
-        }
         InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log("OTEX2D");
-        _triggerExitRoof = true;
-        _collider2D.isTrigger = false;
-    }
-
     private void OnPlayerDetected()
     {
         StopAllCoroutines();
@@ -111,6 +93,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         Debug.Log(name + " detected player");
     }
 
+    private IEnumerator ActivateTriggerExitRoof()
+    {
+        yield return new WaitForSeconds(2);
+    }
+
     private void Update()
     {
     }
@@ -123,7 +110,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _fireDestroyer.SetCanDestroy(false);
         _playerKiller.SetCanKill(false);
         gameObject.SetActive(true);
-        _triggerExitRoof = false;
         _playerDetector.SetCanDetect(true);
         _collider2D.isTrigger = _collider2D.IsTouchingLayers(_whatIsGround);
     }

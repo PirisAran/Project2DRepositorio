@@ -93,7 +93,6 @@ public class RoomCamManager : MonoBehaviour
     {
         if (_currentCBMCP != null)
         {
-            Debug.Log("one shake");
             _currentCBMCP.m_AmplitudeGain = intensity;
             float timer = duration;
             while (timer > 0)

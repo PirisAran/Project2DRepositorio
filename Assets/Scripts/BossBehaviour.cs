@@ -32,11 +32,11 @@ public class BossBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 dir = _minVelocity.normalized;
-        float velMagnitude = _minVelocity.magnitude;
-        velMagnitude =+ GetAddedSpeed();
+        float velMagnitude = _minVelocity.magnitude + GetAddedSpeed();
 
         _rb.velocity = dir * velMagnitude;
-        
+        Debug.Log(_rb.velocity.x + " || " + _rb.velocity.y);
+
     }
 
     private float GetAddedSpeed()
@@ -59,5 +59,6 @@ public class BossBehaviour : MonoBehaviour
     public static void ModifyVelocity(Vector2 velocityMod)
     {
         _minVelocity += velocityMod;
+        
     }
 }

@@ -13,6 +13,8 @@ public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
     [SerializeField]
     float _timeToBurn = 3;
 
+    [SerializeField] SoundPlayer _burningSound;
+    SfxBehaviour _soundBehaviour;
     [SerializeField]
     SpriteRenderer _sr;
     Color _previousColor;
@@ -73,6 +75,7 @@ public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
     void Burn()
     {
         var obj = _spawner.SpawnOne(_hitPos, _particlesRot);
+        _soundBehaviour = _burningSound.PlaySound().GetComponent<SfxBehaviour>();
         _particlesCreated.Enqueue(obj);
         StartCoroutine(InstantiateMultipleFireParticlesInRandomPos(9));
         StartCoroutine(BurnAndDisable());
@@ -81,6 +84,7 @@ public class BurnableObjectBehaviour : MonoBehaviour, IRestartLevelElement
     IEnumerator BurnAndDisable()
     {
         float timer = _timeToBurn;
+        _soundBehaviour.DestroyAfterSecondsWithFade(_timeToBurn);
         while (timer > 0)
         {
             timer -= Time.deltaTime;

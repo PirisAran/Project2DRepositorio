@@ -10,8 +10,8 @@ public class CheckPoint : PlayerWithFireActivation
     [SerializeField] Transform _playerSpawnPoint;
     [SerializeField] Transform _umbraSpawnPoint;
     [SerializeField] Animator _anim;
-    [SerializeField] Light2D _light;
-    [SerializeField] Color _innactiveLightColor, _activeLightColor;
+    [SerializeField] protected Light2D _light;
+    [SerializeField] protected Color _innactiveLightColor, _activeLightColor;
 
     public static Action OnCheckPointActivated;
 

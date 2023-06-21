@@ -7,13 +7,15 @@ public class FakeSwamp: MonoBehaviour
     [SerializeField] float _distanceOfActivation;
     PlayerController _player;
 
+    [SerializeField] Transform _oDetectionLocation;
+
     FakeSwampsManager _manager;
     SpriteShapeRenderer _spriteShapeRenderer;
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _distanceOfActivation);
+        Gizmos.DrawWireSphere(_oDetectionLocation.position, _distanceOfActivation);
         Gizmos.color = Color.white;
     }
 
@@ -30,7 +32,7 @@ public class FakeSwamp: MonoBehaviour
 
     public bool CanGetActive()
     {
-        return Vector2.Distance(_player.transform.position, transform.position) < _distanceOfActivation;
+        return Vector2.Distance(_player.transform.position, _oDetectionLocation.position) < _distanceOfActivation;
     }
 
     private void Update()

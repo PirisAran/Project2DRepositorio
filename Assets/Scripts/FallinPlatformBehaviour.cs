@@ -72,7 +72,6 @@ public class FallinPlatformBehaviour : MonoBehaviour
     private void UpdateSound()
     {
         _audioSource.volume = _isMoving ? _oVolume : 0;
-        Debug.Log(_audioSource.volume + " VOLUME");
     }
 
     private void UpdateIdleState()

@@ -16,5 +16,6 @@ public class MiniCheckPoint: CheckPoint
     protected override void DoAnimation()
     {
         _spriteRenderer.sprite = _emptySprite;
+        _light.color = _activeLightColor;
     }
 }

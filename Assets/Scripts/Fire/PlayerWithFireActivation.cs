@@ -16,6 +16,10 @@ public abstract class PlayerWithFireActivation : ActivationObject
 
     [SerializeField] SoundPlayer _errorSound;
 
+    [SerializeField] protected bool _isTrigger = false;
+
+    private bool _firstTriggerTry = true;
+
     private enum IconStates { Show, Hide, PressedGood, PressedBad}
     IconStates _currentState;
     private void Start()
@@ -44,6 +48,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
 
         if (_thrower.transform != collision.transform) return;
         _inTrigger = false;
+        _firstTriggerTry = true;
     }
 
     private void Update()
@@ -61,7 +66,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
             return;
         }
         UpdateEIconAnimation();
-        if (_inTrigger && Input.GetKeyDown(_interactKey))
+        if (_inTrigger && (Input.GetKeyDown(_interactKey) || _isTrigger) && _firstTriggerTry)
         {
             if (_thrower.HasFire)
             {
@@ -75,6 +80,7 @@ public abstract class PlayerWithFireActivation : ActivationObject
                     _errorSound.PlaySound();
                 }
             }
+            _firstTriggerTry = false;
         }
         
     }

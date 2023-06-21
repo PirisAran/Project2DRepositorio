@@ -26,6 +26,7 @@ public class SpeedBoostersBoss: MonoBehaviour
         if (collision.GetComponent<BossBehaviour>())
         {
             BossBehaviour.ModifyVelocity(_velocityValue);
+            Debug.Log("Boss got added " + _velocityValue);
         }
     }
 
