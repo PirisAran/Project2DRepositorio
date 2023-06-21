@@ -99,7 +99,10 @@ public class FireDamager : MonoBehaviour
     // Deal damage to fire
     private void OnDamageFire()
     {
-        _fire.TakeDamage(_damageDealt);
+        if (_fire.CurrentFireHealth > 0)
+        {
+            _fire.TakeDamage(_damageDealt);
+        }
         Debug.Log(name + " damage fire: " + _damageDealt);
     }
 
