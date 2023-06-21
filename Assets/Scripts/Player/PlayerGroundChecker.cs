@@ -9,7 +9,7 @@ public class PlayerGroundChecker : CollisionChecker
     private Vector2 _boxSize = new Vector2(1.25f, 0.1f);
     public bool OnGround => _colliding;
 
-
+    [SerializeField] LayerMask _whatIsGeyser;
 
     private void OnDrawGizmosSelected()
     {
@@ -19,9 +19,12 @@ public class PlayerGroundChecker : CollisionChecker
 
     private void Update()
     {
+
         _colliding = CheckIfColliding();
         CheckLanding();
     }
+
+   
 
     protected override bool CheckIfColliding()
     {

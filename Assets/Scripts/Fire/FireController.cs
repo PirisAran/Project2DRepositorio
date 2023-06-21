@@ -191,7 +191,10 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     private void OnLanding()
     {
-        _rb.velocity = Vector2.zero;
+        if (_rb.bodyType != RigidbodyType2D.Static)
+        {
+            _rb.velocity = Vector2.zero;
+        }
     }
 
     /* ----- ----- APPEARENCE (SHOW, HIDE, ETC) --------- */

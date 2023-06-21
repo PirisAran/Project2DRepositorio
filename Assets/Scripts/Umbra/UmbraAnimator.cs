@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using TecnocampusProjectII;
 
-public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
+public class UmbraAnimator : MonoBehaviour
 {
     //[SerializeField]
     //Sprite _cuteSprite;
@@ -29,7 +29,6 @@ public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
 
     IEnumerator _currentTransformation;
 
-    bool _playerDead = false;
 
     private void Awake()
     {
@@ -49,7 +48,6 @@ public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
 
     private void Start()
     {
-        GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
     }
 
     private void OnEnable()
@@ -102,7 +100,6 @@ public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
 
     void OnKillPlayer()
     {
-        _playerDead = true;
         SetCurrentAnimator(_killerBones);   
         _killerBones.SetBool("attack", true);
     }
@@ -136,10 +133,5 @@ public class UmbraAnimator : MonoBehaviour, IRestartLevelElement
     private void OnPlayerFinishKill()
     {
         _killerBones.SetBool("attack", false);
-    }
-
-    public void RestartLevel()
-    {
-        _playerDead = false;
     }
 }

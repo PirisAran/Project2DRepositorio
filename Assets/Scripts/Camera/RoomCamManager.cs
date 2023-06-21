@@ -8,7 +8,7 @@ public class RoomCamManager : MonoBehaviour
 {
     static RoomCamManager _instance;
 
-    [SerializeField] float _shakeDuration = 0.5f, _shakeDeltaTime = 1.5f;
+    [SerializeField] float _shakeDeltaTime = 1.5f;
 
     Camera _mainCamera;
 

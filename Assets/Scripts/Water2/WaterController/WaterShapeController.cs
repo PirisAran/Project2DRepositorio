@@ -33,6 +33,8 @@ public class WaterShapeController : MonoBehaviour
     void Start() { 
        
     }
+
+    [System.Obsolete]
     void OnValidate() {
 
         if (!gameObject.active)

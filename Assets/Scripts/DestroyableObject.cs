@@ -23,6 +23,8 @@ public class DestroyableObject : MonoBehaviour, IRestartLevelElement
         Destroy(_particlesCreated);
         _particlesCreated = null;
     }
+
+    [System.Obsolete]
     private void Awake()
     {
         if (_objectToDestroy == null) _objectToDestroy = gameObject;

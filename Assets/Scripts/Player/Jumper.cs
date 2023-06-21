@@ -172,7 +172,16 @@ public class Jumper : MonoBehaviour
     private void AddJumpForce(float heightToReach)
     {
         _initialPosition = transform.position;
-        _rb.velocity = new Vector2(_rb.velocity.x, GetJumpForce(heightToReach));
+
+        Debug.Log(heightToReach + " height");
+
+        if (heightToReach < 0)
+        {
+            heightToReach = 0;
+        }
+        float jumpForce = GetJumpForce(heightToReach);
+
+        _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
     }
     //Pillar la fuerza del salto
     private float GetJumpForce(float height)

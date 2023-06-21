@@ -5,10 +5,6 @@ using TecnocampusProjectII;
 public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
 {
     [SerializeField] float _lifeTime;
-    bool _destroyed = false;
-
-    static float coroutinescount = 0;
-    static float restartcount = 0;
 
     LevelController _lvlController;
 
@@ -23,7 +19,6 @@ public class ParticlePrefabBehaviour : MonoBehaviour, IRestartLevelElement
     IEnumerator DestroyAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        _destroyed = true;
         Destroy(gameObject);
     }
 

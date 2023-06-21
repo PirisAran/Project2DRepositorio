@@ -66,11 +66,6 @@ namespace TecnocampusProjectII
                 Debug.Log("load next level " + m_NextLevel);
                 StartCoroutine(ChangeScene(m_NextLevel));
             }
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Debug.Log("KeyDown");
-                RestartLevel();
-            }
         }
 
         private bool ConditionNextLevel()

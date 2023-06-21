@@ -11,8 +11,8 @@ public class FireDamager : MonoBehaviour
 
     bool _playerInTrigger;
 
-    static FireController _fire;
-    static PlayerController _player;
+    FireController _fire;
+    PlayerController _player;
 
 
     private void OnEnable()
@@ -26,19 +26,17 @@ public class FireDamager : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_fire == null)
+        {
+            return;
+        }
         _fire.OnFirePickedUp -= OnFirePickedUp;
     }
 
     private void Start()
     {
-        if (_player == null)
-        {
-            _player = GameLogic.GetGameLogic().GetGameController().m_Player;
-        }
-        if (_fire == null)
-        {
-            _fire = _player.GetComponentInChildren<FireController>();
-        }
+        _player = GameLogic.GetGameLogic().GetGameController().m_Player;
+        _fire = FindObjectOfType<FireController>();
         _fire.OnFirePickedUp += OnFirePickedUp;
     }
 
@@ -46,19 +44,20 @@ public class FireDamager : MonoBehaviour
     {
         if (!_canDamage) return;
 
-
-        if (collision.transform == _fire.transform)
+        if (_fire != null && _player!= null)
         {
-            if (_fire.IsAttached()) return;
+            if (collision.transform == _fire.transform)
+            {
+                if (_fire.IsAttached()) return;
+            }
+            else if (collision.transform == _player.transform)
+            {
+                _playerInTrigger = true;
+                if (!_fire.IsAttached()) return;
+            }
+            else return;
+            OnDamageFire();
         }
-        else if (collision.transform == _player.transform)
-        {
-            _playerInTrigger = true;
-            if (!_fire.IsAttached()) return;
-        }
-        else return;
-
-        OnDamageFire();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -80,7 +79,6 @@ public class FireDamager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!_canDamage) return;
-
 
         if (collision.gameObject.transform == _fire.transform)
         {

@@ -61,7 +61,12 @@ public class Runner : MonoBehaviour
     private void Move()
     {
         var vel = new Vector2(_horizontalMov * _currentStateSpeed, _rb.velocity.y);
-        _rb.velocity = vel;
+
+        if (_rb.bodyType != RigidbodyType2D.Static)
+        {
+            _rb.velocity = vel;
+        }
+        
         XSpeed = vel.x;
 
         _isRunning = vel.x != 0 && vel.y == 0;

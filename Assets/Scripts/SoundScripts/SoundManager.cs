@@ -13,6 +13,10 @@ public class SoundManager : MonoBehaviour
 
     public static GameObject InstantiateSound(GameObject sound, Vector3 position)
     {
+        if (_soundManager==null)
+        {
+            return null;
+        }
         return _soundManager._InstantiateSound(sound, position);
     }
 

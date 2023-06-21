@@ -188,6 +188,10 @@ public class Thrower : MonoBehaviour
 
     private void HeartBeatSound()
     {
+        if (_audioSource == null)
+        {
+            _audioSource = _heartBeatSound.PlaySound().GetComponent<AudioSource>();
+        }
          _audioSource.volume = _hasFire? 0 : originalVolume; 
     }
 

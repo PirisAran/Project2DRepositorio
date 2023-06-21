@@ -28,7 +28,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     [SerializeField]
     private Animator _animator;
-    private bool _isPlayingAnimation = false;
 
     PolygonCollider2D _collider2D;
 
