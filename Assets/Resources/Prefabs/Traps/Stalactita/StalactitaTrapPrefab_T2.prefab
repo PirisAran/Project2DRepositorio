@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef71ba5dbd2777942ba1becb3d4b71fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canDetect: 1
 --- !u!1 &3371506680822365035
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7736300432381365352}
   - component: {fileID: 8782945968938449719}
+  - component: {fileID: 8972855089999146191}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -286,6 +288,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8972855089999146191
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3371506680822365035}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ba61010a55eec13479cef91cff7e7955, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3585951192675502716
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +322,6 @@ GameObject:
   - component: {fileID: 2033753112760518678}
   - component: {fileID: 2605356670357052411}
   - component: {fileID: 6288071022454283045}
-  - component: {fileID: 1759950904}
   m_Layer: 16
   m_Name: StalactitaTrapPrefab_T2
   m_TagString: Untagged
@@ -369,6 +390,7 @@ MonoBehaviour:
   _particleStalactitaStartPrefab: {fileID: 452134198795002175, guid: ec906eec7fb9b2740a87f84c7c24dbb4, type: 3}
   _particleSpawnStartPosition: {fileID: 1099584356}
   _fallingSound: {fileID: 1286955377}
+  _animator: {fileID: 8972855089999146191}
 --- !u!60 &2033753112760518678
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -423,26 +445,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canKill: 0
---- !u!95 &1759950904
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3585951192675502716}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2780479ae59c3d543ba6ef79a97cf9a3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6478274819284848541
 GameObject:
   m_ObjectHideFlags: 0

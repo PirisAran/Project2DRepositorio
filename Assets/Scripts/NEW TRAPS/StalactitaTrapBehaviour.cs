@@ -26,6 +26,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     [SerializeField] SoundPlayer _fallingSound;
 
+    [SerializeField]
     private Animator _animator;
     private bool _isPlayingAnimation = false;
 
@@ -44,7 +45,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _particleSystem1 = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
         _particleSystem2 = _particleStalactitaStartPrefab.GetComponentInChildren<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
         Init();
     }
 
