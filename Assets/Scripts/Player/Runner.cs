@@ -53,7 +53,10 @@ public class Runner : MonoBehaviour
     }
     private void UpdateMove()
     {
-        Move();
+        if (!PauseMenu._isPaused)
+        {
+            Move();
+        }
     }
     private void Move()
     {
