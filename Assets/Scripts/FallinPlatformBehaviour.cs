@@ -67,13 +67,12 @@ public class FallinPlatformBehaviour : MonoBehaviour
                 break;
         }
         UpdateSound();
-        Debug.Log("Is Moving = " + _isMoving);
     }
 
     private void UpdateSound()
     {
         _audioSource.volume = _isMoving ? _oVolume : 0;
-        Debug.Log(_audioSource.volume + "VOLUME");
+        Debug.Log(_audioSource.volume + " VOLUME");
     }
 
     private void UpdateIdleState()
