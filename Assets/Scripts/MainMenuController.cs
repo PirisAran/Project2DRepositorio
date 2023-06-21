@@ -12,6 +12,8 @@ namespace TecnocampusProjectII
 	{
 		[SerializeField] string _firstLevelScene;
 
+		[SerializeField] SoundPlayer _wooshSound;
+
 		[SerializeField] GameObject _mainMenuCanva;
 		[SerializeField] GameObject _optionsCanva;
 
@@ -91,6 +93,8 @@ namespace TecnocampusProjectII
 				default:
                     break;
             }
+
+			_wooshSound.PlaySound();
         }
 
 		private void SetFireColor(Gradient _gradient)
