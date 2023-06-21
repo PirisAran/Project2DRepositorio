@@ -154,7 +154,6 @@ GameObject:
   - component: {fileID: 1628025574761416998}
   - component: {fileID: 731167828958200073}
   - component: {fileID: 2524099723529053449}
-  - component: {fileID: 1571938329}
   m_Layer: 16
   m_Name: StalactitaTrapPrefab_T3
   m_TagString: Untagged
@@ -223,6 +222,7 @@ MonoBehaviour:
   _particleStalactitaStartPrefab: {fileID: 452134198795002175, guid: ec906eec7fb9b2740a87f84c7c24dbb4, type: 3}
   _particleSpawnStartPosition: {fileID: 842567774}
   _fallingSound: {fileID: 486010816}
+  _animator: {fileID: 8721644845413989983}
 --- !u!60 &1628025574761416998
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -280,26 +280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canDestroy: 0
---- !u!95 &1571938329
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2349240319227385320}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c6809a99a6a829b4bbabf6910f24f0ea, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2623136203486902875
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7057812748838800728}
   - component: {fileID: 8308567225997867527}
+  - component: {fileID: 8721644845413989983}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -384,6 +365,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8721644845413989983
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2623136203486902875}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ba61010a55eec13479cef91cff7e7955, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6175551957309106701
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,3 +478,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef71ba5dbd2777942ba1becb3d4b71fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canDetect: 1

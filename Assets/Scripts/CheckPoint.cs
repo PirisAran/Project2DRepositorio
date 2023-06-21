@@ -12,24 +12,15 @@ public class CheckPoint : PlayerWithFireActivation
     [SerializeField] Animator _anim;
     [SerializeField] Light2D _light;
     [SerializeField] Color _innactiveLightColor, _activeLightColor;
-    [SerializeField] Sprite _noLeafsSprite;
-    [SerializeField] SpriteRenderer _spriteRenderer;
 
     public static Action OnCheckPointActivated;
 
     [SerializeField] SoundPlayer _checkPointSound;
     [SerializeField] GameObject _checkPointParticlePrefab;
-    ParticleSystem _particleSystem;
-    Transform _player;
 
     private void Awake()
     {
         _light.color = _innactiveLightColor;
-        _particleSystem = _checkPointParticlePrefab.GetComponent<ParticleSystem>();
-    }
-    private void Start()
-    {
-        _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
     }
     protected override void DoAnimation()
     {
