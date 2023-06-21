@@ -66,7 +66,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     [SerializeField] float _minParticleSize = 0.3f, _maxParticleSize = 1.2f;
     [SerializeField] int _minParticleRate = 10, _maxParticleRate = 40;
 
-
+    ParticlePositionUpdater _posUpdater;
 
     //Pick up and throw parameters--------------------
     [SerializeField]
@@ -106,6 +106,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _rb = GetComponent<Rigidbody2D>();
         _collCheck = GetComponent<FireGroundChecker>();
         //_particleSystem = _fireParticlesPrefab.GetComponentInChildren<ParticleSystem>();
+        _posUpdater = _fireParticlesPrefab.GetComponentInChildren<ParticlePositionUpdater>();
    
     }
     private void Start()
@@ -126,6 +127,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
     private void AdjustLightEffect()
     {
+        var mainModule = _particleSystem.main;
         var healthFraction = Mathf.Clamp01(_currentFireHealth / _maxFireHealth);
         _lightRange = Mathf.Lerp(0, _maxLightRange, healthFraction);
 
@@ -136,10 +138,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
 
         //cambiar tamaño particulas
         var maxSize = Mathf.Lerp(_minParticleSize, _maxParticleSize, healthFraction);
-        var mainModule = _particleSystem.main;
         mainModule.startSize = new ParticleSystem.MinMaxCurve(maxSize);
-
-        mainModule.simulationSpace = IsAttached() ? ParticleSystemSimulationSpace.Local : ParticleSystemSimulationSpace.World;
     }
 
     // Update is called once per frame
@@ -182,6 +181,7 @@ public class FireController : MonoBehaviour, IRestartLevelElement
         _playerThrower.SetAttachFireToBody(v);
         _rb.bodyType = v ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
         GetComponent<Collider2D>().enabled = !v;
+        _posUpdater.enabled = !v;
     }
 
     public bool IsAttached()

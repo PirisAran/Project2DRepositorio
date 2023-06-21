@@ -7,7 +7,6 @@ using UnityEngine.U2D;
 [ExecuteAlways]
 public class WaterShapeController : MonoBehaviour
 {
-
     private int CorsnersCount = 2;
     [SerializeField]
     private SpriteShapeController spriteShapeController;

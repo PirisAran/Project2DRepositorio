@@ -26,8 +26,11 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     [SerializeField] SoundPlayer _fallingSound;
 
+    [SerializeField]
     private Animator _animator;
     private bool _isPlayingAnimation = false;
+
+    private bool _triggerExitRoof = false;
 
     private void OnEnable()
     {
@@ -44,7 +47,6 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _particleSystem1 = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
         _particleSystem2 = _particleStalactitaStartPrefab.GetComponentInChildren<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
         Init();
     }
 
@@ -54,6 +56,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerKiller.SetCanKill(false);
         _fireDestroyer.SetCanDestroy(false);
         _oPosition = transform.position;
+        GetComponent<Collider2D>().isTrigger = true;
 
     }
 
@@ -66,13 +69,27 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!_triggerExitRoof)
+        {
+            return;
+        }
         InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_triggerExitRoof)
+        {
+            return;
+        }
+        InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
         gameObject.SetActive(false);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _triggerExitRoof = true;
+        GetComponent<Collider2D>().isTrigger = false;
     }
 
     private void OnPlayerDetected()
@@ -101,6 +118,8 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _fireDestroyer.SetCanDestroy(false);
         _playerKiller.SetCanKill(false);
         gameObject.SetActive(true);
+        _triggerExitRoof = false;
+        GetComponent<Collider2D>().isTrigger = true;
     }
 
     public void RestartLevel()

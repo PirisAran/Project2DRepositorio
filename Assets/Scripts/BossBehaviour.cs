@@ -28,7 +28,11 @@ public class BossBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 dir = _minVelocity.normalized;
-        float velMagnitude = _minVelocity.magnitude + GetAddedSpeed();
+        float velMagnitude = _minVelocity.magnitude;
+        if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Normal))
+        {
+            velMagnitude =+ GetAddedSpeed();
+        }
 
         _rb.velocity = dir * velMagnitude;
         
