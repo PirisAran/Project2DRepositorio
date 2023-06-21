@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject _pauseMenuCanva;
 
     public static bool _isPaused;
-    float _continueTransitionTime = 1.3f;
+    float _continueTransitionTime = 1f;
     float _currentTime;
 
 
@@ -18,13 +18,13 @@ public class PauseMenu : MonoBehaviour
         _pauseMenuCanva.SetActive(false);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (_isPaused)
             {
-                ResumeGamee();
+                ResumeGame();
             }
             else
             {
@@ -33,9 +33,9 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public void ResumeGamee()
+    public void ResumeGame()
     {
-        StartCoroutine(ResumeGame());
+        StartCoroutine(ResumeGameCoroutine());
     }
 
     public void PauseGame()
@@ -46,7 +46,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     
-    IEnumerator ResumeGame()
+    IEnumerator ResumeGameCoroutine()
     {
         _isPaused = false;
         _pauseMenuCanva.SetActive(false);
@@ -65,6 +65,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("MenuGold");
+        _isPaused = false;
     }
 
 }

@@ -44,11 +44,13 @@ public class CursorController : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
+    private void Update()
     {
         Vector2 cursorPos = new Vector2();
         cursorPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         cursorPos.y = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
         _particlesInstantiated.transform.position = cursorPos;
     }
+
+
 }
