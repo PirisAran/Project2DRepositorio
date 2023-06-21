@@ -24,7 +24,10 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
     ParticleSystem _particleSystem1;
     ParticleSystem _particleSystem2;
 
-    [SerializeField] SoundPlayer _fallingSound; 
+    [SerializeField] SoundPlayer _fallingSound;
+
+    private Animator _animator;
+    private bool _isPlayingAnimation = false;
 
     private void OnEnable()
     {
@@ -41,6 +44,7 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _particleSystem1 = _particleStalactitaPrefab.GetComponent<ParticleSystem>();
         _particleSystem2 = _particleStalactitaStartPrefab.GetComponentInChildren<ParticleSystem>();
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         Init();
     }
 
@@ -50,13 +54,16 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         _playerKiller.SetCanKill(false);
         _fireDestroyer.SetCanDestroy(false);
         _oPosition = transform.position;
+
     }
 
     private void Start()
     {
         GameLogic.GetGameLogic().GetGameController().GetLevelController().AddRestartLevelElement(this);
+        StartCoroutine(StalactitaAnimation());
     }
 
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         InstantiateParticles(_particleStalactitaPrefab, _particleSpawnStartPosition);
@@ -70,6 +77,10 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void OnPlayerDetected()
     {
+        StopAllCoroutines();
+        //_animator.SetBool("trembling", false);
+        _animator.enabled = false;
+
         _fallingSound.PlaySound();
         InstantiateParticles(_particleStalactitaStartPrefab, _particleSpawnPosition);
         _rb.bodyType = RigidbodyType2D.Dynamic;
@@ -81,6 +92,9 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
 
     private void ResetValues()
     {
+        _animator.enabled = true;
+        StartCoroutine(StalactitaAnimation());
+
         _rb.bodyType = RigidbodyType2D.Static;
         transform.position = _oPosition;
         _playerDetector.enabled = true;
@@ -102,5 +116,28 @@ public class StalactitaTrapBehaviour : MonoBehaviour, IRestartLevelElement
         ParticleSystem instantiateParticleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
 
         instantiateParticleSystem.Play();
+    }
+
+    
+    IEnumerator StalactitaAnimation()
+    {
+        while (true)
+        {
+            float randomDelay = Random.Range(2f, 5f);
+            yield return new WaitForSeconds(randomDelay);
+
+            _animator.SetBool("trembling", true);
+
+            // Espera la duración de la animación
+
+            //AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            //float _animationDuration = stateInfo.length;
+            yield return new WaitForSeconds(1);
+
+            // Desactiva el parámetro de animación aleatoria
+            _animator.SetBool("trembling", false);
+
+            yield return null;
+        }
     }
 }
