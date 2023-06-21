@@ -23,16 +23,17 @@ public class BossBehaviour : MonoBehaviour
     void Start()
     {
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
+        if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Hard))
+        {
+            _maxAddedSpeed = 1.5f;
+        }
     }
 
     void FixedUpdate()
     {
         Vector2 dir = _minVelocity.normalized;
         float velMagnitude = _minVelocity.magnitude;
-        if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Normal))
-        {
-            velMagnitude =+ GetAddedSpeed();
-        }
+        velMagnitude =+ GetAddedSpeed();
 
         _rb.velocity = dir * velMagnitude;
         
