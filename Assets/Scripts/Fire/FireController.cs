@@ -128,7 +128,6 @@ public class FireController : MonoBehaviour, IRestartLevelElement
     private void AdjustLightEffect()
     {
         var mainModule = _particleSystem.main;
-        //mainModule.simulationSpace = IsAttached() ? ParticleSystemSimulationSpace.Local : ParticleSystemSimulationSpace.World;
         var healthFraction = Mathf.Clamp01(_currentFireHealth / _maxFireHealth);
         _lightRange = Mathf.Lerp(0, _maxLightRange, healthFraction);
 
