@@ -68,7 +68,7 @@ namespace TecnocampusProjectII
 
 		public void OnEasyDifficultyClicked()
         {
-			DifficultyManager.SetDifficultyLevel(DifficultyManager.DifficultyLevels.Easy);
+			DifficultyManager.SetDifficultyLevel(DifficultyManager.DifficultyLevels.Normal);
 			ChangeFireColor(DifficultyManager._currentDifficultyLevel);
         }
 
@@ -82,11 +82,9 @@ namespace TecnocampusProjectII
         {
             switch (d)
             {
-                case DifficultyManager.DifficultyLevels.Easy:
+                case DifficultyManager.DifficultyLevels.Normal:
 					SetFireColor(_easyGradient);
 					break;
-                case DifficultyManager.DifficultyLevels.Normal:
-                    break;
                 case DifficultyManager.DifficultyLevels.Hard:
 					SetFireColor(_hardGradient);
                     break;

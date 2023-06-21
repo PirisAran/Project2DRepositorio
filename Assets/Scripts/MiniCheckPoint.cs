@@ -1,8 +1,12 @@
-﻿public class MiniCheckPoint: CheckPoint
+﻿using UnityEngine;
+
+public class MiniCheckPoint: CheckPoint
 {
+    [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] Sprite _emptySprite;
     private void Start()
     {
-        if (DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Easy)
+        if (DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Normal)
         {
             return;
         }
@@ -11,6 +15,6 @@
     }
     protected override void DoAnimation()
     {
-        //Nothing
+        _spriteRenderer.sprite = _emptySprite;
     }
 }

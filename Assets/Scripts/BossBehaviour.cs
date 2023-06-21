@@ -29,7 +29,7 @@ public class BossBehaviour : MonoBehaviour
     {
         Vector2 dir = _minVelocity.normalized;
         float velMagnitude = _minVelocity.magnitude;
-        if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Easy))
+        if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Normal))
         {
             velMagnitude =+ GetAddedSpeed();
         }

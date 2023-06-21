@@ -4,10 +4,9 @@ public class DifficultyManager
 {
 	public static Action OnDifficultyChanged;
 
-	public static DifficultyLevels _currentDifficultyLevel = DifficultyLevels.Hard;
+	public static DifficultyLevels _currentDifficultyLevel = DifficultyLevels.Normal;
 	public enum DifficultyLevels
     {
-		Easy,
 		Normal,
 		Hard
     }
