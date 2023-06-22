@@ -116,12 +116,14 @@ namespace TecnocampusProjectII
         IEnumerator ChangeScene(string _nextScene)
         {
             //do transition scene
-            yield return new WaitForSeconds(0.5f);
-            SceneManager.LoadScene(_nextScene);
+            yield return new WaitForSeconds(0.1f);
+            LoadNextScene();
         }
 
         public void LoadNextScene()
         {
+            Destroy(_fire.gameObject);
+            Destroy(_player.gameObject);
             SceneManager.LoadScene(m_NextLevel);
         }
     }
