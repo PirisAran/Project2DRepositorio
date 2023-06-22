@@ -22,6 +22,7 @@ public class BossBehaviour : MonoBehaviour
 
     void Start()
     {
+        _minVelocity = Vector2.zero;
         _player = GameLogic.GetGameLogic().GetGameController().m_Player.transform;
         if (!(DifficultyManager._currentDifficultyLevel == DifficultyManager.DifficultyLevels.Hard))
         {
